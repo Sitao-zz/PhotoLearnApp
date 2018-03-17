@@ -3,7 +3,7 @@ package sg.edu.nus.iss.pt5.photolearnapp.service;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import sg.edu.nus.iss.pt5.photolearnapp.Constants.PhotoLearnAppConstants;
+import sg.edu.nus.iss.pt5.photolearnapp.constants.PhotoLearnAppConstants;
 
 /**
  * Created by akeelan on 3/17/2018.
