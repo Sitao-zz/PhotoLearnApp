@@ -20,7 +20,7 @@
         </activity>
 
         <activity
-            android:name=".ListLearningSessionActivity"
+            android:name=".activity.ListLearningSessionActivity"
             android:label="List Learning Session"
             android:parentActivityName=".activity.MainActivity" />
 

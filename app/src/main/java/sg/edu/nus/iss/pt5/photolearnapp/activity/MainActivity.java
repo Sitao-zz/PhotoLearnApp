@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import sg.edu.nus.iss.pt5.photolearnapp.R;
+
 public class MainActivity extends AppCompatActivity {
     SignInButton mSignInButton;
     Button mSignOutButton;

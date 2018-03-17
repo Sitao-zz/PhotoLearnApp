@@ -12,6 +12,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import sg.edu.nus.iss.pt5.photolearnapp.R;
+
 public class ListLearningSessionActivity extends AppCompatActivity {
 
     public static final String ARG_ITEM_ID = "learningSession_list";

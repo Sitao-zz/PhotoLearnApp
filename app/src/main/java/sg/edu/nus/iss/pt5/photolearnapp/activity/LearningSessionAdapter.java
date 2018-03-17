@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import sg.edu.nus.iss.pt5.photolearnapp.R;
+
 public class LearningSessionAdapter extends ArrayAdapter<LearningSession> {
     private Context context;
     List<LearningSession> LearningSessions;
