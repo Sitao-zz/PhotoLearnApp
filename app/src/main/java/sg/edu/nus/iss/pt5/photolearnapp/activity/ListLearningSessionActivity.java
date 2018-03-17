@@ -1,10 +1,13 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ public class ListLearningSessionActivity extends AppCompatActivity {
 
     Activity activity;
     ListView learningSessionView;
+    Button mDetailsButton;
     ArrayList<LearningSession> learningSessions;
 
     LearningSessionAdapter learningSessionAdapter;
@@ -37,8 +41,22 @@ public class ListLearningSessionActivity extends AppCompatActivity {
         task = new GetLsTask(this);
         task.execute((Void) null);
 
+        mDetailsButton=(Button)findViewById(R.id.buttonDetails);
 
         //new Test(Create2Activity.this, url).execute(); //async task for getting data from db
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mDetailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListLearningSessionActivity.this, DetailsActivity.class);
+                intent.putExtra("location", "place");
+                startActivity(intent);
+            }
+        });
     }
 
     private void findViewsById() {
