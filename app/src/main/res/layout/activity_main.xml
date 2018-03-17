@@ -36,6 +36,12 @@
                 android:text="Sunny"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="274dp" />
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="184dp"
+                android:layout_height="wrap_content"
+                android:text="Next" />
         </TableRow>
 
         <TableRow

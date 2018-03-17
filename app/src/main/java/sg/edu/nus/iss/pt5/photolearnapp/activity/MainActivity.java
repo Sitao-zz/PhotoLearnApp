@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mConditionTextView;
     Button mSunnyButton;
     Button mFoggyButton;
+    Button mNextButton;
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mConditionRef = mRootRef.child("condition");
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mConditionTextView=(TextView)findViewById(R.id.textViewCondition);
         mSunnyButton=(Button)findViewById(R.id.buttonSunny);
         mFoggyButton=(Button)findViewById(R.id.buttonFoggy);
+        mNextButton=(Button)findViewById(R.id.buttonNext);
     }
 
     @Override
@@ -62,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mConditionRef.setValue("Foggy");
+            }
+        });
+
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                intent.putExtra("location", "place");
+                startActivity(intent);
             }
         });
     }
