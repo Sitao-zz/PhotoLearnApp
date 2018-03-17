@@ -5,6 +5,6 @@ package sg.edu.nus.iss.pt5.photolearnapp.Constants;
  */
 
 public class PhotoLearnAppConstants {
-    
+
     public static final String STORAGE_PATH_UPLOADS = "uploads/";
 }

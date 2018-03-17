@@ -28,6 +28,10 @@
             android:label="@string/title_activity_details_view"
             android:parentActivityName=".activity.ListLearningSessionActivity">
         </activity>
+        <activity
+            android:name=".activity.LearningSessionActivity"
+            android:label="@string/title_activity_learning_session"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
