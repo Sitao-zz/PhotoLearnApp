@@ -6,13 +6,54 @@
     android:layout_height="match_parent"
     tools:context="sg.edu.nus.iss.pt5.photolearnapp.activity.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewCondition"
+                android:layout_width="196dp"
+                android:layout_height="60dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Condition"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteX="94dp"
+                tools:layout_editor_absoluteY="98dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/buttonSunny"
+                android:layout_width="119dp"
+                android:layout_height="wrap_content"
+                android:text="Sunny"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="274dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/buttonFoggy"
+                android:layout_width="114dp"
+                android:layout_height="wrap_content"
+                android:text="Foggy"
+                tools:layout_editor_absoluteX="253dp"
+                tools:layout_editor_absoluteY="274dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>
