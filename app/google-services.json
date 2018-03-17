@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "447934580984",
+    "firebase_url": "https://photolearn-4a76c.firebaseio.com",
+    "project_id": "photolearn-4a76c",
+    "storage_bucket": "photolearn-4a76c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447934580984:android:d3c006efd7dcf3eb",
+        "android_client_info": {
+          "package_name": "sg.edu.nus.iss.pt5.photolearnapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447934580984-b224m41ahsl3c10pgffm07m1maik5m3t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.edu.nus.iss.pt5.photolearnapp",
+            "certificate_hash": "2284ab1b7081307868dd1105ce157428f14270c4"
+          }
+        },
+        {
+          "client_id": "447934580984-cs7vqnok1v2e1itgf0ldk47jvmv2eqkj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0cW9AGZfWS9HjAzBiPdp01MQ8l-P37dg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447934580984-cs7vqnok1v2e1itgf0ldk47jvmv2eqkj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
