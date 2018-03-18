@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "447934580984-b224m41ahsl3c10pgffm07m1maik5m3t.apps.googleusercontent.com",
+          "client_id": "447934580984-45sbe9heogcppjrgh0m9igbsi4eo7923.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "sg.edu.nus.iss.pt5.photolearnapp",
-            "certificate_hash": "2284ab1b7081307868dd1105ce157428f14270c4"
+            "certificate_hash": "ef36e95710f280847c96928328b9379e2b362248"
           }
         },
         {
