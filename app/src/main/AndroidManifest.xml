@@ -18,20 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.ListLearningSessionActivity"
             android:label="List Learning Session"
-            android:parentActivityName=".activity.MainActivity" />
-
-        <activity android:name=".activity.DetailsActivity"
-            android:label="@string/title_activity_details_view"
-            android:parentActivityName=".activity.ListLearningSessionActivity">
+            android:parentActivityName=".activity.MainActivity">
         </activity>
         <activity
             android:name=".activity.LearningSessionActivity"
             android:label="@string/title_activity_learning_session"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".activity.DetailsActivity"
+            android:label="@string/title_activity_details_view"
+            android:parentActivityName=".activity.ListLearningSessionActivity">
+        </activity>
     </application>
 
 </manifest>
