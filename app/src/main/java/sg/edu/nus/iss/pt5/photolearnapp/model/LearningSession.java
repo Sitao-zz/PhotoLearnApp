@@ -1,19 +1,21 @@
 package sg.edu.nus.iss.pt5.photolearnapp.model;
 
+import java.util.Date;
+
 /**
  * Created by Liang Entao on 18/3/18.
  */
 public class LearningSession {
     String id;
     String userId;
-    long courseDate;
+    Date courseDate;
     String courseCode;
     int moduleNumber;
 
     public LearningSession() {
     }
 
-    public LearningSession(String id, String userId, long courseDate, String courseCode, int moduleNumber) {
+    public LearningSession(String id, String userId, Date courseDate, String courseCode, int moduleNumber) {
         this.id = id;
         this.userId = userId;
         this.courseDate = courseDate;
@@ -37,11 +39,11 @@ public class LearningSession {
         this.userId = userId;
     }
 
-    public long getCourseDate() {
+    public Date getCourseDate() {
         return courseDate;
     }
 
-    public void setCourseDate(long courseDate) {
+    public void setCourseDate(Date courseDate) {
         this.courseDate = courseDate;
     }
 
