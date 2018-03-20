@@ -129,11 +129,7 @@ public abstract class BaseDAO<T extends Object> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mObjRef.child(objId).removeEventListener(this);
                 T obj = dataSnapshot.getValue(mTClass);
-                if(obj !=null) {
-                    resultListener.OnDAOReturned(obj);
-                } else {
-                    Log.e("Null value", "Snapshot: " + dataSnapshot.toString());
-                }
+                resultListener.OnDAOReturned(obj);
             }
 
             @Override
