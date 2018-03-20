@@ -4,9 +4,10 @@ package sg.edu.nus.iss.pt5.photolearnapp.model;
  * Created by Liang Entao on 18/3/18.
  */
 public class User {
+    @RecordId
     String id;
-    String name;
-    String email;
+    private String name;
+    private String email;
 
     public User() {}
 

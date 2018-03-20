@@ -4,13 +4,14 @@ package sg.edu.nus.iss.pt5.photolearnapp.model;
  * Created by Liang Entao on 18/3/18.
  */
 public class LearningItem {
-    String id;
-    String userId;
-    String titleId;
-    String photoUrl;
-    String photoDesc;
-    double latitude;
-    double longitude;
+    @RecordId
+    private String id;
+    private String userId;
+    private String titleId;
+    private String photoUrl;
+    private String photoDesc;
+    private double latitude;
+    private double longitude;
 
     public LearningItem() {
     }

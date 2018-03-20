@@ -6,11 +6,12 @@ import java.util.Date;
  * Created by Liang Entao on 18/3/18.
  */
 public class LearningSession {
-    String id;
-    String userId;
-    Date courseDate;
-    String courseCode;
-    int moduleNumber;
+    @RecordId
+    private String id;
+    private String userId;
+    private Date courseDate;
+    private String courseCode;
+    private int moduleNumber;
 
     public LearningSession() {
     }

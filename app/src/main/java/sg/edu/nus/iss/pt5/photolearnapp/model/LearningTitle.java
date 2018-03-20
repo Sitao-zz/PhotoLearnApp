@@ -6,11 +6,12 @@ import java.util.Date;
  * Created by Liang Entao on 18/3/18.
  */
 public class LearningTitle {
-    String id;
-    String userId;
-    String title;
-    String sessionId;
-    Date timestamp;
+    @RecordId
+    private String id;
+    private String userId;
+    private String title;
+    private String sessionId;
+    private Date timestamp;
 
     public LearningTitle() {
     }
