@@ -69,7 +69,7 @@ public abstract class BaseDAO<T extends Object> {
     }
 
     public void getObject(String objId, DAOResultListener<T> resultListener) {
-        ValueEventListener valueListener = createValueEventListener(resultListener);
+        ValueEventListener valueListener = createValueEventListener(objId, resultListener);
         mObjRef.child(objId).addValueEventListener(valueListener);
     }
 
@@ -122,13 +122,18 @@ public abstract class BaseDAO<T extends Object> {
     }
 
     // private methods
-    private ValueEventListener createValueEventListener(final DAOResultListener<T> resultListener) {
+    private ValueEventListener createValueEventListener(final String objId, final DAOResultListener<T> resultListener) {
         // ValueEventListener is operating on the entire children list under this dbReference
         return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mObjRef.child(objId).removeEventListener(this);
                 T obj = dataSnapshot.getValue(mTClass);
-                resultListener.OnDAOReturned(obj);
+                if(obj !=null) {
+                    resultListener.OnDAOReturned(obj);
+                } else {
+                    Log.e("Null value", "Snapshot: " + dataSnapshot.toString());
+                }
             }
 
             @Override
