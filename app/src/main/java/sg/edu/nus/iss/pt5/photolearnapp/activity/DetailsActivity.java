@@ -1,7 +1,7 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 

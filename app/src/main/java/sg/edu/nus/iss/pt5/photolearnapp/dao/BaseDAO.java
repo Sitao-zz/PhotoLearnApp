@@ -29,7 +29,7 @@ public abstract class BaseDAO<T extends Object> {
         this.mTClass = tClass;
         this.mObjRef = mRootRef.child(refKey);
     }
-    
+
     public void save(T obj) {
         try {
             // Insert single record
@@ -97,7 +97,7 @@ public abstract class BaseDAO<T extends Object> {
                     return new HashMap.SimpleEntry<String, Object>(classField.getName(), classField.get(obj));
                 } catch (IllegalAccessException e) {
                     throw new InvalidPropertiesFormatException("Fail to access attribute: " + classField.getName());
-                }finally {
+                } finally {
                     classField.setAccessible(false);
                 }
             }
@@ -108,14 +108,13 @@ public abstract class BaseDAO<T extends Object> {
     protected Map<String, Object> getAttrs(T obj) throws InvalidPropertiesFormatException {
         Map<String, Object> objAttrs = new HashMap<>();
         Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field classField : fields)
-        {
+        for (Field classField : fields) {
             try {
                 classField.setAccessible(true);
                 objAttrs.put(classField.getName(), classField.get(obj));
-            } catch(IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 throw new InvalidPropertiesFormatException("Fail to access attribute: " + classField.getName());
-            }finally{
+            } finally {
                 classField.setAccessible(false);
             }
         }

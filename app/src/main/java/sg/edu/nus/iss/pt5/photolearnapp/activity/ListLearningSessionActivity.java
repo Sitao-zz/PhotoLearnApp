@@ -27,21 +27,22 @@ public class ListLearningSessionActivity extends AppCompatActivity {
     ArrayList<LearningSession> learningSessions;
 
     LearningSessionAdapter learningSessionAdapter;
-   // LearningSessionDAO learningSessionDAO;
-   Calendar dateCalendar;
+    // LearningSessionDAO learningSessionDAO;
+    Calendar dateCalendar;
     private GetLsTask task;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_learningsession);
 
-      //  learningSessionDAO = new LearningSessionDAO(this);
+        //  learningSessionDAO = new LearningSessionDAO(this);
 
         findViewsById();
         task = new GetLsTask(this);
         task.execute((Void) null);
 
-        mDetailsButton=(Button)findViewById(R.id.buttonDetails);
+        mDetailsButton = (Button) findViewById(R.id.buttonDetails);
 
         //new Test(Create2Activity.this, url).execute(); //async task for getting data from db
     }
@@ -72,7 +73,7 @@ public class ListLearningSessionActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<LearningSession> doInBackground(Void... arg0) {
-           // ArrayList<LearningSession> learningSessionList = reminderDAO.getReminders();
+            // ArrayList<LearningSession> learningSessionList = reminderDAO.getReminders();
             ArrayList<LearningSession> learningSessionList = new ArrayList<LearningSession>();
             LearningSession ls = new LearningSession();
             dateCalendar = Calendar.getInstance();
@@ -101,8 +102,8 @@ public class ListLearningSessionActivity extends AppCompatActivity {
                 learningSessions = lsList;
                 if (lsList != null) {
                     if (lsList.size() != 0) {
-                        learningSessionAdapter = new  LearningSessionAdapter(getApplicationContext(), lsList);
-                        learningSessionView.setAdapter( learningSessionAdapter);
+                        learningSessionAdapter = new LearningSessionAdapter(getApplicationContext(), lsList);
+                        learningSessionView.setAdapter(learningSessionAdapter);
                     } else {
                         Toast.makeText(activity, "No Learning Session List", Toast.LENGTH_LONG).show();
                     }

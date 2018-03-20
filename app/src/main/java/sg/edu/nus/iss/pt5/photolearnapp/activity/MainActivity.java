@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSignInButton=(SignInButton)findViewById(R.id.sign_in_button);
-        mSignOutButton=(Button)findViewById(R.id.signOutButton);
-        mStatusTextView=(TextView)findViewById(R.id.status_textview);
+        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        mSignOutButton = (Button) findViewById(R.id.signOutButton);
+        mStatusTextView = (TextView) findViewById(R.id.status_textview);
 
-         btn = (Button) findViewById(R.id.button1);
+        btn = (Button) findViewById(R.id.button1);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
 //                .enableAutoManage(this, (GoogleApiClient.OnConnectionFailedListener) this)
 //                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
 //                .build();
-
-
-
 
 
     }
@@ -99,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private void signIn() {
         Intent signIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signIntent, RC_SIGN_IN);
-       // showLS();
+        // showLS();
     }
 
     @Override
