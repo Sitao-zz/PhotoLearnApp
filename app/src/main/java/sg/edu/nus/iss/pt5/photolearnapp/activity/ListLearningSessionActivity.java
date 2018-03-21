@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
+import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 
 public class ListLearningSessionActivity extends AppCompatActivity {
 
@@ -79,7 +80,7 @@ public class ListLearningSessionActivity extends AppCompatActivity {
             dateCalendar = Calendar.getInstance();
             ls.setCourseDate(dateCalendar.getTime());
             ls.setCourseCode("aaaa");
-            ls.setLSid("LS123");
+            ls.setId("LS123");
             ls.setModuleNumber(1);
 
             learningSessionList.add(ls);
@@ -111,5 +112,4 @@ public class ListLearningSessionActivity extends AppCompatActivity {
             }
         }
     }
-
 }

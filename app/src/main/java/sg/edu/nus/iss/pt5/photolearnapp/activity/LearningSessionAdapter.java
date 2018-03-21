@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
+import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 
 public class LearningSessionAdapter extends ArrayAdapter<LearningSession> {
     private Context context;
@@ -72,7 +73,7 @@ public class LearningSessionAdapter extends ArrayAdapter<LearningSession> {
             holder = (ViewHolder) convertView.getTag();
         }
         LearningSession learningSession = (LearningSession) getItem(position);
-        holder.lsIdTxt.setText(learningSession.getLSid() + "");
+        holder.lsIdTxt.setText(learningSession.getId() + "");
         holder.courseCodeTxt.setText(learningSession.getCourseCode());
         holder.courseDateTxt.setText(formatter.format(learningSession.getCourseDate()));
         holder.moduleNumberTxt.setText(learningSession.getModuleNumber() + "");
