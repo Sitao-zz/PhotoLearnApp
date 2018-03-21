@@ -86,7 +86,9 @@ public abstract class BaseDAO<T extends Object> {
     }
 
     // protected methods
-    protected abstract String getIdValue(T obj) throws InvalidPropertiesFormatException;
+    protected String getIdValue(T obj) throws InvalidPropertiesFormatException {
+        return String.valueOf(getId(obj).getValue()) ;
+    }
 
     protected Map.Entry<String, Object> getId(T obj) throws InvalidPropertiesFormatException {
         Field[] fields = obj.getClass().getDeclaredFields();

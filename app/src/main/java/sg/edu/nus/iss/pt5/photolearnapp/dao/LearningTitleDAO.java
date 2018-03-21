@@ -11,9 +11,4 @@ public class LearningTitleDAO extends BaseDAO<LearningTitle> {
     public LearningTitleDAO() {
         super("learningTitles", LearningTitle.class);
     }
-
-    @Override
-    protected String getIdValue(LearningTitle title) throws InvalidPropertiesFormatException {
-        return (String) getId(title).getValue();
-    }
 }

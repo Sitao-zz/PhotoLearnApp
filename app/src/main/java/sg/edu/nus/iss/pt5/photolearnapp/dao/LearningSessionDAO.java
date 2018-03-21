@@ -11,9 +11,4 @@ public class LearningSessionDAO extends BaseDAO<LearningSession> {
     public LearningSessionDAO() {
         super("learningSessions", LearningSession.class);
     }
-
-    @Override
-    protected String getIdValue(LearningSession session) throws InvalidPropertiesFormatException {
-        return (String) getId(session).getValue();
-    }
 }

@@ -11,9 +11,4 @@ public class UserDAO extends BaseDAO<User> {
     public UserDAO() {
         super("users", User.class);
     }
-
-    @Override
-    protected String getIdValue(User user) throws InvalidPropertiesFormatException {
-        return (String) getId(user).getValue();
-    }
 }

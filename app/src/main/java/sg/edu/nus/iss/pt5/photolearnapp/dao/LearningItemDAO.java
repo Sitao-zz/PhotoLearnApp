@@ -11,9 +11,4 @@ public class LearningItemDAO extends BaseDAO<LearningItem> {
     public LearningItemDAO() {
         super("learningItems", LearningItem.class);
     }
-
-    @Override
-    protected String getIdValue(LearningItem item) throws InvalidPropertiesFormatException {
-        return (String) getId(item).getValue();
-    }
 }
