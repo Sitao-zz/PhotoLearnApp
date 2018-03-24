@@ -5,7 +5,7 @@ package sg.edu.nus.iss.pt5.photolearnapp.model;
  */
 public class User {
     @RecordId
-    String id;
+    private String id;
     private String name;
     private String email;
 
