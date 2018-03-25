@@ -1,0 +1,102 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="sg.edu.nus.iss.pt5.photolearnapp.activity.ItemActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/photoImageViewID"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@android:drawable/stat_notify_error" />
+
+            <ImageButton
+                android:id="@+id/textToSpeachBtnID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_volume_up_black_24dp" />
+
+            <TextView
+                android:id="@+id/descriptionTextViewID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description of the image" />
+
+        <LinearLayout
+            android:id="@+id/optLayoutID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/optOneCheckBoxID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="Option 01" />
+
+            <CheckBox
+                android:id="@+id/optTowCheckBoxID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="Option 02" />
+
+            <CheckBox
+                android:id="@+id/optThreeCheckBoxID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="Option 03" />
+
+            <CheckBox
+                android:id="@+id/optFourCheckBoxID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="Option 04" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remarks :" />
+
+            <TextView
+                android:id="@+id/remarksTextViewID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remarks" />
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/editBtnID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Edit" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

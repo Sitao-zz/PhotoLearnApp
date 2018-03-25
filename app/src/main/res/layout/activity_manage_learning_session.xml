@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    tools:context="sg.edu.nus.iss.pt5.photolearnapp.activity.ManageLearningSessionActivity">
+
+    <TextView
+        android:id="@+id/courseDateTextViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course Date :"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/courseDateEditTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:clickable="true"
+        android:focusable="false"/>
+
+    <TextView
+        android:id="@+id/courseCodeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course Code :"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/courseCodeEditTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:maxLength="10" />
+
+    <TextView
+        android:id="@+id/courseNameTextViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course Name :"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/courseNameEditTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:maxLength="50" />
+
+    <TextView
+        android:id="@+id/moduleNumberTextViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Module Number :"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/moduleNumberEditTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="5" />
+
+    <TextView
+        android:id="@+id/moduleNameTextViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Module Name :"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/moduleNameEditTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:maxLength="50" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancelBtnID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/addBtnID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/saveBtnID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

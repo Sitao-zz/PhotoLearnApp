@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!-- player_row.xml -->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:id="@+id/learningSessionLayoutID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/sessionIDTextViewID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="20180322-IoT-M01" />
+
+            <TextView
+                android:id="@+id/courseNameTextViewID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Course Name" />
+
+            <TextView
+                android:id="@+id/moduleNameTextViewID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Module Name" />
+
+            <TextView
+                android:id="@+id/courseDateTextViewID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="22/03/2018"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/nextImageViewID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/learningSessionLayoutID"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            app:srcCompat="@drawable/ic_navigate_next" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
