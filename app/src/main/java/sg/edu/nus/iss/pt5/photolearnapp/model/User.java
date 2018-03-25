@@ -1,11 +1,11 @@
 package sg.edu.nus.iss.pt5.photolearnapp.model;
 
-import sg.edu.nus.iss.pt5.photolearnapp.dao.ILookupable;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.IEntity;
 
 /**
  * Created by Liang Entao on 18/3/18.
  */
-public class User implements ILookupable {
+public class User implements IEntity {
     @RecordId
     private String id;
     private String name;

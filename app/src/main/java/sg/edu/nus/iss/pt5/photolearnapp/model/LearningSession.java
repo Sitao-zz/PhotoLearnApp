@@ -2,28 +2,41 @@ package sg.edu.nus.iss.pt5.photolearnapp.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import sg.edu.nus.iss.pt5.photolearnapp.dao.ILookupable;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.IEntity;
 
 /**
  * Created by mjeyakaran on 18/3/18.
  */
 
-public class LearningSession implements Serializable, ILookupable {
+public class LearningSession implements Serializable, IEntity {
 
     public static final String DATE_PATTERN = "yyyyMMdd";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.US);
 
     @RecordId
     private String id;
+    private String userId;
     private Date courseDate;
     private String courseCode;
     private String courseName;
     private String moduleNumber;
     private String moduleName;
+
+    public LearningSession() {
+    }
+
+    public LearningSession(String id, String userId, Date courseDate, String courseCode, String courseName, String moduleNumber, String moduleName) {
+        this.id = id;
+        this.userId = userId;
+        this.courseDate = courseDate;
+        this.courseCode = courseCode;
+        this.courseName = courseName;
+        this.moduleNumber = moduleNumber;
+        this.moduleName = moduleName;
+    }
 
     /**
      * YYYYMMDD-<Course Code>-M<Module number>

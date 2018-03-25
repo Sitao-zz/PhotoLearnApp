@@ -19,7 +19,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.RecordId;
 /**
  * Created by Liang Entao on 20/3/18.
  */
-public abstract class BaseEntityDAO<T extends Object> {
+public abstract class BaseEntityDAO<T extends IEntity> {
     final protected DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private Class<T> mTClass;
     private DatabaseReference mObjRef;
@@ -31,39 +31,33 @@ public abstract class BaseEntityDAO<T extends Object> {
     }
 
     public void save(T obj) {
-        try {
-            // Insert single record
-            mObjRef.child(getIdValue(obj)).setValue(obj);
-        } catch (InvalidPropertiesFormatException e) {
-            Log.e("Invalid Property", e.getMessage());
-        }
+        // Insert single record
+        mObjRef.child(obj.getId()).setValue(obj);
     }
 
     public void save(Iterable<T> objects) {
-        try {
-            // Insert multiple records
-            Map<String, Object> objList = new HashMap<String, Object>();
-            for (T obj : objects) {
-                objList.put(getIdValue(obj), obj);
-            }
-            mObjRef.updateChildren(objList);
-        } catch (InvalidPropertiesFormatException e) {
-            Log.e("Invalid Property", e.getMessage());
+        // Insert multiple records
+        Map<String, Object> objList = new HashMap<String, Object>();
+        for (T obj : objects) {
+            objList.put(obj.getId(), obj);
         }
+        mObjRef.updateChildren(objList);
     }
 
+    @Deprecated
     public void update(T obj) {
         try {
             Map<String, Object> objAttrs = getAttrs(obj);
 
             // TODO: need validation on whether the key already exists
-            DatabaseReference objRef = mObjRef.child(getIdValue(obj));
+            DatabaseReference objRef = mObjRef.child(obj.getId());
             objRef.updateChildren(objAttrs);
         } catch (InvalidPropertiesFormatException e) {
             Log.e("Invalid Property", e.getMessage());
         }
     }
 
+    @Deprecated
     public void update(String id, Map<String, Object> attrs) {
         mObjRef.child(id).updateChildren(attrs);
     }
@@ -74,11 +68,7 @@ public abstract class BaseEntityDAO<T extends Object> {
     }
 
     public void delete(T obj) {
-        try {
-            mObjRef.child(getIdValue(obj)).removeValue();
-        } catch (InvalidPropertiesFormatException e) {
-            Log.e("Invalid Property", e.getMessage());
-        }
+        mObjRef.child(obj.getId()).removeValue();
     }
 
     public void delete(String objId) {
@@ -86,10 +76,20 @@ public abstract class BaseEntityDAO<T extends Object> {
     }
 
     // protected methods
+
+    /**
+     * Create IEntity interface ensure the implementation of getId().
+     *
+     * @param obj
+     * @return
+     * @throws InvalidPropertiesFormatException
+     */
+    @Deprecated()
     protected String getIdValue(T obj) throws InvalidPropertiesFormatException {
-        return String.valueOf(getId(obj).getValue()) ;
+        return String.valueOf(getId(obj).getValue());
     }
 
+    @Deprecated
     protected Map.Entry<String, Object> getId(T obj) throws InvalidPropertiesFormatException {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field classField : fields) {
@@ -107,6 +107,7 @@ public abstract class BaseEntityDAO<T extends Object> {
         throw new InvalidPropertiesFormatException("@RecordId is not defined in " + obj.getClass().getName() + " class.");
     }
 
+    @Deprecated
     protected Map<String, Object> getAttrs(T obj) throws InvalidPropertiesFormatException {
         Map<String, Object> objAttrs = new HashMap<>();
         Field[] fields = obj.getClass().getDeclaredFields();
