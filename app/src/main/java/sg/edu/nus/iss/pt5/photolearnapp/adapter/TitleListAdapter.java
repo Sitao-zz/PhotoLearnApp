@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
@@ -82,9 +83,9 @@ public class TitleListAdapter<T extends Title> extends RecyclerView.Adapter<Titl
             titleTextView.setText(title);
         }
 
-        public void setDateTime(Calendar dateTime) {
+        public void setDateTime(Date dateTime) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-            dateTimeTextView.setText(dateFormat.format(dateTime.getTime()));
+            dateTimeTextView.setText(dateFormat.format(dateTime));
         }
     }
 

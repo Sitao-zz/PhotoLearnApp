@@ -102,7 +102,7 @@ public class ManageTitleActivity extends AppCompatActivity implements View.OnCli
             case R.id.addBtnID:
 
                 updateModel();
-                title.setDateTime(Calendar.getInstance());
+                title.setDateTime(Calendar.getInstance().getTime());
 
                 returnIntent = new Intent();
                 returnIntent.putExtra(MODE, mode);

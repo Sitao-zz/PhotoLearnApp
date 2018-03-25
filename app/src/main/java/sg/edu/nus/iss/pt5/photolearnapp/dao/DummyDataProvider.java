@@ -22,7 +22,7 @@ public class DummyDataProvider {
         for (int i = 0; i < 20; i++) {
             learningSession = new LearningSession();
             learningSession.setSessionID("20180201-IOT-M0" + i);
-            learningSession.setCourseDate(Calendar.getInstance());
+            learningSession.setCourseDate(Calendar.getInstance().getTime());
             learningSessionList.add(learningSession);
         }
 
@@ -35,7 +35,7 @@ public class DummyDataProvider {
         for (int i = 0; i < 2; i++) {
             learningTitle = new LearningTitle();
             learningTitle.setTitle("Learning Title" + i);
-            learningTitle.setDateTime(Calendar.getInstance());
+            learningTitle.setDateTime(Calendar.getInstance().getTime());
             learningTitleList.add(learningTitle);
         }
 
@@ -48,7 +48,7 @@ public class DummyDataProvider {
         for (int i = 0; i < 2; i++) {
             quizTitle = new QuizTitle();
             quizTitle.setTitle("Quiz Title" + i);
-            quizTitle.setDateTime(Calendar.getInstance());
+            quizTitle.setDateTime(Calendar.getInstance().getTime());
             quizTitleList.add(quizTitle);
         }
 
