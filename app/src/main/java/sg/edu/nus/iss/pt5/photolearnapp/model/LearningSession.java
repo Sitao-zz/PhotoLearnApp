@@ -3,6 +3,7 @@ package sg.edu.nus.iss.pt5.photolearnapp.model;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import sg.edu.nus.iss.pt5.photolearnapp.dao.ILookupable;
@@ -15,10 +16,10 @@ public class LearningSession implements Serializable, ILookupable {
 
     public static final String DATE_PATTERN = "yyyyMMdd";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.US);
-    
+
     @RecordId
     private String id;
-    private Calendar courseDate;
+    private Date courseDate;
     private String courseCode;
     private String courseName;
     private String moduleNumber;
@@ -30,7 +31,7 @@ public class LearningSession implements Serializable, ILookupable {
     public void generateSessionID() {
 
         StringBuilder sessionIDBuilder = new StringBuilder();
-        sessionIDBuilder.append(sdf.format(courseDate.getTime()));
+        sessionIDBuilder.append(sdf.format(courseDate));
         sessionIDBuilder.append("-");
         sessionIDBuilder.append(courseCode);
         sessionIDBuilder.append("-M");
@@ -47,11 +48,11 @@ public class LearningSession implements Serializable, ILookupable {
         this.id = id;
     }
 
-    public Calendar getCourseDate() {
+    public Date getCourseDate() {
         return courseDate;
     }
 
-    public void setCourseDate(Calendar courseDate) {
+    public void setCourseDate(Date courseDate) {
         this.courseDate = courseDate;
     }
 
