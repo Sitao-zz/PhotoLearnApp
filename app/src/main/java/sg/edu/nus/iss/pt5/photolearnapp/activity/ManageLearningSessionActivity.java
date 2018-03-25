@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
@@ -38,16 +39,19 @@ public class ManageLearningSessionActivity extends AppCompatActivity implements 
 
     private Mode mode;
     private LearningSession learningSession;
-    private Calendar courseDate;
+    private Date courseDate;
 
     private DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-            courseDate.set(Calendar.YEAR, year);
-            courseDate.set(Calendar.MONTH, monthOfYear);
-            courseDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            courseDate = calendar.getTime();
 
             updateCourseDate();
 
@@ -82,7 +86,7 @@ public class ManageLearningSessionActivity extends AppCompatActivity implements 
 
         if (Mode.ADD == mode) {
             learningSession = new LearningSession();
-            learningSession.setCourseDate(Calendar.getInstance());
+            learningSession.setCourseDate(Calendar.getInstance().getTime());
             addBtn.setVisibility(View.VISIBLE);
             setTitle("Add New Learning Session");
         } else if(Mode.EDIT == mode) {
@@ -124,10 +128,12 @@ public class ManageLearningSessionActivity extends AppCompatActivity implements 
 
         switch (v.getId()) {
             case R.id.courseDateEditTextID :
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(courseDate);
                 new DatePickerDialog(ManageLearningSessionActivity.this, onDateSetListener,
-                        courseDate.get(Calendar.YEAR),
-                        courseDate.get(Calendar.MONTH),
-                        courseDate.get(Calendar.DAY_OF_MONTH)).show();
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
                 break;
             case R.id.cancelBtnID :
                 finish();

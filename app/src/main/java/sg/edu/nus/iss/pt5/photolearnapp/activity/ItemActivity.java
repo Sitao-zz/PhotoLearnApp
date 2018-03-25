@@ -14,6 +14,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.ItemPagerAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
+import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
@@ -32,6 +33,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     private ViewPager mViewPager;
 
     private Title title;
+    private UIType uiType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +44,13 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
         // Read Intent Parameters
         Bundle extras = getIntent().getExtras();
         title = (Title) extras.get(AppConstants.TITLE_OBJ);
+        uiType = (title instanceof LearningTitle) ? UIType.LEARNING : UIType.QUIZ;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        if (title instanceof LearningTitle) {
+        if (uiType == UIType.LEARNING) {
             itemPagerAdapter = new ItemPagerAdapter<LearningItem>(getSupportFragmentManager(), DummyDataProvider.getLearningItemList());
         } else {
             itemPagerAdapter = new ItemPagerAdapter<QuizItem>(getSupportFragmentManager(), DummyDataProvider.getQuizItemList());
@@ -69,6 +71,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.addItemFButton:
                 Intent intent = new Intent(this, ManageItemActivity.class);
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
+                intent.putExtra(AppConstants.UI_TYPE, uiType);
                 startActivityForResult(intent, RC_ADD_ITEM);
                 break;
         }

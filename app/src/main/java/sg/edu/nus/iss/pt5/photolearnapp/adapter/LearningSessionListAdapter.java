@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
@@ -95,9 +96,9 @@ public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSes
             moduleNameTextView.setText(moduleName);
         }
 
-        public void setCourseDate(Calendar courseDate) {
+        public void setCourseDate(Date courseDate) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-            courseDateTextView.setText(dateFormat.format(courseDate.getTime()));
+            courseDateTextView.setText(dateFormat.format(courseDate));
         }
     }
 
