@@ -7,6 +7,7 @@ package sg.edu.nus.iss.pt5.photolearnapp.constants;
 public class AppConstants {
 
     public static final int RC_SIGN_IN = 100;
+    public static final int RC_SIGN_IN_SUCCESS = 101;
     public static final int RC_UPLOADED_IMAGE = 110;
     public static final int RC_CAMERA_CAPTURE = 111;
     public static final int RC_GALLERY_PICTURE = 112;
