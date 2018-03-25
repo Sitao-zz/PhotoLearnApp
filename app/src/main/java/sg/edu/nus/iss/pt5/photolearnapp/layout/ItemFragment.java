@@ -96,13 +96,13 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         editBtn = (Button) view.findViewById(R.id.editBtnID);
         editBtn.setOnClickListener(this);
 
-        descriptionTextView.setText(item.getDescription());
+        descriptionTextView.setText(item.getPhotoDesc());
 
         optLayout = (LinearLayout) view.findViewById(R.id.optLayoutID);
         optLayout.setVisibility((isQuizItem) ? View.VISIBLE : View.GONE);
 
         UploadImageService uploadImageService = new UploadImageService();
-        uploadImageService.downloadImage(item.getPhotoURL(), photoImageView);
+        uploadImageService.downloadImage(item.getPhotoUrl(), photoImageView);
         return view;
     }
 

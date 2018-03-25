@@ -92,7 +92,7 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
 
         setTitle();
 
-        descriptionEditText.setText(item.getDescription());
+        descriptionEditText.setText(item.getPhotoDesc());
 
     }
 
@@ -133,7 +133,7 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void updateModel() {
-        item.setDescription(descriptionEditText.getText().toString());
+        item.setPhotoDesc(descriptionEditText.getText().toString());
     }
 
     @Override
@@ -184,7 +184,7 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
 
     private void downloadImage() {
 
-        StorageReference pathReference = storageRef.child(item.getPhotoURL());
+        StorageReference pathReference = storageRef.child(item.getPhotoUrl());
 
         final long ONE_MEGABYTE = 1024 * 1024;
         pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -268,7 +268,7 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                item.setPhotoURL(taskSnapshot.getMetadata().getPath());
+                item.setPhotoUrl(taskSnapshot.getMetadata().getPath());
                 downloadImage();
             }
         });

@@ -60,8 +60,8 @@ public class DummyDataProvider {
         LearningItem learningItem;
         for (int i = 0; i < 2; i++) {
             learningItem = new LearningItem();
-            learningItem.setDescription("Learning Item" + i);
-            learningItem.setPhotoURL("uploads/1521886071849.JPEG");
+            learningItem.setPhotoDesc("Learning Item" + i);
+            learningItem.setPhotoUrl("uploads/1521886071849.JPEG");
             learningItemList.add(learningItem);
         }
 
@@ -73,8 +73,8 @@ public class DummyDataProvider {
         QuizItem quizItem;
         for (int i = 0; i < 2; i++) {
             quizItem = new QuizItem();
-            quizItem.setDescription("Quiz Item" + i);
-            quizItem.setPhotoURL("uploads/1521886071849.JPEG");
+            quizItem.setPhotoDesc("Quiz Item" + i);
+            quizItem.setPhotoUrl("uploads/1521886071849.JPEG");
             quizItemList.add(quizItem);
         }
 

@@ -8,40 +8,81 @@ import java.io.Serializable;
 
 public abstract class Item implements Serializable {
 
-    private String photo;
-    private String photoURL;
-    private String gps;
-    private String description;
+    @RecordId
+    private String id;
+    private String userId;
+    private String titleId;
+    private String photoUrl;
+    private String photoDesc;
+    private double latitude;
+    private double longitude;
 
-    public String getPhoto() {
-        return photo;
+    public Item() {
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public Item(String id, String userId, String titleId, String photoUrl, String photoDesc, double latitude, double longitude) {
+        this.id = id;
+        this.userId = userId;
+        this.titleId = titleId;
+        this.photoUrl = photoUrl;
+        this.photoDesc = photoDesc;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public String getPhotoURL() {
-        return photoURL;
+    public String getId() {
+        return id;
     }
 
-    public void setPhotoURL(String photoURL) {
-        this.photoURL = photoURL;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getGps() {
-        return gps;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setGps(String gps) {
-        this.gps = gps;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitleId() {
+        return titleId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitleId(String titleId) {
+        this.titleId = titleId;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public String getPhotoDesc() {
+        return photoDesc;
+    }
+
+    public void setPhotoDesc(String photoDesc) {
+        this.photoDesc = photoDesc;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
