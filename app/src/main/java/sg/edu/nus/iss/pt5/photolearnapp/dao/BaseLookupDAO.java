@@ -24,6 +24,6 @@ public abstract class BaseLookupDAO<K extends ILookupable, V extends Object, D e
     }
 
     public void delete() {
-        
+
     }
 }

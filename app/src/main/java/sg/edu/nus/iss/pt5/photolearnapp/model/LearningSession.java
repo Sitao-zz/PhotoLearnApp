@@ -1,29 +1,42 @@
 package sg.edu.nus.iss.pt5.photolearnapp.model;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import sg.edu.nus.iss.pt5.photolearnapp.dao.ILookupable;
 
 /**
- * Created by Liang Entao on 18/3/18.
+ * Created by mjeyakaran on 18/3/18.
  */
-public class LearningSession implements ILookupable {
+
+public class LearningSession implements Serializable, ILookupable {
+
+    public static final String DATE_PATTERN = "yyyyMMdd";
+    private SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.US);
+    
     @RecordId
     private String id;
-    private String userId;
-    private Date courseDate;
+    private Calendar courseDate;
     private String courseCode;
-    private int moduleNumber;
+    private String courseName;
+    private String moduleNumber;
+    private String moduleName;
 
-    public LearningSession() {
-    }
+    /**
+     * YYYYMMDD-<Course Code>-M<Module number>
+     */
+    public void generateSessionID() {
 
-    public LearningSession(String id, String userId, Date courseDate, String courseCode, int moduleNumber) {
-        this.id = id;
-        this.userId = userId;
-        this.courseDate = courseDate;
-        this.courseCode = courseCode;
-        this.moduleNumber = moduleNumber;
+        StringBuilder sessionIDBuilder = new StringBuilder();
+        sessionIDBuilder.append(sdf.format(courseDate.getTime()));
+        sessionIDBuilder.append("-");
+        sessionIDBuilder.append(courseCode);
+        sessionIDBuilder.append("-M");
+        sessionIDBuilder.append(moduleNumber);
+
+        this.id = sessionIDBuilder.toString();
     }
 
     public String getId() {
@@ -34,19 +47,11 @@ public class LearningSession implements ILookupable {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Date getCourseDate() {
+    public Calendar getCourseDate() {
         return courseDate;
     }
 
-    public void setCourseDate(Date courseDate) {
+    public void setCourseDate(Calendar courseDate) {
         this.courseDate = courseDate;
     }
 
@@ -58,11 +63,27 @@ public class LearningSession implements ILookupable {
         this.courseCode = courseCode;
     }
 
-    public int getModuleNumber() {
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getModuleNumber() {
         return moduleNumber;
     }
 
-    public void setModuleNumber(int moduleNumber) {
+    public void setModuleNumber(String moduleNumber) {
         this.moduleNumber = moduleNumber;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 }
