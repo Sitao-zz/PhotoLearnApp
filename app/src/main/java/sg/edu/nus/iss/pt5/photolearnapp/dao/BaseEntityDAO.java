@@ -19,13 +19,13 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.RecordId;
 /**
  * Created by Liang Entao on 20/3/18.
  */
-public abstract class BaseDAO<T extends Object> {
+public abstract class BaseEntityDAO<T extends Object> {
     final protected DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private Class<T> mTClass;
     private DatabaseReference mObjRef;
 
     // public methods
-    public BaseDAO(String refKey, Class<T> tClass) {
+    public BaseEntityDAO(String refKey, Class<T> tClass) {
         this.mTClass = tClass;
         this.mObjRef = mRootRef.child(refKey);
     }

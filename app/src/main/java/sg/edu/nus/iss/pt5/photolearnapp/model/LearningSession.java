@@ -5,16 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import sg.edu.nus.iss.pt5.photolearnapp.dao.ILookupable;
+
 /**
  * Created by mjeyakaran on 18/3/18.
  */
 
-public class LearningSession implements Serializable {
+public class LearningSession implements Serializable, ILookupable {
 
     public static final String DATE_PATTERN = "yyyyMMdd";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.US);
-
-    private String sessionID;
+    
+    @RecordId
+    private String id;
     private Calendar courseDate;
     private String courseCode;
     private String courseName;
@@ -33,15 +36,15 @@ public class LearningSession implements Serializable {
         sessionIDBuilder.append("-M");
         sessionIDBuilder.append(moduleNumber);
 
-        this.sessionID = sessionIDBuilder.toString();
+        this.id = sessionIDBuilder.toString();
     }
 
-    public String getSessionID() {
-        return sessionID;
+    public String getId() {
+        return id;
     }
 
-    public void setSessionID(String sessionID) {
-        this.sessionID = sessionID;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Calendar getCourseDate() {

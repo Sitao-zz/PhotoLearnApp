@@ -21,7 +21,7 @@ public class DummyDataProvider {
         LearningSession learningSession;
         for (int i = 0; i < 20; i++) {
             learningSession = new LearningSession();
-            learningSession.setSessionID("20180201-IOT-M0" + i);
+            learningSession.setId("20180201-IOT-M0" + i);
             learningSession.setCourseDate(Calendar.getInstance());
             learningSessionList.add(learningSession);
         }
