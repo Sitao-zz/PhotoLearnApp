@@ -3,6 +3,14 @@
     package="sg.edu.nus.iss.pt5.photolearnapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -11,27 +19,49 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".activity.ListLearningSessionActivity"
-            android:label="List Learning Session"
-            android:parentActivityName=".activity.MainActivity" />
-
-        <activity android:name=".activity.DetailsActivity"
-            android:label="@string/title_activity_details_view"
-            android:parentActivityName=".activity.ListLearningSessionActivity">
-        </activity>
-        <activity
             android:name=".activity.LearningSessionActivity"
             android:label="@string/title_activity_learning_session"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activity.ManageLearningSessionActivity"
+            android:parentActivityName=".activity.LearningSessionActivity" />
+
+        <activity
+            android:name=".activity.TitleActivity"
+            android:label="@string/title_activity_title"
+            android:parentActivityName=".activity.LearningSessionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.ManageTitleActivity"
+            android:parentActivityName=".activity.TitleActivity" />
+
+        <activity
+            android:name=".activity.ItemActivity"
+            android:label="@string/title_activity_item"
+            android:parentActivityName=".activity.TitleActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sg.edu.nus.iss.pt5.photolearnapp.activity.TitleActivity" />
+        </activity>
+
+        <activity android:name=".activity.ManageItemActivity" />
+
+        <activity android:name=".activity.UploadPhotoActivity" />
+
     </application>
 
 </manifest>
