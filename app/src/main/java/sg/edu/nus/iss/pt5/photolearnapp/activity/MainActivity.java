@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,8 +29,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
+import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_SIGN_IN;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_SIGN_IN_SUCCESS;
 
 public class MainActivity extends BaseActivity implements
         View.OnClickListener {
@@ -83,6 +86,8 @@ public class MainActivity extends BaseActivity implements
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
             }
+        } else if(requestCode == RC_SIGN_IN_SUCCESS) {
+            signOut();
         }
     }
 
@@ -132,7 +137,7 @@ public class MainActivity extends BaseActivity implements
 
     private void handleLoginSuccess(FirebaseUser user) {
         Intent intent = new Intent(this, LearningSessionActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,RC_SIGN_IN_SUCCESS);
     }
 
     @Override
@@ -140,8 +145,6 @@ public class MainActivity extends BaseActivity implements
         int i = v.getId();
         if (i == R.id.sign_in_button) {
             signIn();
-        } else if (i == R.id.sign_out_button) {
-            signOut();
         }
     }
 }
