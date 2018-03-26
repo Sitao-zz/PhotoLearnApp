@@ -9,8 +9,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,17 +24,17 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.RecordId;
 public abstract class BaseEntityDAO<T extends IEntity> {
     final protected DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private Class<T> mTClass;
-    private DatabaseReference mObjRef;
+    protected DatabaseReference mEntityRef;
 
     // public methods
     public BaseEntityDAO(String refKey, Class<T> tClass) {
+        this.mEntityRef = mRootRef.child(refKey);
         this.mTClass = tClass;
-        this.mObjRef = mRootRef.child(refKey);
     }
 
     public void save(T obj) {
         // Insert single record
-        mObjRef.child(obj.getId()).setValue(obj);
+        mEntityRef.child(obj.getId()).setValue(obj);
     }
 
     public void save(Iterable<T> objects) {
@@ -41,7 +43,7 @@ public abstract class BaseEntityDAO<T extends IEntity> {
         for (T obj : objects) {
             objList.put(obj.getId(), obj);
         }
-        mObjRef.updateChildren(objList);
+        mEntityRef.updateChildren(objList);
     }
 
     @Deprecated
@@ -50,8 +52,8 @@ public abstract class BaseEntityDAO<T extends IEntity> {
             Map<String, Object> objAttrs = getAttrs(obj);
 
             // TODO: need validation on whether the key already exists
-            DatabaseReference objRef = mObjRef.child(obj.getId());
-            objRef.updateChildren(objAttrs);
+            DatabaseReference entityRef = mEntityRef.child(obj.getId());
+            entityRef.updateChildren(objAttrs);
         } catch (InvalidPropertiesFormatException e) {
             Log.e("Invalid Property", e.getMessage());
         }
@@ -59,23 +61,92 @@ public abstract class BaseEntityDAO<T extends IEntity> {
 
     @Deprecated
     public void update(String id, Map<String, Object> attrs) {
-        mObjRef.child(id).updateChildren(attrs);
+        mEntityRef.child(id).updateChildren(attrs);
     }
 
     public void getObject(String objId, DAOResultListener<T> resultListener) {
-        ValueEventListener valueListener = createValueEventListener(objId, resultListener);
-        mObjRef.child(objId).addValueEventListener(valueListener);
+        ValueEventListener valueListener = createChildEventListener(objId, resultListener);
+        mEntityRef.child(objId).addValueEventListener(valueListener);
+    }
+
+    public void getObjects(DAOResultListener<Iterable<T>> resultListener) {
+        ValueEventListener childrenListener = createChildrenEventListener(resultListener);
+        mEntityRef.addValueEventListener(childrenListener);
+    }
+
+    public void getObjects(List<String> objIds, DAOResultListener<Iterable<T>> resultListener) {
+        ValueEventListener childrenListener = createChildrenEventListener(objIds, resultListener);
+        mEntityRef.addValueEventListener(childrenListener);
     }
 
     public void delete(T obj) {
-        mObjRef.child(obj.getId()).removeValue();
+        mEntityRef.child(obj.getId()).removeValue();
     }
 
     public void delete(String objId) {
-        mObjRef.child(objId).removeValue();
+        mEntityRef.child(objId).removeValue();
     }
 
     // protected methods
+    protected ValueEventListener createChildEventListener(final String objId, final DAOResultListener<T> resultListener) {
+        // ValueEventListener is operating on the entire children list under this dbReference
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mEntityRef.child(objId).removeEventListener(this);
+                T obj = dataSnapshot.getValue(mTClass);
+                resultListener.OnDAOReturned(obj);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+    }
+
+    protected ValueEventListener createChildrenEventListener(final DAOResultListener<Iterable<T>> resultListener) {
+        // ValueEventListener is operating on the entire children list under this dbReference
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mEntityRef.removeEventListener(this);
+                List<T> list = new ArrayList<T>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    T obj = child.getValue(mTClass);
+                    list.add(obj);
+                }
+                resultListener.OnDAOReturned(list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    protected ValueEventListener createChildrenEventListener(final List<String> objIds, final DAOResultListener<Iterable<T>> resultListener) {
+        // ValueEventListener is operating on the entire children list under this dbReference
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mEntityRef.removeEventListener(this);
+                List<T> list = new ArrayList<T>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    T obj = child.getValue(mTClass);
+                    if (objIds == null || objIds.contains(obj.getId())) {
+                        list.add(obj);
+                    }
+                }
+                resultListener.OnDAOReturned(list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
 
     /**
      * Create IEntity interface ensure the implementation of getId().
@@ -124,23 +195,8 @@ public abstract class BaseEntityDAO<T extends IEntity> {
         return objAttrs;
     }
 
+
     // private methods
-    private ValueEventListener createValueEventListener(final String objId, final DAOResultListener<T> resultListener) {
-        // ValueEventListener is operating on the entire children list under this dbReference
-        return new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mObjRef.child(objId).removeEventListener(this);
-                T obj = dataSnapshot.getValue(mTClass);
-                resultListener.OnDAOReturned(obj);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-    }
-
     private String getIdName(T obj) throws InvalidPropertiesFormatException {
         return getId(obj).getKey();
     }
