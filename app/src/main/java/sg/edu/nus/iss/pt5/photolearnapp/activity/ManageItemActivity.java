@@ -34,6 +34,8 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
+import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
+import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreListener;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.ITEM_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
@@ -41,6 +43,8 @@ import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.UI_TYPE;
 
 public class ManageItemActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
     private ImageView photoImageView;
     private EditText descriptionEditText;
@@ -55,9 +59,6 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
     private Mode mode;
     private UIType titleUIType;
     private Item item;
-
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = storage.getReference();
 
     private int position;
 
@@ -182,29 +183,6 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void downloadImage() {
-
-        StorageReference pathReference = storageRef.child(item.getPhotoUrl());
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                DisplayMetrics dm = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-                photoImageView.setMinimumHeight(dm.heightPixels);
-                photoImageView.setMinimumWidth(dm.widthPixels);
-                photoImageView.setImageBitmap(bm);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-    }
 
     private void startDialog() {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
@@ -251,25 +229,37 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private void downloadImage() {
+        fileStoreHelper.downloadImage(item.getPhotoUrl(), new FileStoreListener<Bitmap>() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                DisplayMetrics dm = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+                photoImageView.setMinimumHeight(dm.heightPixels);
+                photoImageView.setMinimumWidth(dm.widthPixels);
+                photoImageView.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // TODO
+            }
+        });
+    }
+
     public void uploadToFileStore(Bitmap bitmap) {
 
-        StorageReference imagesRef = storageRef.child(AppConstants.STORAGE_PATH_UPLOADS + CommonUtils.generateRandomImageFileName());
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = imagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileStoreHelper.uploadImage(bitmap, new FileStoreListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 item.setPhotoUrl(taskSnapshot.getMetadata().getPath());
                 downloadImage();
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // TODO
             }
         });
 
