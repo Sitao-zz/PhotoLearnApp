@@ -23,7 +23,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitlePagerAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 
-public class TitleActivity extends AppCompatActivity {
+public class TitleActivity extends BaseActivity {
 
     private TitlePagerAdapter titlePagerAdapter;
     private ViewPager mViewPager;
