@@ -21,7 +21,7 @@ import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.TITLE_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.UI_TYPE;
 
-public class ManageTitleActivity extends AppCompatActivity implements View.OnClickListener {
+public class ManageTitleActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText titleNameEditText;
 

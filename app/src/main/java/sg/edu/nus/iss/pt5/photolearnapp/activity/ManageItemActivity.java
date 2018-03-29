@@ -1,15 +1,16 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -17,13 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
@@ -33,14 +29,18 @@ import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
-import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
+import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
+import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreListener;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.ITEM_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_PERMISSION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.UI_TYPE;
 
-public class ManageItemActivity extends AppCompatActivity implements View.OnClickListener {
+public class ManageItemActivity extends BaseActivity implements View.OnClickListener {
+
+    private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
     private ImageView photoImageView;
     private EditText descriptionEditText;
@@ -55,9 +55,6 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
     private Mode mode;
     private UIType titleUIType;
     private Item item;
-
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = storage.getReference();
 
     private int position;
 
@@ -104,7 +101,7 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
                 item = new LearningItem();
                 addBtn.setVisibility(View.VISIBLE);
                 setTitle("Add New Learning Item");
-                startDialog();
+                selectImage();
             } else if (Mode.EDIT == mode) {
                 deleteBtn.setVisibility(View.VISIBLE);
                 saveBtn.setVisibility(View.VISIBLE);
@@ -117,7 +114,7 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
                 item = new QuizItem();
                 addBtn.setVisibility(View.VISIBLE);
                 setTitle("Add New Quiz Item");
-                startDialog();
+                selectImage();
             } else if (Mode.EDIT == mode) {
                 deleteBtn.setVisibility(View.VISIBLE);
                 saveBtn.setVisibility(View.VISIBLE);
@@ -182,31 +179,11 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void downloadImage() {
 
-        StorageReference pathReference = storageRef.child(item.getPhotoUrl());
+    private void selectImage() {
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                DisplayMetrics dm = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(dm);
+        checkPermissions();
 
-                photoImageView.setMinimumHeight(dm.heightPixels);
-                photoImageView.setMinimumWidth(dm.widthPixels);
-                photoImageView.setImageBitmap(bm);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-    }
-
-    private void startDialog() {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
         myAlertDialog.setTitle("Upload Pictures Option");
         myAlertDialog.setMessage("How do you want to set your picture?");
@@ -251,27 +228,58 @@ public class ManageItemActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private void downloadImage() {
+        fileStoreHelper.downloadImage(item.getPhotoUrl(), new FileStoreListener<Bitmap>() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                DisplayMetrics dm = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+                photoImageView.setMinimumHeight(dm.heightPixels);
+                photoImageView.setMinimumWidth(dm.widthPixels);
+                photoImageView.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // TODO
+            }
+        });
+    }
+
     public void uploadToFileStore(Bitmap bitmap) {
 
-        StorageReference imagesRef = storageRef.child(AppConstants.STORAGE_PATH_UPLOADS + CommonUtils.generateRandomImageFileName());
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = imagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileStoreHelper.uploadImage(bitmap, new FileStoreListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 item.setPhotoUrl(taskSnapshot.getMetadata().getPath());
                 downloadImage();
             }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // TODO
+            }
         });
 
+    }
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, RC_PERMISSION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case RC_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length < 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    // permission denied.
+                    finish();
+                }
+            }
+        }
     }
 }

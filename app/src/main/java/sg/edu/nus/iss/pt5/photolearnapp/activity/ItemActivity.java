@@ -27,7 +27,7 @@ import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_ADD_ITEM;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_EDIT_ITEM;
 
-public class ItemActivity extends AppCompatActivity implements View.OnClickListener {
+public class ItemActivity extends BaseActivity implements View.OnClickListener {
 
     private ItemPagerAdapter itemPagerAdapter;
     private ViewPager mViewPager;

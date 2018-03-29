@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.pt5.photolearnapp.layout;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,12 +23,15 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
-import sg.edu.nus.iss.pt5.photolearnapp.service.UploadImageService;
+import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
+import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreListener;
 import sg.edu.nus.iss.pt5.photolearnapp.util.TextToSpeechUtil;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_EDIT_ITEM;
 
 public class ItemFragment extends Fragment implements View.OnClickListener {
+
+    private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
     private boolean isQuizItem = false;
 
@@ -101,9 +105,23 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         optLayout = (LinearLayout) view.findViewById(R.id.optLayoutID);
         optLayout.setVisibility((isQuizItem) ? View.VISIBLE : View.GONE);
 
-        UploadImageService uploadImageService = new UploadImageService();
-        uploadImageService.downloadImage(item.getPhotoUrl(), photoImageView);
+        downloadImage();
+
         return view;
+    }
+
+    private void downloadImage() {
+        fileStoreHelper.downloadImage(item.getPhotoUrl(), new FileStoreListener<Bitmap>() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                photoImageView.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // TODO
+            }
+        });
     }
 
     @Override

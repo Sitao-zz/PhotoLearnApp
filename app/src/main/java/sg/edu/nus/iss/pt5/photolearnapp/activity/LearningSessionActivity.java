@@ -15,14 +15,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
+import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
+import sg.edu.nus.iss.pt5.photolearnapp.model.Trainer;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeCallback;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.LearningSessionListAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeActionHandler;
@@ -33,7 +38,7 @@ import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.ITEM_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
 
-public class LearningSessionActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class LearningSessionActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQ_CODE = 0001;
 
@@ -41,6 +46,11 @@ public class LearningSessionActivity extends AppCompatActivity implements View.O
     private LearningSessionListAdapter learningSessionListAdapter;
     private List<LearningSession> learningSessionList;
     private SwipeCallback swipeCallback;
+
+    private TextView userNameTextView;
+    private TextView userRoleTextView;
+    private View trainerContent;
+    private View participantContent;
 
     private SwipeActionHandler swipeActionHandler = new SwipeActionHandler() {
         @Override
@@ -77,6 +87,49 @@ public class LearningSessionActivity extends AppCompatActivity implements View.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        Menu navigationViewMenu = navigationView.getMenu();
+        View headerView = navigationView.getHeaderView(0);
+
+        userNameTextView = (TextView) headerView.findViewById(R.id.userNameTextViewID);
+        userNameTextView.setText(SecurityContext.getInstance().getRole().getUser().getName());
+        userRoleTextView = (TextView) headerView.findViewById(R.id.userRoleTextViewID);
+
+        if (SecurityContext.getInstance().isTrainer()) {
+
+            userRoleTextView.setText("Trainer");
+            MenuItem switchAsParticipantMenuItem = navigationViewMenu.findItem(R.id.switchAsParticipantNavID).setVisible(false);
+            switchAsParticipantMenuItem.setVisible(true);
+
+            showTrainerView();
+
+        } else if (SecurityContext.getInstance().isParticipant()) {
+
+            userRoleTextView.setText("Participant");
+            MenuItem switchAsTrainerMenuItem = navigationViewMenu.findItem(R.id.switchAsTrainerNavID).setVisible(false);
+            switchAsTrainerMenuItem.setVisible(true);
+
+            showParticipantView();
+
+        } else {
+            userRoleTextView.setText("Unknown");
+        }
+
+    }
+
+    private void showTrainerView() {
+
+        trainerContent = findViewById(R.id.trainerContentID);
+        trainerContent.setVisibility(View.VISIBLE);
+
         learningSessionListAdapter = new LearningSessionListAdapter(this, learningSessionList);
 
         learningSessionListRecyclerView = (RecyclerView) findViewById(R.id.learningSessionListRecyclerView);
@@ -98,14 +151,12 @@ public class LearningSessionActivity extends AppCompatActivity implements View.O
         FloatingActionButton addLearningSessionBtn = (FloatingActionButton) findViewById(R.id.addLearningSessionFButton);
         addLearningSessionBtn.setOnClickListener(this);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+    }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    private void showParticipantView() {
+
+        participantContent = findViewById(R.id.participantContentID);
+        participantContent.setVisibility(View.VISIBLE);
 
     }
 
@@ -160,8 +211,12 @@ public class LearningSessionActivity extends AppCompatActivity implements View.O
 
         switch (item.getItemId()) {
             case R.id.switchAsTrainerNavID:
+                SecurityContext.getInstance().setRole(new Trainer(SecurityContext.getInstance().getRole().getUser()));
+                refreshActivity();
                 break;
             case R.id.switchAsParticipantNavID:
+                SecurityContext.getInstance().setRole(new Participant(SecurityContext.getInstance().getRole().getUser()));
+                refreshActivity();
                 break;
             case R.id.signOutNavID:
                 Intent returnIntent = new Intent();
@@ -174,5 +229,11 @@ public class LearningSessionActivity extends AppCompatActivity implements View.O
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void refreshActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 }

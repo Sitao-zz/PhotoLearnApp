@@ -52,7 +52,6 @@
                 android:value="sg.edu.nus.iss.pt5.photolearnapp.activity.TitleActivity" />
         </activity>
         <activity android:name=".activity.ManageItemActivity" />
-        <activity android:name=".activity.UploadPhotoActivity" />
     </application>
 
 </manifest>

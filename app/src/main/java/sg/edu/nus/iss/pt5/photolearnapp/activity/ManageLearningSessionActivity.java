@@ -22,7 +22,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.LEARNING_SESSION_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 
-public class ManageLearningSessionActivity extends AppCompatActivity implements View.OnClickListener{
+public class ManageLearningSessionActivity extends BaseActivity implements View.OnClickListener{
 
     public static final String DATE_PATTERN = "dd/MM/yyyy";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.US);

@@ -15,6 +15,8 @@ public class AppConstants {
     public static final int RC_EDIT_ITEM = 121;
     public static final int RC_DELETE_ITEM = 122;
 
+    public static final int RC_PERMISSION = 130;
+
 
     public static final String POSITION = "Position";
     public static final String LEARNING_SESSION_OBJ = "Learning Session Object";
