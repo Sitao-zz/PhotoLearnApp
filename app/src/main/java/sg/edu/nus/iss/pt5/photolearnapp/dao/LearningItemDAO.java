@@ -14,7 +14,11 @@ public class LearningItemDAO extends BaseEntityDAO<LearningItem> {
     }
 
     public void getItemsByTitle(LearningTitle title, DAOResultListener<Iterable<LearningItem>> resultListener) {
+        this.getItemsByTitleId(title.getId(), resultListener);
+    }
+
+    public void getItemsByTitleId(String titleId, DAOResultListener<Iterable<LearningItem>> resultListener) {
         ValueEventListener childrenListener = createChildrenEventListener(resultListener);
-        mEntityRef.orderByChild("titleId").equalTo(title.getId()).addValueEventListener(childrenListener);
+        mEntityRef.orderByChild("titleId").equalTo(titleId).addValueEventListener(childrenListener);
     }
 }

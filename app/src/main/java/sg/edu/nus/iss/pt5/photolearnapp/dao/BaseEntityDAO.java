@@ -83,8 +83,24 @@ public abstract class BaseEntityDAO<T extends IEntity> {
         mEntityRef.child(obj.getId()).removeValue();
     }
 
-    public void delete(String objId) {
+    public void deleteById(String objId) {
         mEntityRef.child(objId).removeValue();
+    }
+
+    public void delete(Iterable<T> objects) {
+        Map<String, Object> objList = new HashMap<String, Object>();
+        for (T obj : objects) {
+            objList.put(obj.getId(), null);
+        }
+        mEntityRef.updateChildren(objList);
+    }
+
+    public void deleteById(Iterable<String> objIds) {
+        Map<String, Object> objList = new HashMap<String, Object>();
+        for (String objId : objIds) {
+            objList.put(objId, null);
+        }
+        mEntityRef.updateChildren(objList);
     }
 
     // protected methods
