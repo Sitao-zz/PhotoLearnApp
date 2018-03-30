@@ -16,12 +16,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import sg.edu.nus.iss.pt5.photolearnapp.model.IModel;
 import sg.edu.nus.iss.pt5.photolearnapp.model.RecordId;
 
 /**
  * Created by Liang Entao on 20/3/18.
  */
-public abstract class BaseEntityDAO<T extends IEntity> {
+public abstract class BaseEntityDAO<T extends IModel> {
     final protected DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     protected DatabaseReference mEntityRef;
     private Class<T> mTClass;
@@ -165,7 +166,7 @@ public abstract class BaseEntityDAO<T extends IEntity> {
     }
 
     /**
-     * Create IEntity interface ensure the implementation of getId().
+     * Create IModel interface ensure the implementation of getId().
      *
      * @param obj
      * @return
