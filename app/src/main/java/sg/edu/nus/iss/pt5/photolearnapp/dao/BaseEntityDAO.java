@@ -15,14 +15,14 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
-import sg.edu.nus.iss.pt5.photolearnapp.model.IModel;
 import sg.edu.nus.iss.pt5.photolearnapp.model.RecordId;
 
 /**
  * Created by Liang Entao on 20/3/18.
  */
-public abstract class BaseEntityDAO<T extends IModel> {
+public abstract class BaseEntityDAO<T extends IEntity> {
     final protected DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     protected DatabaseReference mEntityRef;
     private Class<T> mTClass;
@@ -35,6 +35,9 @@ public abstract class BaseEntityDAO<T extends IModel> {
 
     public void save(T obj) {
         // Insert single record
+        if (obj.getId().isEmpty()) {
+            obj.setId(UUID.randomUUID().toString());
+        }
         mEntityRef.child(obj.getId()).setValue(obj);
     }
 
@@ -42,6 +45,9 @@ public abstract class BaseEntityDAO<T extends IModel> {
         // Insert multiple records
         Map<String, Object> objList = new HashMap<String, Object>();
         for (T obj : objects) {
+            if (obj.getId().isEmpty()) {
+                obj.setId(UUID.randomUUID().toString());
+            }
             objList.put(obj.getId(), obj);
         }
         mEntityRef.updateChildren(objList);

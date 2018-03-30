@@ -5,11 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import sg.edu.nus.iss.pt5.photolearnapp.dao.IEntity;
+
 /**
  * Created by mjeyakaran on 18/3/18.
  */
 
-public class LearningSession implements Serializable, IModel {
+public class LearningSession implements Serializable, IModel, IEntity {
 
     public static final String DATE_PATTERN = "yyyyMMdd";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.US);
