@@ -35,7 +35,7 @@ public abstract class BaseEntityDAO<T extends IEntity> {
 
     public void save(T obj) {
         // Insert single record
-        if (obj.getId().isEmpty()) {
+        if (obj.getId() == null || obj.getId().isEmpty()) {
             obj.setId(UUID.randomUUID().toString());
         }
         mEntityRef.child(obj.getId()).setValue(obj);
@@ -45,7 +45,7 @@ public abstract class BaseEntityDAO<T extends IEntity> {
         // Insert multiple records
         Map<String, Object> objList = new HashMap<String, Object>();
         for (T obj : objects) {
-            if (obj.getId().isEmpty()) {
+            if (obj.getId() == null || obj.getId().isEmpty()) {
                 obj.setId(UUID.randomUUID().toString());
             }
             objList.put(obj.getId(), obj);

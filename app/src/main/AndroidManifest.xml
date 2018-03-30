@@ -57,6 +57,17 @@
                 android:value="sg.edu.nus.iss.pt5.photolearnapp.activity.TitleActivity" />
         </activity>
         <activity android:name=".activity.ManageItemActivity" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+          />
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider313983045794866"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
     </application>
 
 </manifest>

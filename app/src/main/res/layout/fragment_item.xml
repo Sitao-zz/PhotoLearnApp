@@ -69,28 +69,28 @@
                 android:id="@+id/optOneCheckBoxID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:clickable="false"
                 android:text="Option 01" />
 
             <CheckBox
                 android:id="@+id/optTowCheckBoxID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:clickable="false"
                 android:text="Option 02" />
 
             <CheckBox
                 android:id="@+id/optThreeCheckBoxID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:clickable="false"
                 android:text="Option 03" />
 
             <CheckBox
                 android:id="@+id/optFourCheckBoxID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:clickable="false"
                 android:text="Option 04" />
 
             <TextView

@@ -9,6 +9,7 @@ import java.util.List;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.layout.ItemFragment;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
+import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 
 /**
  * Created by mjeyakaran on 23/3/18.
@@ -16,10 +17,12 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 
 public class ItemPagerAdapter<T extends Item> extends FragmentStatePagerAdapter {
 
+    private Title title;
     private List<T> itemList;
 
-    public ItemPagerAdapter(FragmentManager fm, List<T> itemList) {
+    public ItemPagerAdapter(FragmentManager fm, Title title, List<T> itemList) {
         super(fm);
+        this.title = title;
         this.itemList = itemList;
     }
 
@@ -27,7 +30,7 @@ public class ItemPagerAdapter<T extends Item> extends FragmentStatePagerAdapter 
     public Fragment getItem(int position) {
 
         T item = itemList.get(position);
-        ItemFragment itemFragment = ItemFragment.newInstance(position, item);
+        ItemFragment itemFragment = ItemFragment.newInstance(position, title, item);
 
         return itemFragment;
     }
@@ -42,16 +45,6 @@ public class ItemPagerAdapter<T extends Item> extends FragmentStatePagerAdapter 
         // it will recreate all Fragments when
         // notifyDataSetChanged is called
         return POSITION_NONE;
-    }
-
-    public void editItem(int position, T item) {
-        itemList.set(position, item);
-        notifyDataSetChanged();
-    }
-
-    public void deleteItem(int position, T item) {
-        itemList.remove(position);
-        notifyDataSetChanged();
     }
 
     public List<T> getItemList() {

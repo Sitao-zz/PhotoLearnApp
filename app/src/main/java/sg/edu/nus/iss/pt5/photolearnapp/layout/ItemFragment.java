@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
@@ -47,8 +49,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
-    private boolean isQuizUI = false;
-
     private LearningSession learningSession;
     private Title title;
     private Item item;
@@ -56,6 +56,13 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private ImageView photoImageView;
     private TextView descriptionTextView;
+
+    private CheckBox optOneCheckBox;
+    private CheckBox optTwoCheckBox;
+    private CheckBox optThreeCheckBox;
+    private CheckBox optFourCheckBox;
+    private TextView remarksTextView;
+
     private Button editBtn;
 
     private LinearLayout optLayout;
@@ -78,7 +85,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    public static ItemFragment newInstance(int position, Item item) {
+    public static ItemFragment newInstance(int position, Title title, Item item) {
 
         ItemFragment fragment = new ItemFragment();
 
@@ -86,6 +93,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         //args.putSerializable(AppConstants.LEARNING_SESSION_OBJ, learningSession);
         //args.putSerializable(AppConstants.TITLE_OBJ, title);
         args.putSerializable(AppConstants.POSITION, position);
+        args.putSerializable(AppConstants.TITLE_OBJ, title);
         args.putSerializable(AppConstants.ITEM_OBJ, item);
 
         fragment.setArguments(args);
@@ -101,9 +109,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             //learningSession = (LearningSession) getArguments().getSerializable(AppConstants.LEARNING_SESSION_OBJ);
             //title = (Title) getArguments().getSerializable(AppConstants.TITLE_OBJ);
             position = getArguments().getInt(AppConstants.POSITION);
+            title = (Title) getArguments().getSerializable(AppConstants.TITLE_OBJ);
             item = (Item) getArguments().getSerializable(AppConstants.ITEM_OBJ);
-
-            if (CommonUtils.isQuizUI(item)) isQuizUI = true;
         }
 
         textToSpeechUtil = new TextToSpeechUtil(this.getContext());
@@ -132,19 +139,44 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
         context = this.getContext();
 
+        if(CommonUtils.isQuizUI(title)) {
+            optOneCheckBox = (CheckBox) view.findViewById(R.id.optOneCheckBoxID);
+            optTwoCheckBox = (CheckBox) view.findViewById(R.id.optTowCheckBoxID);
+            optThreeCheckBox = (CheckBox) view.findViewById(R.id.optThreeCheckBoxID);
+            optFourCheckBox = (CheckBox) view.findViewById(R.id.optFourCheckBoxID);
+            remarksTextView = (TextView) view.findViewById(R.id.remarksTextViewID);
+        }
+
         textToSpeechBtn = (ImageButton) view.findViewById(R.id.textToSpeachBtnID);
         textToSpeechBtn.setOnClickListener(this);
 
         initEditItemButton(view);
 
-        descriptionTextView.setText(item.getPhotoDesc());
+        populateUI();
 
         optLayout = (LinearLayout) view.findViewById(R.id.optLayoutID);
-        optLayout.setVisibility((isQuizUI) ? View.VISIBLE : View.GONE);
+        optLayout.setVisibility((CommonUtils.isQuizUI(title)) ? View.VISIBLE : View.GONE);
 
         downloadImage();
 
         return view;
+    }
+
+    private void populateUI() {
+        descriptionTextView.setText(item.getPhotoDesc());
+
+        if(CommonUtils.isQuizUI(title)){
+            QuizItem quizItem = (QuizItem) item;
+            optOneCheckBox.setChecked(quizItem.isOptionOneAnswer());
+            optOneCheckBox.setText(quizItem.getOptionOne());
+            optTwoCheckBox.setChecked(quizItem.isOptionTwoAnswer());
+            optTwoCheckBox.setText(quizItem.getOptionTwo());
+            optThreeCheckBox.setChecked(quizItem.isOptionThreeAnswer());
+            optThreeCheckBox.setText(quizItem.getOptionThree());
+            optFourCheckBox.setChecked(quizItem.isOptionFourAnswer());
+            optFourCheckBox.setText(quizItem.getOptionFour());
+            remarksTextView.setText(quizItem.getExplanation());
+        }
     }
 
     private void initEditItemButton(View view) {
@@ -212,8 +244,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             case R.id.editBtnID:
                 Intent editIntent = new Intent(this.getActivity(), ManageItemActivity.class);
                 editIntent.putExtra(AppConstants.MODE, Mode.EDIT);
-                editIntent.putExtra(AppConstants.UI_TYPE, (item instanceof LearningItem) ? UIType.LEARNING : UIType.QUIZ);
                 editIntent.putExtra(AppConstants.POSITION, position);
+                editIntent.putExtra(AppConstants.TITLE_OBJ, title);
                 editIntent.putExtra(AppConstants.ITEM_OBJ, item);
                 this.getActivity().startActivityForResult(editIntent, RC_EDIT_ITEM);
                 break;
@@ -269,31 +301,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /*
-    @Override
-    public void onLocationChanged(Location location) {
-
-        //get the location of longtitude and Latitude.
-        double doubleLongitude = location.getLongitude();
-        double doubleLatitude = location.getLatitude();
-        textViewLongitude.setText(doubleLongitude+",");
-        textViewLatitude.setText(doubleLatitude+"");
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }*/
 
     private Location getLastKnownLocation() {
         //mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);

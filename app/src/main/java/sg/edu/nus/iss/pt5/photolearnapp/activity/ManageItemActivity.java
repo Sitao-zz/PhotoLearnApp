@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,16 +27,24 @@ import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningItemDAO;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
+import sg.edu.nus.iss.pt5.photolearnapp.model.LearningTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
+import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
+import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreListener;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.ITEM_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_PERMISSION;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.TITLE_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.UI_TYPE;
 
 public class ManageItemActivity extends BaseActivity implements View.OnClickListener {
@@ -46,6 +55,15 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
     private EditText descriptionEditText;
 
     private LinearLayout optLinearLayout;
+    private EditText optOneEditText;
+    private CheckBox optOneIsAnsCheckBox;
+    private EditText optTwoEditText;
+    private CheckBox optTwoIsAnsCheckBox;
+    private EditText optThreeEditText;
+    private CheckBox optThreeIsAnsCheckBox;
+    private EditText optFourEditText;
+    private CheckBox optFourIsAnsCheckBox;
+    private EditText remarksEditText;
 
     private Button cancelBtn;
     private Button addBtn;
@@ -53,10 +71,14 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
     private Button deleteBtn;
 
     private Mode mode;
-    private UIType titleUIType;
+
+    private Title title;
     private Item item;
 
     private int position;
+
+    private LearningItemDAO learningItemDAO;
+    private QuizItemDAO quizItemDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +86,26 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_item);
 
+        learningItemDAO = new LearningItemDAO();
+        quizItemDAO = new QuizItemDAO();
+
         photoImageView = (ImageView) findViewById(R.id.photoImageViewID);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditTextID);
         optLinearLayout = (LinearLayout) findViewById(R.id.optLayoutID);
+
+        optOneEditText = (EditText) findViewById(R.id.optOneEditTextID);
+        optOneIsAnsCheckBox = (CheckBox) findViewById(R.id.optOneIsAnsCheckBoxID);
+
+        optTwoEditText = (EditText) findViewById(R.id.optTwoEditTextID);
+        optTwoIsAnsCheckBox = (CheckBox) findViewById(R.id.optTwoIsAnsCheckBoxID);
+
+        optThreeEditText = (EditText) findViewById(R.id.optThreeEditTextID);
+        optThreeIsAnsCheckBox = (CheckBox) findViewById(R.id.optThreeIsAnsCheckBoxID);
+
+        optFourEditText = (EditText) findViewById(R.id.optFourEditTextID);
+        optFourIsAnsCheckBox = (CheckBox) findViewById(R.id.optFourIsAnsCheckBoxID);
+
+        remarksEditText = (EditText) findViewById(R.id.remarksEditTextID);;
 
         cancelBtn = (Button) findViewById(R.id.cancelBtnID);
         cancelBtn.setOnClickListener(this);
@@ -83,22 +122,41 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
         // Read Intent Parameters
         Bundle extras = getIntent().getExtras();
         mode = (Mode) extras.get(MODE);
-        titleUIType = (UIType) extras.get(UI_TYPE);
+        title = (Title) extras.get(TITLE_OBJ);
         item = (Item) extras.get(ITEM_OBJ);
         position = extras.getInt(POSITION);
 
         setTitle();
 
+        populateUI();
+
+    }
+
+    private void populateUI() {
         descriptionEditText.setText(item.getPhotoDesc());
 
+        if(CommonUtils.isQuizUI(title)) {
+            QuizItem quizItem = ((QuizItem)item);
+            optOneEditText.setText(quizItem.getOptionOne());
+            optOneIsAnsCheckBox.setChecked(quizItem.isOptionOneAnswer());
+            optTwoEditText.setText(quizItem.getOptionTwo());
+            optTwoIsAnsCheckBox.setChecked(quizItem.isOptionTwoAnswer());
+            optThreeEditText.setText(quizItem.getOptionThree());
+            optThreeIsAnsCheckBox.setChecked(quizItem.isOptionThreeAnswer());
+            optFourEditText.setText(quizItem.getOptionFour());
+            optFourIsAnsCheckBox.setChecked(quizItem.isOptionFourAnswer());
+            remarksEditText.setText(quizItem.getExplanation());
+        }
     }
 
     private void setTitle() {
 
-        if ((UIType.LEARNING == titleUIType)) {
+        if (CommonUtils.isLearningUI(title)) {
             optLinearLayout.setVisibility(View.GONE);
             if (Mode.ADD == mode) {
                 item = new LearningItem();
+                item.setUserId(SecurityContext.getInstance().getRole().getUser().getId());
+                item.setTitleId(title.getId());
                 addBtn.setVisibility(View.VISIBLE);
                 setTitle("Add New Learning Item");
                 selectImage();
@@ -112,6 +170,8 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
             optLinearLayout.setVisibility(View.VISIBLE);
             if (Mode.ADD == mode) {
                 item = new QuizItem();
+                item.setUserId(SecurityContext.getInstance().getRole().getUser().getId());
+                item.setTitleId(title.getId());
                 addBtn.setVisibility(View.VISIBLE);
                 setTitle("Add New Quiz Item");
                 selectImage();
@@ -131,6 +191,20 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
     private void updateModel() {
         item.setPhotoDesc(descriptionEditText.getText().toString());
+
+        if(CommonUtils.isQuizUI(title)) {
+            QuizItem quizItem = ((QuizItem)item);
+
+            quizItem.setOptionOne(optOneEditText.getText().toString());
+            quizItem.setOptionOneAnswer(optOneIsAnsCheckBox.isChecked());
+            quizItem.setOptionTwo(optTwoEditText.getText().toString());
+            quizItem.setOptionTwoAnswer(optTwoIsAnsCheckBox.isChecked());
+            quizItem.setOptionThree(optThreeEditText.getText().toString());
+            quizItem.setOptionThreeAnswer(optThreeIsAnsCheckBox.isChecked());
+            quizItem.setOptionFour(optFourEditText.getText().toString());
+            quizItem.setOptionFourAnswer(optFourIsAnsCheckBox.isChecked());
+            quizItem.setExplanation(remarksEditText.getText().toString());
+        }
     }
 
     @Override
@@ -146,6 +220,12 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
                 updateModel();
 
+                if(CommonUtils.isLearningUI(title)) {
+                    learningItemDAO.save((LearningItem) item);
+                } else {
+                    quizItemDAO.save((QuizItem) item);
+                }
+
                 returnIntent = new Intent();
                 returnIntent.putExtra(MODE, mode);
                 returnIntent.putExtra(ITEM_OBJ, item);
@@ -157,6 +237,12 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
                 updateModel();
 
+                if(CommonUtils.isLearningUI(title)) {
+                    learningItemDAO.save((LearningItem) item);
+                } else {
+                    quizItemDAO.save((QuizItem) item);
+                }
+
                 returnIntent = new Intent();
                 returnIntent.putExtra(MODE, mode);
                 returnIntent.putExtra(ITEM_OBJ, item);
@@ -166,6 +252,12 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.deleteBtnID:
+
+                if(CommonUtils.isLearningUI(title)) {
+                    learningItemDAO.delete((LearningItem) item);
+                } else {
+                    quizItemDAO.delete((QuizItem) item);
+                }
 
                 returnIntent = new Intent();
                 returnIntent.putExtra(MODE, Mode.DELETE);
