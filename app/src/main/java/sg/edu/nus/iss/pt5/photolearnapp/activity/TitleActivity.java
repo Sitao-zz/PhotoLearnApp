@@ -22,11 +22,18 @@ import android.widget.TextView;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitlePagerAdapter;
+import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
+import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
+import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
+
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.TITLE_OBJ;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.UI_TYPE;
 
 public class TitleActivity extends BaseActivity {
 
@@ -41,11 +48,17 @@ public class TitleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_title);
 
+        // Read Intent Parameters
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            learningSession = (LearningSession) extras.get(AppConstants.LEARNING_SESSION_OBJ);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        titlePagerAdapter = new TitlePagerAdapter(getSupportFragmentManager(),learningSession);
+        titlePagerAdapter = new TitlePagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(titlePagerAdapter);
@@ -60,8 +73,6 @@ public class TitleActivity extends BaseActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
 
     }
 

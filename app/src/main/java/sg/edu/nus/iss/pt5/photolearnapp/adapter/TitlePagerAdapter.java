@@ -14,12 +14,10 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 
 public class TitlePagerAdapter extends FragmentStatePagerAdapter {
 
-    private LearningSession learningSession;
     private int pageCount = 2;
 
-    public TitlePagerAdapter(FragmentManager fm, LearningSession learningSession) {
+    public TitlePagerAdapter(FragmentManager fm) {
         super(fm);
-        this.learningSession = learningSession;
     }
 
     @Override
@@ -27,10 +25,10 @@ public class TitlePagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                TitleFragment learningTitleFragment = TitleFragment.newInstance(UIType.LEARNING, learningSession);
+                TitleFragment learningTitleFragment = TitleFragment.newInstance(UIType.LEARNING);
                 return learningTitleFragment;
             case 1:
-                TitleFragment quizTitleFragment = TitleFragment.newInstance(UIType.QUIZ, learningSession);
+                TitleFragment quizTitleFragment = TitleFragment.newInstance(UIType.QUIZ);
                 return quizTitleFragment;
             default:
                 return null;

@@ -15,6 +15,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import sg.edu.nus.iss.pt5.photolearnapp.model.RecordId;
 
@@ -34,6 +35,9 @@ public abstract class BaseEntityDAO<T extends IEntity> {
 
     public void save(T obj) {
         // Insert single record
+        if (obj.getId() == null || obj.getId().isEmpty()) {
+            obj.setId(UUID.randomUUID().toString());
+        }
         mEntityRef.child(obj.getId()).setValue(obj);
     }
 
@@ -41,6 +45,9 @@ public abstract class BaseEntityDAO<T extends IEntity> {
         // Insert multiple records
         Map<String, Object> objList = new HashMap<String, Object>();
         for (T obj : objects) {
+            if (obj.getId() == null || obj.getId().isEmpty()) {
+                obj.setId(UUID.randomUUID().toString());
+            }
             objList.put(obj.getId(), obj);
         }
         mEntityRef.updateChildren(objList);
@@ -165,7 +172,7 @@ public abstract class BaseEntityDAO<T extends IEntity> {
     }
 
     /**
-     * Create IEntity interface ensure the implementation of getId().
+     * Create IModel interface ensure the implementation of getId().
      *
      * @param obj
      * @return

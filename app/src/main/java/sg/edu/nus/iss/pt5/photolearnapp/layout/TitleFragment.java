@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
@@ -21,14 +22,22 @@ import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitleListAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningTitleDAO;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizTitleDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
+import sg.edu.nus.iss.pt5.photolearnapp.model.LearningTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeActionHandler;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeCallback;
+
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_ADD_LT;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_EDIT_LT;
 
 public class TitleFragment<T extends Title> extends Fragment implements View.OnClickListener {
 
@@ -42,9 +51,19 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
     private TitleListAdapter titleListAdapter;
     private SwipeCallback swipeCallback;
 
+    private LearningTitleDAO learningTitleDAO;
+    private QuizTitleDAO quizTitleDAO;
+
     private SwipeActionHandler swipeActionHandler = new SwipeActionHandler() {
         @Override
         public void onRightClicked(int position) {
+
+            if (CommonUtils.isLearningUI(uiType)) {
+                learningTitleDAO.delete((LearningTitle) titleList.get(position));
+            } else {
+                quizTitleDAO.delete((QuizTitle) titleList.get(position));
+            }
+
             titleListAdapter.removeTitle(position);
         }
 
@@ -53,8 +72,9 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
             Intent intent = new Intent(TitleFragment.this.getContext(), ManageTitleActivity.class);
             intent.putExtra(AppConstants.MODE, Mode.EDIT);
             intent.putExtra(AppConstants.UI_TYPE, uiType);
+            intent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
             intent.putExtra(AppConstants.TITLE_OBJ, titleList.get(position));
-            TitleFragment.this.startActivity(intent);
+            getActivity().startActivityForResult(intent, AppConstants.RC_EDIT_LT);
         }
     };
 
@@ -62,40 +82,71 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
         // Required empty public constructor
     }
 
-    public static TitleFragment newInstance(UIType titleUIType, LearningSession learningSession) {
-
+    public static TitleFragment newInstance(UIType uiType) {
         TitleFragment fragment = new TitleFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable(AppConstants.UI_TYPE, titleUIType);
-        args.putSerializable(AppConstants.LEARNING_SESSION_OBJ, learningSession);
-        fragment.setArguments(args);
+        args.putSerializable(AppConstants.UI_TYPE, uiType);
 
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            uiType = (UIType) getArguments().getSerializable(AppConstants.UI_TYPE);
-            learningSession = (LearningSession) getArguments().getSerializable(AppConstants.LEARNING_SESSION_OBJ);
-        }
+        learningTitleDAO = new LearningTitleDAO();
+        quizTitleDAO = new QuizTitleDAO();
+        titleList = new ArrayList<T>();
 
+        Bundle extras = getActivity().getIntent().getExtras();
+        learningSession = (LearningSession) extras.getSerializable(AppConstants.LEARNING_SESSION_OBJ);
+        uiType = (UIType) getArguments().getSerializable(AppConstants.UI_TYPE);
+
+        titleListAdapter = new TitleListAdapter(getActivity(), titleList);
+
+    }
+
+    private void loadData() {
         // Load data
         switch (uiType) {
             case LEARNING:
-                // TODO Load Learning Titles
-                titleList = (List<T>) DummyDataProvider.getLearningTitleList();
+                if (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantEditMode()) {
+                    learningTitleDAO.getTitlesBySessionPart(learningSession, (Participant) SecurityContext.getInstance().getRole(), new DAOResultListener<Iterable<LearningTitle>>() {
+                        @Override
+                        public void OnDAOReturned(Iterable<LearningTitle> obj) {
+                            titleList.clear();
+                            titleList.addAll((List<T>) obj);
+                            titleListAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    learningTitleDAO.getTitlesBySession(learningSession, new DAOResultListener<Iterable<LearningTitle>>() {
+                        @Override
+                        public void OnDAOReturned(Iterable<LearningTitle> obj) {
+                            titleList.clear();
+                            titleList.addAll((List<T>) obj);
+                            titleListAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+
                 break;
             case QUIZ:
-                // TODO Load Quiz Titles
-                titleList = (List<T>) DummyDataProvider.getQuizTitleList();
+                quizTitleDAO.getTitlesBySession(learningSession, new DAOResultListener<Iterable<QuizTitle>>() {
+                    @Override
+                    public void OnDAOReturned(Iterable<QuizTitle> obj) {
+                        titleList.clear();
+                        titleList.addAll((List<T>) obj);
+                        titleListAdapter.notifyDataSetChanged();
+
+                    }
+                });
                 break;
         }
 
-        titleListAdapter = new TitleListAdapter(this.getContext(), titleList);
 
     }
 
@@ -109,6 +160,8 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
 
         initAddTitleButton(view);
 
+        loadData();
+
         return view;
     }
 
@@ -120,7 +173,7 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
         titleListRecyclerView.setAdapter(titleListAdapter);
 
         // Trainer can only edit title
-        if(SecurityContext.getInstance().isTrainer()) {
+        if (SecurityContext.getInstance().isTrainer()) {
             swipeCallback = new SwipeCallback(swipeActionHandler);
             ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeCallback);
             itemTouchhelper.attachToRecyclerView(titleListRecyclerView);
@@ -152,31 +205,17 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
                 Intent intent = new Intent(this.getContext(), ManageTitleActivity.class);
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
                 intent.putExtra(AppConstants.UI_TYPE, uiType);
-                startActivityForResult(intent, REQ_CODE);
+                intent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
+                getActivity().startActivityForResult(intent, RC_ADD_LT);
                 break;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQ_CODE && resultCode == Activity.RESULT_OK) {
-
-            Bundle extras = data.getExtras();
-
-            Mode mode = (Mode) extras.get(AppConstants.MODE);
-            T title = (T) extras.get(AppConstants.TITLE_OBJ);
-
-            switch (mode) {
-                case ADD:
-                    titleList.add(title);
-                    titleListAdapter.notifyDataSetChanged();
-                    break;
-                case EDIT:
-                    break;
-                case DELETE:
-                    break;
-            }
-
+        if ((requestCode == RC_ADD_LT || requestCode == RC_EDIT_LT)
+                && resultCode == Activity.RESULT_OK) {
+            loadData();
         }
     }
 }

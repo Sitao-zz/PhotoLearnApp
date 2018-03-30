@@ -5,7 +5,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.dao.IEntity;
 /**
  * Created by Liang Entao on 18/3/18.
  */
-public class User implements IEntity {
+public class User implements IModel, IEntity {
     @RecordId
     private String id;
     private String name;
@@ -22,6 +22,11 @@ public class User implements IEntity {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

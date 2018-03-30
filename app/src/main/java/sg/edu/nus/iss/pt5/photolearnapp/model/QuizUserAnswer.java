@@ -12,7 +12,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.dao.IEntity;
 /**
  * Created by Liang Entao on 30/3/18.
  */
-public class QuizUserAnswer implements Serializable, IEntity {
+public class QuizUserAnswer implements Serializable, IModel, IEntity {
     public static final String DATETIME_PATTERN = "yyyyMMddHHmmss";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
 
@@ -31,18 +31,18 @@ public class QuizUserAnswer implements Serializable, IEntity {
     public QuizUserAnswer(String userId, String quizItemId, Iterable<Boolean> answer) {
         this.userId = userId;
         this.quizItemId = quizItemId;
-        if(answer !=null) {
+        if (answer != null) {
             Iterator<Boolean> it = answer.iterator();
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 isOptionOne = it.next();
             }
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 isOptionTwo = it.next();
             }
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 isOptionThree = it.next();
             }
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 isOptionFour = it.next();
             }
         }

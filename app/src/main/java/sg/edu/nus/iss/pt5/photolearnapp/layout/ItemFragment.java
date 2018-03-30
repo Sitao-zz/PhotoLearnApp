@@ -34,8 +34,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
-    private boolean isQuizUI = false;
-
     private LearningSession learningSession;
     private Title title;
     private Item item;
@@ -54,7 +52,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    public static ItemFragment newInstance(int position, Item item) {
+    public static ItemFragment newInstance(int position, Title title, Item item) {
 
         ItemFragment fragment = new ItemFragment();
 
@@ -62,6 +60,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         //args.putSerializable(AppConstants.LEARNING_SESSION_OBJ, learningSession);
         //args.putSerializable(AppConstants.TITLE_OBJ, title);
         args.putSerializable(AppConstants.POSITION, position);
+        args.putSerializable(AppConstants.TITLE_OBJ, title);
         args.putSerializable(AppConstants.ITEM_OBJ, item);
 
         fragment.setArguments(args);
@@ -77,9 +76,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             //learningSession = (LearningSession) getArguments().getSerializable(AppConstants.LEARNING_SESSION_OBJ);
             //title = (Title) getArguments().getSerializable(AppConstants.TITLE_OBJ);
             position = getArguments().getInt(AppConstants.POSITION);
+            title = (Title) getArguments().getSerializable(AppConstants.TITLE_OBJ);
             item = (Item) getArguments().getSerializable(AppConstants.ITEM_OBJ);
-
-            if (CommonUtils.isQuizUI(item)) isQuizUI = true;
         }
 
         textToSpeechUtil = new TextToSpeechUtil(this.getContext());
@@ -103,7 +101,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         descriptionTextView.setText(item.getPhotoDesc());
 
         optLayout = (LinearLayout) view.findViewById(R.id.optLayoutID);
-        optLayout.setVisibility((isQuizUI) ? View.VISIBLE : View.GONE);
+        optLayout.setVisibility((CommonUtils.isQuizUI(title)) ? View.VISIBLE : View.GONE);
 
         downloadImage();
 
@@ -145,8 +143,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             case R.id.editBtnID:
                 Intent editIntent = new Intent(this.getActivity(), ManageItemActivity.class);
                 editIntent.putExtra(AppConstants.MODE, Mode.EDIT);
-                editIntent.putExtra(AppConstants.UI_TYPE, (item instanceof LearningItem) ? UIType.LEARNING : UIType.QUIZ);
                 editIntent.putExtra(AppConstants.POSITION, position);
+                editIntent.putExtra(AppConstants.TITLE_OBJ, title);
                 editIntent.putExtra(AppConstants.ITEM_OBJ, item);
                 this.getActivity().startActivityForResult(editIntent, RC_EDIT_ITEM);
                 break;

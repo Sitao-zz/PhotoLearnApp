@@ -4,6 +4,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningTitle;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 
 /**
  * Created by Liang Entao on 20/3/18.
@@ -13,7 +14,7 @@ public class QuizItemDAO extends BaseEntityDAO<QuizItem> {
         super("quizItems", QuizItem.class);
     }
 
-    public void getItemsByTitle(LearningTitle title, DAOResultListener<Iterable<QuizItem>> resultListener) {
+    public void getItemsByTitle(QuizTitle title, DAOResultListener<Iterable<QuizItem>> resultListener) {
         this.getItemsByTitleId(title.getId(), resultListener);
     }
 
