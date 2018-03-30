@@ -2,11 +2,13 @@ package sg.edu.nus.iss.pt5.photolearnapp.model;
 
 import java.io.Serializable;
 
+import sg.edu.nus.iss.pt5.photolearnapp.dao.IEntity;
+
 /**
  * Created by mjeyakaran on 24/3/18.
  */
 
-public abstract class Item implements Serializable, IModel {
+public abstract class Item implements Serializable, IModel, IEntity {
 
     @RecordId
     private String id;
