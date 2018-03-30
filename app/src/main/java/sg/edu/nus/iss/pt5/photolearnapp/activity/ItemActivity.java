@@ -21,6 +21,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
@@ -52,17 +53,28 @@ public class ItemActivity extends BaseActivity implements View.OnClickListener {
 
         if (uiType == UIType.LEARNING) {
             itemPagerAdapter = new ItemPagerAdapter<LearningItem>(getSupportFragmentManager(), DummyDataProvider.getLearningItemList());
+            toolbar.setTitle(getString(R.string.learning_item));
         } else {
             itemPagerAdapter = new ItemPagerAdapter<QuizItem>(getSupportFragmentManager(), DummyDataProvider.getQuizItemList());
+            toolbar.setTitle(getString(R.string.quiz_item));
         }
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(itemPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addItemFButton);
-        fab.setOnClickListener(this);
+        initAddItemButton();
 
+    }
+
+    private void initAddItemButton() {
+        FloatingActionButton addItemButton = (FloatingActionButton) findViewById(R.id.addItemFButton);
+        if (SecurityContext.getInstance().isTrainer() && UIType.LEARNING == uiType
+                || SecurityContext.getInstance().isParticipant() && UIType.QUIZ == uiType) {
+            addItemButton.setVisibility(View.GONE);
+        } else {
+            addItemButton.setOnClickListener(this);
+        }
     }
 
     @Override

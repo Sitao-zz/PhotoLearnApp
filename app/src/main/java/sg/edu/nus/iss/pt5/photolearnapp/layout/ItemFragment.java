@@ -23,8 +23,10 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
+import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreListener;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import sg.edu.nus.iss.pt5.photolearnapp.util.TextToSpeechUtil;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_EDIT_ITEM;
@@ -78,7 +80,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             position = getArguments().getInt(AppConstants.POSITION);
             item = (Item) getArguments().getSerializable(AppConstants.ITEM_OBJ);
 
-            if(item instanceof QuizItem) isQuizItem = true;
+            if(CommonUtils.isQuizItem(item)) isQuizItem = true;
         }
 
         textToSpeechUtil = new TextToSpeechUtil(this.getContext());
@@ -97,8 +99,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         textToSpeechBtn = (ImageButton) view.findViewById(R.id.textToSpeachBtnID);
         textToSpeechBtn.setOnClickListener(this);
 
-        editBtn = (Button) view.findViewById(R.id.editBtnID);
-        editBtn.setOnClickListener(this);
+        initEditItemButton(view);
 
         descriptionTextView.setText(item.getPhotoDesc());
 
@@ -108,6 +109,16 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         downloadImage();
 
         return view;
+    }
+
+    private void initEditItemButton(View view) {
+        editBtn = (Button) view.findViewById(R.id.editBtnID);
+        if(SecurityContext.getInstance().isTrainer() && CommonUtils.isLearningItem(item) ||
+                SecurityContext.getInstance().isParticipant() && CommonUtils.isQuizItem(item)) {
+            editBtn.setVisibility(View.GONE);
+        } else {
+            editBtn.setOnClickListener(this);
+        }
     }
 
     private void downloadImage() {

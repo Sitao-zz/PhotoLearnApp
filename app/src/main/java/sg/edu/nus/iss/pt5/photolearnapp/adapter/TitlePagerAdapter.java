@@ -15,6 +15,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 public class TitlePagerAdapter extends FragmentStatePagerAdapter {
 
     private LearningSession learningSession;
+    private int pageCount = 2;
 
     public TitlePagerAdapter(FragmentManager fm, LearningSession learningSession) {
         super(fm);
@@ -38,6 +39,11 @@ public class TitlePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return pageCount;
+    }
+
+    public void removeTabPage() {
+        pageCount--;
+        notifyDataSetChanged();
     }
 }

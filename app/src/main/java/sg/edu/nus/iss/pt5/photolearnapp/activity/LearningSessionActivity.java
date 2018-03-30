@@ -18,6 +18,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -37,6 +38,8 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.ITEM_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_TITLE_EDIT_MODE;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_TITLE_READ_MODE;
 
 public class LearningSessionActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,6 +54,9 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
     private TextView userRoleTextView;
     private View trainerContent;
     private View participantContent;
+
+    private Button viewModeBtn;
+    private Button editModeBtn;
 
     private SwipeActionHandler swipeActionHandler = new SwipeActionHandler() {
         @Override
@@ -158,6 +164,11 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
         participantContent = findViewById(R.id.participantContentID);
         participantContent.setVisibility(View.VISIBLE);
 
+        viewModeBtn = (Button) findViewById(R.id.viewModeBtnID);
+        viewModeBtn.setOnClickListener(this);
+        editModeBtn = (Button) findViewById(R.id.editModeBtnID);
+        editModeBtn.setOnClickListener(this);
+
     }
 
     @Override
@@ -178,6 +189,16 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
                 Intent intent = new Intent(this, ManageLearningSessionActivity.class);
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
                 startActivityForResult(intent, REQ_CODE);
+                break;
+            case R.id.viewModeBtnID:
+                Intent viewModeIntent = new Intent(this, TitleActivity.class);
+                ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.VIEW);
+                startActivityForResult(viewModeIntent, RC_TITLE_READ_MODE);
+                break;
+            case R.id.editModeBtnID:
+                Intent editModeIntent = new Intent(this, TitleActivity.class);
+                ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.EDIT);
+                startActivityForResult(editModeIntent, RC_TITLE_EDIT_MODE);
                 break;
         }
 

@@ -47,4 +47,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="item">Item</string>
+    <string name="learning_session">Learning Session</string>
+    <string name="title">Title</string>
+    <string name="quiz_item">Quiz Item</string>
+    <string name="learning_item">Learning Item</string>
 </resources>

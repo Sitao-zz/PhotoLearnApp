@@ -17,6 +17,9 @@ public class AppConstants {
 
     public static final int RC_PERMISSION = 130;
 
+    public static final int RC_TITLE_READ_MODE = 140;
+    public static final int RC_TITLE_EDIT_MODE = 141;
+
 
     public static final String POSITION = "Position";
     public static final String LEARNING_SESSION_OBJ = "Learning Session Object";

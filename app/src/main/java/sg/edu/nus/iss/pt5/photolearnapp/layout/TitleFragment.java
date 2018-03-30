@@ -24,14 +24,15 @@ import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeActionHandler;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeCallback;
 
-public class TitleFragment<T extends Title> extends Fragment implements View.OnClickListener{
+public class TitleFragment<T extends Title> extends Fragment implements View.OnClickListener {
 
     private static final int REQ_CODE = 002;
 
-    private UIType titleUIType;
+    private UIType uiType;
     private LearningSession learningSession;
     private List<T> titleList;
 
@@ -49,7 +50,7 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
         public void onLeftClicked(int position) {
             Intent intent = new Intent(TitleFragment.this.getContext(), ManageTitleActivity.class);
             intent.putExtra(AppConstants.MODE, Mode.EDIT);
-            intent.putExtra(AppConstants.UI_TYPE, titleUIType);
+            intent.putExtra(AppConstants.UI_TYPE, uiType);
             intent.putExtra(AppConstants.TITLE_OBJ, titleList.get(position));
             TitleFragment.this.startActivity(intent);
         }
@@ -76,12 +77,12 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            titleUIType = (UIType) getArguments().getSerializable(AppConstants.UI_TYPE);
+            uiType = (UIType) getArguments().getSerializable(AppConstants.UI_TYPE);
             learningSession = (LearningSession) getArguments().getSerializable(AppConstants.LEARNING_SESSION_OBJ);
         }
 
         // Load data
-        switch (titleUIType){
+        switch (uiType) {
             case LEARNING:
                 // TODO Load Learning Titles
                 titleList = (List<T>) DummyDataProvider.getLearningTitleList();
@@ -118,9 +119,19 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
             }
         });
 
-        FloatingActionButton addTitleBtn = (FloatingActionButton) view.findViewById(R.id.addTitleFButton);
-        addTitleBtn.setOnClickListener(this);
+        initAddTitleButton(view);
+
         return view;
+    }
+
+    private void initAddTitleButton(View view) {
+        FloatingActionButton addTitleBtn = (FloatingActionButton) view.findViewById(R.id.addTitleFButton);
+        if (SecurityContext.getInstance().isTrainer() && UIType.LEARNING == uiType
+                || SecurityContext.getInstance().isParticipant() && UIType.QUIZ == uiType) {
+            addTitleBtn.setVisibility(View.GONE);
+        } else {
+            addTitleBtn.setOnClickListener(this);
+        }
     }
 
     @Override
@@ -129,7 +140,7 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
             case R.id.addTitleFButton:
                 Intent intent = new Intent(this.getContext(), ManageTitleActivity.class);
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
-                intent.putExtra(AppConstants.UI_TYPE, titleUIType);
+                intent.putExtra(AppConstants.UI_TYPE, uiType);
                 startActivityForResult(intent, REQ_CODE);
                 break;
         }

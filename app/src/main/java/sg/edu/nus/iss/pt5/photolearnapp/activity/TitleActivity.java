@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
+import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,7 +22,10 @@ import android.widget.TextView;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitlePagerAdapter;
+import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
+import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 public class TitleActivity extends BaseActivity {
 
@@ -46,9 +50,17 @@ public class TitleActivity extends BaseActivity {
         mViewPager.setAdapter(titlePagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        if(SecurityContext.getInstance().isParticipant()) {
+            if(Mode.EDIT == ((Participant)SecurityContext.getInstance().getRole()).getMode()) {
+                tabLayout.removeTabAt(1);
+                titlePagerAdapter.removeTabPage();
+            }
+        }
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+
 
     }
 

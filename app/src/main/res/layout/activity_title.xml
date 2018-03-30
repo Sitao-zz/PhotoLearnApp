@@ -24,7 +24,7 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Title">
+            app:title="@string/title">
 
         </android.support.v7.widget.Toolbar>
 
@@ -43,7 +43,8 @@
                 android:id="@+id/tabQuizTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/quiz_title" />
+                android:text="@string/quiz_title"
+                android:visibility="visible"/>
 
         </android.support.design.widget.TabLayout>
 
