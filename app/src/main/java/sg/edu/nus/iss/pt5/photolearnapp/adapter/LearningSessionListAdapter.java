@@ -97,7 +97,7 @@ public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSes
         }
 
         public void setCourseDate(Date courseDate) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_DISPLAY_PATTERN);
             courseDateTextView.setText(dateFormat.format(courseDate));
         }
     }

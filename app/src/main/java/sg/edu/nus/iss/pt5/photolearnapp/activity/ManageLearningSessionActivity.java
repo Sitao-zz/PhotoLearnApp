@@ -17,7 +17,9 @@ import java.util.Locale;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningSessionDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.LEARNING_SESSION_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
@@ -40,6 +42,8 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
     private Mode mode;
     private LearningSession learningSession;
     private Date courseDate;
+
+    private LearningSessionDAO learningSessionDAO;
 
     private DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -65,6 +69,8 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_learning_session);
 
+        learningSessionDAO = new LearningSessionDAO();
+
         courseDateEditText = (EditText) findViewById(R.id.courseDateEditTextID);
         courseCodeEditText = (EditText) findViewById(R.id.courseCodeEditTextID);
         courseNameEditText = (EditText) findViewById(R.id.courseNameEditTextID);
@@ -86,6 +92,7 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
 
         if (Mode.ADD == mode) {
             learningSession = new LearningSession();
+            learningSession.setUserId(SecurityContext.getInstance().getRole().getUser().getId());
             learningSession.setCourseDate(Calendar.getInstance().getTime());
             addBtn.setVisibility(View.VISIBLE);
             setTitle("Add New Learning Session");
@@ -143,6 +150,8 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
                 updateModel();
                 learningSession.generateSessionID();
 
+                learningSessionDAO.save(learningSession);
+
                 returnIntent = new Intent();
                 returnIntent.putExtra(MODE,mode);
                 returnIntent.putExtra(LEARNING_SESSION_OBJ,learningSession);
@@ -151,6 +160,8 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
                 break;
             case R.id.saveBtnID:
                 updateModel();
+
+                learningSessionDAO.save(learningSession);
                 returnIntent = new Intent();
                 returnIntent.putExtra(MODE,mode);
                 returnIntent.putExtra(LEARNING_SESSION_OBJ,learningSession);

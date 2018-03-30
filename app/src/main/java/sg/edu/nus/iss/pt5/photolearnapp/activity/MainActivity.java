@@ -29,8 +29,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.UserDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Trainer;
+import sg.edu.nus.iss.pt5.photolearnapp.model.User;
 import sg.edu.nus.iss.pt5.photolearnapp.model.UserRole;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
@@ -140,8 +142,12 @@ public class MainActivity extends BaseActivity implements
 
     private void handleLoginSuccess(FirebaseUser user) {
 
+        User appUser = new User(user.getUid(), user.getDisplayName(), user.getEmail());
+        UserDAO userDAO = new UserDAO();
+        userDAO.save(appUser);
+
         // Create User : Default Trainer
-        SecurityContext.getInstance().setRole(new Trainer(user.getUid(),user.getDisplayName(),user.getEmail()));
+        SecurityContext.getInstance().setRole(new Trainer(appUser));
 
         // Redirect to Learning Session
         Intent intent = new Intent(this, LearningSessionActivity.class);
