@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.Calendar;
-import java.util.UUID;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
@@ -69,8 +68,12 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
 
         init();
 
-        titleNameEditText.setText(title.getTitle());
+        populateUI();
 
+    }
+
+    private void populateUI() {
+        titleNameEditText.setText(title.getTitle());
     }
 
     private void init() {
@@ -106,7 +109,7 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    private void updateModel() {
+    private void populateModel() {
         title.setTitle(titleNameEditText.getText().toString());
     }
 
@@ -121,7 +124,7 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.addBtnID:
 
-                updateModel();
+                populateModel();
                 title.setDateTime(Calendar.getInstance().getTime());
 
                 if(CommonUtils.isLearningUI(uiType)) {
@@ -138,7 +141,7 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.saveBtnID:
-                updateModel();
+                populateModel();
 
                 if(CommonUtils.isLearningUI(uiType)) {
                     learningTitleDAO.save((LearningTitle) title);

@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,6 +55,15 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
     private EditText descriptionEditText;
 
     private LinearLayout optLinearLayout;
+    private EditText optOneEditText;
+    private CheckBox optOneIsAnsCheckBox;
+    private EditText optTwoEditText;
+    private CheckBox optTwoIsAnsCheckBox;
+    private EditText optThreeEditText;
+    private CheckBox optThreeIsAnsCheckBox;
+    private EditText optFourEditText;
+    private CheckBox optFourIsAnsCheckBox;
+    private EditText remarksEditText;
 
     private Button cancelBtn;
     private Button addBtn;
@@ -83,6 +93,20 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditTextID);
         optLinearLayout = (LinearLayout) findViewById(R.id.optLayoutID);
 
+        optOneEditText = (EditText) findViewById(R.id.optOneEditTextID);
+        optOneIsAnsCheckBox = (CheckBox) findViewById(R.id.optOneIsAnsCheckBoxID);
+
+        optTwoEditText = (EditText) findViewById(R.id.optTwoEditTextID);
+        optTwoIsAnsCheckBox = (CheckBox) findViewById(R.id.optTwoIsAnsCheckBoxID);
+
+        optThreeEditText = (EditText) findViewById(R.id.optThreeEditTextID);
+        optThreeIsAnsCheckBox = (CheckBox) findViewById(R.id.optThreeIsAnsCheckBoxID);
+
+        optFourEditText = (EditText) findViewById(R.id.optFourEditTextID);
+        optFourIsAnsCheckBox = (CheckBox) findViewById(R.id.optFourIsAnsCheckBoxID);
+
+        remarksEditText = (EditText) findViewById(R.id.remarksEditTextID);;
+
         cancelBtn = (Button) findViewById(R.id.cancelBtnID);
         cancelBtn.setOnClickListener(this);
 
@@ -104,8 +128,25 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
         setTitle();
 
+        populateUI();
+
+    }
+
+    private void populateUI() {
         descriptionEditText.setText(item.getPhotoDesc());
 
+        if(CommonUtils.isQuizUI(title)) {
+            QuizItem quizItem = ((QuizItem)item);
+            optOneEditText.setText(quizItem.getOptionOne());
+            optOneIsAnsCheckBox.setChecked(quizItem.isOptionOneAnswer());
+            optTwoEditText.setText(quizItem.getOptionTwo());
+            optTwoIsAnsCheckBox.setChecked(quizItem.isOptionTwoAnswer());
+            optThreeEditText.setText(quizItem.getOptionThree());
+            optThreeIsAnsCheckBox.setChecked(quizItem.isOptionThreeAnswer());
+            optFourEditText.setText(quizItem.getOptionFour());
+            optFourIsAnsCheckBox.setChecked(quizItem.isOptionFourAnswer());
+            remarksEditText.setText(quizItem.getExplanation());
+        }
     }
 
     private void setTitle() {
@@ -150,6 +191,20 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
     private void updateModel() {
         item.setPhotoDesc(descriptionEditText.getText().toString());
+
+        if(CommonUtils.isQuizUI(title)) {
+            QuizItem quizItem = ((QuizItem)item);
+
+            quizItem.setOptionOne(optOneEditText.getText().toString());
+            quizItem.setOptionOneAnswer(optOneIsAnsCheckBox.isChecked());
+            quizItem.setOptionTwo(optTwoEditText.getText().toString());
+            quizItem.setOptionTwoAnswer(optTwoIsAnsCheckBox.isChecked());
+            quizItem.setOptionThree(optThreeEditText.getText().toString());
+            quizItem.setOptionThreeAnswer(optThreeIsAnsCheckBox.isChecked());
+            quizItem.setOptionFour(optFourEditText.getText().toString());
+            quizItem.setOptionFourAnswer(optFourIsAnsCheckBox.isChecked());
+            quizItem.setExplanation(remarksEditText.getText().toString());
+        }
     }
 
     @Override

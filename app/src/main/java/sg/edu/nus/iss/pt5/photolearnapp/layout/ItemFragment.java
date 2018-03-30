@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
@@ -41,6 +43,13 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private ImageView photoImageView;
     private TextView descriptionTextView;
+
+    private CheckBox optOneCheckBox;
+    private CheckBox optTwoCheckBox;
+    private CheckBox optThreeCheckBox;
+    private CheckBox optFourCheckBox;
+    private TextView remarksTextView;
+
     private Button editBtn;
 
     private LinearLayout optLayout;
@@ -93,12 +102,20 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         photoImageView = (ImageView) view.findViewById(R.id.photoImageViewID);
         descriptionTextView = (TextView) view.findViewById(R.id.descriptionTextViewID);
 
+        if(CommonUtils.isQuizUI(title)) {
+            optOneCheckBox = (CheckBox) view.findViewById(R.id.optOneCheckBoxID);
+            optTwoCheckBox = (CheckBox) view.findViewById(R.id.optTowCheckBoxID);
+            optThreeCheckBox = (CheckBox) view.findViewById(R.id.optThreeCheckBoxID);
+            optFourCheckBox = (CheckBox) view.findViewById(R.id.optFourCheckBoxID);
+            remarksTextView = (TextView) view.findViewById(R.id.remarksTextViewID);
+        }
+
         textToSpeechBtn = (ImageButton) view.findViewById(R.id.textToSpeachBtnID);
         textToSpeechBtn.setOnClickListener(this);
 
         initEditItemButton(view);
 
-        descriptionTextView.setText(item.getPhotoDesc());
+        populateUI();
 
         optLayout = (LinearLayout) view.findViewById(R.id.optLayoutID);
         optLayout.setVisibility((CommonUtils.isQuizUI(title)) ? View.VISIBLE : View.GONE);
@@ -106,6 +123,23 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         downloadImage();
 
         return view;
+    }
+
+    private void populateUI() {
+        descriptionTextView.setText(item.getPhotoDesc());
+
+        if(CommonUtils.isQuizUI(title)){
+            QuizItem quizItem = (QuizItem) item;
+            optOneCheckBox.setChecked(quizItem.isOptionOneAnswer());
+            optOneCheckBox.setText(quizItem.getOptionOne());
+            optTwoCheckBox.setChecked(quizItem.isOptionTwoAnswer());
+            optTwoCheckBox.setText(quizItem.getOptionTwo());
+            optThreeCheckBox.setChecked(quizItem.isOptionThreeAnswer());
+            optThreeCheckBox.setText(quizItem.getOptionThree());
+            optFourCheckBox.setChecked(quizItem.isOptionFourAnswer());
+            optFourCheckBox.setText(quizItem.getOptionFour());
+            remarksTextView.setText(quizItem.getExplanation());
+        }
     }
 
     private void initEditItemButton(View view) {
