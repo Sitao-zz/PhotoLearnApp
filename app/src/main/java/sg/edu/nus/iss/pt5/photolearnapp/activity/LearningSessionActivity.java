@@ -21,11 +21,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningSessionDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Trainer;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
@@ -43,8 +47,6 @@ import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_TITLE_R
 
 public class LearningSessionActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int REQ_CODE = 0001;
-
     private RecyclerView learningSessionListRecyclerView;
     private LearningSessionListAdapter learningSessionListAdapter;
     private List<LearningSession> learningSessionList;
@@ -58,9 +60,12 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
     private Button viewModeBtn;
     private Button editModeBtn;
 
+    private LearningSessionDAO learningSessionDAO;
+
     private SwipeActionHandler swipeActionHandler = new SwipeActionHandler() {
         @Override
         public void onRightClicked(int position) {
+            learningSessionDAO.delete(learningSessionList.get(position));
             learningSessionListAdapter.removeLearningSession(position);
         }
 
@@ -69,7 +74,7 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
             Intent intent = new Intent(LearningSessionActivity.this, ManageLearningSessionActivity.class);
             intent.putExtra(AppConstants.MODE, Mode.EDIT);
             intent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSessionList.get(position));
-            LearningSessionActivity.this.startActivity(intent);
+            LearningSessionActivity.this.startActivityForResult(intent, AppConstants.RC_EDIT_LS);
         }
     };
 
@@ -79,13 +84,23 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning_session);
 
+        learningSessionDAO = new LearningSessionDAO();
+        learningSessionList = new ArrayList<LearningSession>();
+
         loadData();
         initUI();
 
     }
 
     private void loadData() {
-        learningSessionList = DummyDataProvider.getLearningSessionList();
+        learningSessionDAO.getSessionsByTrainer((Trainer) SecurityContext.getInstance().getRole(), new DAOResultListener<Iterable<LearningSession>>() {
+            @Override
+            public void OnDAOReturned(Iterable<LearningSession> obj) {
+                learningSessionList.clear();
+                learningSessionList.addAll((Collection<? extends LearningSession>) obj);
+                learningSessionListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void initUI() {
@@ -188,7 +203,7 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
             case R.id.addLearningSessionFButton:
                 Intent intent = new Intent(this, ManageLearningSessionActivity.class);
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
-                startActivityForResult(intent, REQ_CODE);
+                startActivityForResult(intent, AppConstants.RC_ADD_LS);
                 break;
             case R.id.viewModeBtnID:
                 Intent viewModeIntent = new Intent(this, TitleActivity.class);
@@ -206,25 +221,11 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQ_CODE && resultCode == Activity.RESULT_OK) {
-
-            Bundle extras = data.getExtras();
-
-            Mode mode = (Mode) extras.get(AppConstants.MODE);
-            LearningSession learningSession = (LearningSession) extras.get(AppConstants.LEARNING_SESSION_OBJ);
-
-            switch (mode) {
-                case ADD:
-                    learningSessionList.add(learningSession);
-                    learningSessionListAdapter.notifyDataSetChanged();
-                    break;
-                case EDIT:
-                    break;
-                case DELETE:
-                    break;
-            }
-
+        if ((requestCode == AppConstants.RC_ADD_LS || requestCode == AppConstants.RC_EDIT_LS)
+                && resultCode == Activity.RESULT_OK) {
+            loadData();
         }
+
     }
 
     @Override
