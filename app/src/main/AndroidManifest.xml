@@ -23,28 +23,32 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.LearningSessionActivity"
             android:label="@string/title_activity_learning_session"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.ManageLearningSessionActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".activity.LearningSessionActivity" />
         <activity
             android:name=".activity.TitleActivity"
             android:label="@string/title_activity_title"
+            android:launchMode="singleTask"
             android:parentActivityName=".activity.LearningSessionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ManageTitleActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".activity.TitleActivity" />
         <activity
             android:name=".activity.ItemActivity"
             android:label="@string/title_activity_item"
+            android:launchMode="singleTask"
             android:parentActivityName=".activity.TitleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
