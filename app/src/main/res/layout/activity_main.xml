@@ -33,17 +33,17 @@
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
-            android:layout_width="175dp"
+            android:layout_width="350dp"
             android:layout_height="60dp"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp" />
 
         <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
             android:id="@+id/facebook_login_button"
-            android:layout_width="175dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_width="350dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 
