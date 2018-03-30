@@ -21,5 +21,5 @@
     <color name="ModuleCode">#999999</color>
     <color name="loader_circle">#7658a9</color>
     <color name="action_bar">#7658a9</color>
-    <color name="nav_bar">#CE93D8</color>
+    <color name="nav_bar">#f6f5f7</color>
 </resources>
