@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00bcd4</color>
-    <color name="colorPrimaryDark">#0097a7</color>
+    <color name="colorPrimary">#7658a9</color>
+    <color name="colorPrimaryDark">#8067ab</color>
     <color name="colorAccent">#f2fe71</color>
 
     <color name="bg_login">#26ae90</color>
@@ -19,4 +19,6 @@
     <color name="btn_logut_bg">#ff6861</color>
     <color name="title">#222222</color>
     <color name="ModuleCode">#999999</color>
+    <color name="loader_circle">#7658a9</color>
+    <color name="action_bar">#7658a9</color>
 </resources>

@@ -19,8 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +48,7 @@ import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_TITLE_EDIT_MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_TITLE_READ_MODE;
 
-public class LearningSessionActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class LearningSessionActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     private RecyclerView learningSessionListRecyclerView;
     private LearningSessionListAdapter learningSessionListAdapter;
@@ -59,6 +62,16 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
 
     private Button viewModeBtn;
     private Button editModeBtn;
+
+    private LinearLayout sessionDetail;
+    private SearchView learningSessionSearchView;
+    private LearningSession learningSession;
+
+    private TextView courseDateTextView;
+    private TextView courseCodeTextView;
+    private TextView courseNameTextView;
+    private TextView moduleNumberTextView;
+    private TextView moduleNameTextView;
 
     private LearningSessionDAO learningSessionDAO;
 
@@ -181,6 +194,20 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
         participantContent = findViewById(R.id.participantContentID);
         participantContent.setVisibility(View.VISIBLE);
 
+        sessionDetail = (LinearLayout) findViewById(R.id.sessionDetailID);
+        sessionDetail.setVisibility(View.GONE);
+
+        learningSessionSearchView = (SearchView) findViewById(R.id.learningSessionSearchViewID);
+        learningSessionSearchView.setQuery("20180301-IoT-M01",false);
+        learningSessionSearchView.setQueryHint("Learning Session ID");
+        learningSessionSearchView.setOnQueryTextListener(this);
+
+        courseDateTextView = (TextView) findViewById(R.id.courseDateTextViewID);
+        courseCodeTextView = (TextView) findViewById(R.id.courseCodeTextViewID);
+        courseNameTextView = (TextView) findViewById(R.id.courseNameTextViewID);
+        moduleNumberTextView = (TextView) findViewById(R.id.moduleNumberTextViewID);
+        moduleNameTextView = (TextView) findViewById(R.id.moduleNameTextViewID);
+
         viewModeBtn = (Button) findViewById(R.id.viewModeBtnID);
         viewModeBtn.setOnClickListener(this);
         editModeBtn = (Button) findViewById(R.id.editModeBtnID);
@@ -260,4 +287,35 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
         finish();
         startActivity(intent);
     }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        learningSessionDAO.getObject(query, new DAOResultListener<LearningSession>() {
+            @Override
+            public void OnDAOReturned(LearningSession learningSession) {
+                if (learningSession != null) {
+                    sessionDetail.setVisibility(View.VISIBLE);
+                    updateLearningSessionDetailUI(learningSession);
+                } else {
+                    sessionDetail.setVisibility(View.GONE);
+                }
+            }
+        });
+        return false;
+    }
+
+    private void updateLearningSessionDetailUI(LearningSession learningSession) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_DISPLAY_PATTERN);
+        courseDateTextView.setText(dateFormat.format(learningSession.getCourseDate()));
+        courseCodeTextView .setText(learningSession.getCourseCode());
+        courseNameTextView.setText(learningSession.getCourseName());
+        moduleNumberTextView.setText(learningSession.getModuleNumber());
+        moduleNameTextView.setText(learningSession.getModuleName());
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
 }
