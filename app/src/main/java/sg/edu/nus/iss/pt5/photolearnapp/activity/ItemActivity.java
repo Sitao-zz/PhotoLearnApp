@@ -21,6 +21,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
+import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
@@ -69,8 +70,9 @@ public class ItemActivity extends BaseActivity implements View.OnClickListener {
 
     private void initAddItemButton() {
         FloatingActionButton addItemButton = (FloatingActionButton) findViewById(R.id.addItemFButton);
-        if (SecurityContext.getInstance().isTrainer() && UIType.LEARNING == uiType
-                || SecurityContext.getInstance().isParticipant() && UIType.QUIZ == uiType) {
+        if ((SecurityContext.getInstance().isTrainer() && CommonUtils.isLearningUI(uiType))
+                || (SecurityContext.getInstance().isParticipant() && CommonUtils.isQuizUI(uiType))
+                || (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantViewMode())) {
             addItemButton.setVisibility(View.GONE);
         } else {
             addItemButton.setOnClickListener(this);

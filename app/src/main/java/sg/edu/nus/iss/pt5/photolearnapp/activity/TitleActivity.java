@@ -25,6 +25,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitlePagerAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
+import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 public class TitleActivity extends BaseActivity {
@@ -51,7 +52,7 @@ public class TitleActivity extends BaseActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if(SecurityContext.getInstance().isParticipant()) {
-            if(Mode.EDIT == ((Participant)SecurityContext.getInstance().getRole()).getMode()) {
+            if(CommonUtils.isParticipantEditMode()) {
                 tabLayout.removeTabAt(1);
                 titlePagerAdapter.removeTabPage();
             }

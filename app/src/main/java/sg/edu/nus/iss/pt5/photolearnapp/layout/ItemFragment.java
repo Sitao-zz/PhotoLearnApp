@@ -21,7 +21,6 @@ import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
-import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
@@ -35,7 +34,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
-    private boolean isQuizItem = false;
+    private boolean isQuizUI = false;
 
     private LearningSession learningSession;
     private Title title;
@@ -80,7 +79,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             position = getArguments().getInt(AppConstants.POSITION);
             item = (Item) getArguments().getSerializable(AppConstants.ITEM_OBJ);
 
-            if(CommonUtils.isQuizItem(item)) isQuizItem = true;
+            if (CommonUtils.isQuizUI(item)) isQuizUI = true;
         }
 
         textToSpeechUtil = new TextToSpeechUtil(this.getContext());
@@ -104,7 +103,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         descriptionTextView.setText(item.getPhotoDesc());
 
         optLayout = (LinearLayout) view.findViewById(R.id.optLayoutID);
-        optLayout.setVisibility((isQuizItem) ? View.VISIBLE : View.GONE);
+        optLayout.setVisibility((isQuizUI) ? View.VISIBLE : View.GONE);
 
         downloadImage();
 
@@ -113,8 +112,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private void initEditItemButton(View view) {
         editBtn = (Button) view.findViewById(R.id.editBtnID);
-        if(SecurityContext.getInstance().isTrainer() && CommonUtils.isLearningItem(item) ||
-                SecurityContext.getInstance().isParticipant() && CommonUtils.isQuizItem(item)) {
+        if ((SecurityContext.getInstance().isTrainer() && CommonUtils.isLearningUI(item))
+                || (SecurityContext.getInstance().isParticipant() && CommonUtils.isQuizUI(item))
+                || (SecurityContext.getInstance().isParticipant() && CommonUtils.isLearningUI(item) && CommonUtils.isParticipantViewMode())) {
             editBtn.setVisibility(View.GONE);
         } else {
             editBtn.setOnClickListener(this);
@@ -142,7 +142,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
                 String toSpeak = descriptionTextView.getText().toString();
                 textToSpeechUtil.speak(toSpeak);
                 break;
-            case R.id.editBtnID :
+            case R.id.editBtnID:
                 Intent editIntent = new Intent(this.getActivity(), ManageItemActivity.class);
                 editIntent.putExtra(AppConstants.MODE, Mode.EDIT);
                 editIntent.putExtra(AppConstants.UI_TYPE, (item instanceof LearningItem) ? UIType.LEARNING : UIType.QUIZ);

@@ -23,7 +23,9 @@ import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
+import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
+import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeActionHandler;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeCallback;
@@ -103,31 +105,40 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
 
         View view = inflater.inflate(R.layout.fragment_title, container, false);
 
-        titleListRecyclerView = (RecyclerView) view.findViewById(R.id.titleListRecyclerViewID);
-        titleListRecyclerView.setHasFixedSize(true);
-        titleListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        titleListRecyclerView.setAdapter(titleListAdapter);
-
-        swipeCallback = new SwipeCallback(swipeActionHandler);
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeCallback);
-        itemTouchhelper.attachToRecyclerView(titleListRecyclerView);
-
-        titleListRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                swipeCallback.onDraw(c);
-            }
-        });
+        initTitleListView(view);
 
         initAddTitleButton(view);
 
         return view;
     }
 
+    private void initTitleListView(View view) {
+
+        titleListRecyclerView = (RecyclerView) view.findViewById(R.id.titleListRecyclerViewID);
+        titleListRecyclerView.setHasFixedSize(true);
+        titleListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        titleListRecyclerView.setAdapter(titleListAdapter);
+
+        // Trainer can only edit title
+        if(SecurityContext.getInstance().isTrainer()) {
+            swipeCallback = new SwipeCallback(swipeActionHandler);
+            ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeCallback);
+            itemTouchhelper.attachToRecyclerView(titleListRecyclerView);
+
+            titleListRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+                @Override
+                public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                    swipeCallback.onDraw(c);
+                }
+            });
+        }
+    }
+
     private void initAddTitleButton(View view) {
         FloatingActionButton addTitleBtn = (FloatingActionButton) view.findViewById(R.id.addTitleFButton);
-        if (SecurityContext.getInstance().isTrainer() && UIType.LEARNING == uiType
-                || SecurityContext.getInstance().isParticipant() && UIType.QUIZ == uiType) {
+        if ((SecurityContext.getInstance().isTrainer() && UIType.LEARNING == uiType)
+                || (SecurityContext.getInstance().isParticipant() && UIType.QUIZ == uiType)
+                || (SecurityContext.getInstance().isParticipant() && UIType.LEARNING == uiType && CommonUtils.isParticipantViewMode())) {
             addTitleBtn.setVisibility(View.GONE);
         } else {
             addTitleBtn.setOnClickListener(this);
