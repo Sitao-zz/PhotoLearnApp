@@ -7,12 +7,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-import sg.edu.nus.iss.pt5.photolearnapp.dao.IEntity;
-
 /**
  * Created by Liang Entao on 30/3/18.
  */
-public class QuizUserAnswer implements Serializable, IEntity {
+public class QuizUserAnswer implements Serializable, IModel {
     public static final String DATETIME_PATTERN = "yyyyMMddHHmmss";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
 
