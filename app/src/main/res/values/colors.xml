@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#7658a9</color>
     <color name="colorPrimaryDark">#8067ab</color>
-    <color name="colorAccent">#f2fe71</color>
+    <color name="colorAccent">#700b0b0b</color>
 
     <color name="bg_login">#26ae90</color>
     <color name="bg_register">#2e3237</color>
@@ -13,12 +13,13 @@
     <color name="input_register">#888888</color>
     <color name="input_register_bg">#3b4148</color>
     <color name="input_register_hint">#5e6266</color>
-    <color name="btn_login">#26ae90</color>
-    <color name="btn_login_bg">#eceef1</color>
+    <color name="btn_login">#7658a9</color>
+    <color name="btn_login_bg">#7658a9</color>
     <color name="lbl_name">#333333</color>
-    <color name="btn_logut_bg">#ff6861</color>
+    <color name="btn_logut_bg">#8067ab</color>
     <color name="title">#222222</color>
     <color name="ModuleCode">#999999</color>
     <color name="loader_circle">#7658a9</color>
     <color name="action_bar">#7658a9</color>
+    <color name="nav_bar">#CE93D8</color>
 </resources>
