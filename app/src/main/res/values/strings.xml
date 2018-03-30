@@ -52,4 +52,6 @@
     <string name="title">Title</string>
     <string name="quiz_item">Quiz Item</string>
     <string name="learning_item">Learning Item</string>
+
+    <string name="app_id">313983045794866</string>
 </resources>

@@ -37,12 +37,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal" />
 
-        <!--<com.facebook.login.widget.LoginButton
-            android:id="@+id/button_facebook_login"
-            android:layout_width="175dp"
-            android:layout_height="57dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp" />-->
+        <com.facebook.login.widget.LoginButton
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/facebook_login_button"
+            android:layout_width="400dp"
+            android:layout_height="500dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+           />
 
     </LinearLayout>
 
