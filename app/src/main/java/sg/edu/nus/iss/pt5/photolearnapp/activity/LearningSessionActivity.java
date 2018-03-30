@@ -237,11 +237,13 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
             case R.id.viewModeBtnID:
                 Intent viewModeIntent = new Intent(this, TitleActivity.class);
                 ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.VIEW);
+                viewModeIntent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
                 startActivityForResult(viewModeIntent, RC_TITLE_READ_MODE);
                 break;
             case R.id.editModeBtnID:
                 Intent editModeIntent = new Intent(this, TitleActivity.class);
                 ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.EDIT);
+                editModeIntent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
                 startActivityForResult(editModeIntent, RC_TITLE_EDIT_MODE);
                 break;
         }
@@ -305,6 +307,7 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
     }
 
     private void updateLearningSessionDetailUI(LearningSession learningSession) {
+        this.learningSession = learningSession;
         SimpleDateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_DISPLAY_PATTERN);
         courseDateTextView.setText(dateFormat.format(learningSession.getCourseDate()));
         courseCodeTextView .setText(learningSession.getCourseCode());

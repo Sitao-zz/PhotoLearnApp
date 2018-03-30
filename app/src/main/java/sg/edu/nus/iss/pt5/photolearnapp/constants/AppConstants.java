@@ -11,6 +11,9 @@ public class AppConstants {
     public static final int RC_ADD_LS = 10;
     public static final int RC_EDIT_LS = 11;
 
+    public static final int RC_ADD_LT = 20;
+    public static final int RC_EDIT_LT = 21;
+
     public static final int RC_SIGN_IN = 100;
     public static final int RC_SIGN_IN_SUCCESS = 101;
     public static final int RC_UPLOADED_IMAGE = 110;
