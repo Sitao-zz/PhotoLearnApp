@@ -4,13 +4,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningTitle;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Trainer;
 
 /**
  * Created by Liang Entao on 20/3/18.
  */
 public class LearningSessionDAO extends BaseEntityDAO<LearningSession> {
-    private LearningTitleDAO mChildDao = new LearningTitleDAO();
+    private LearningTitleDAO mLearningChildDao = new LearningTitleDAO();
+    private QuizTitleDAO mQuizChildDao = new QuizTitleDAO();
 
     public LearningSessionDAO() {
         super("learningSessions", LearningSession.class);
@@ -28,13 +30,21 @@ public class LearningSessionDAO extends BaseEntityDAO<LearningSession> {
 
     @Override
     public void deleteById(String objId) {
-        DAOResultListener<Iterable<LearningTitle>> resultListener = new DAOResultListener<Iterable<LearningTitle>>() {
+        DAOResultListener<Iterable<LearningTitle>> learningResultListener = new DAOResultListener<Iterable<LearningTitle>>() {
             @Override
             public void OnDAOReturned(Iterable<LearningTitle> titles) {
-                mChildDao.delete(titles);
+                mLearningChildDao.delete(titles);
             }
         };
-        mChildDao.getTitlesBySessionId(objId, resultListener);
+        mLearningChildDao.getTitlesBySessionId(objId, learningResultListener);
+
+        DAOResultListener<Iterable<QuizTitle>> quizResultListener = new DAOResultListener<Iterable<QuizTitle>>() {
+            @Override
+            public void OnDAOReturned(Iterable<QuizTitle> titles) {
+                mQuizChildDao.delete(titles);
+            }
+        };
+        mQuizChildDao.getTitlesBySessionId(objId, quizResultListener);
         super.deleteById(objId);
     }
 

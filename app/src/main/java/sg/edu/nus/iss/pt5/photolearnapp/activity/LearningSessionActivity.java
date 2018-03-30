@@ -93,14 +93,16 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
     }
 
     private void loadData() {
-        learningSessionDAO.getSessionsByTrainer((Trainer) SecurityContext.getInstance().getRole(), new DAOResultListener<Iterable<LearningSession>>() {
-            @Override
-            public void OnDAOReturned(Iterable<LearningSession> obj) {
-                learningSessionList.clear();
-                learningSessionList.addAll((Collection<? extends LearningSession>) obj);
-                learningSessionListAdapter.notifyDataSetChanged();
-            }
-        });
+        if (SecurityContext.getInstance().isTrainer()) {
+            learningSessionDAO.getSessionsByTrainer((Trainer) SecurityContext.getInstance().getRole(), new DAOResultListener<Iterable<LearningSession>>() {
+                @Override
+                public void OnDAOReturned(Iterable<LearningSession> obj) {
+                    learningSessionList.clear();
+                    learningSessionList.addAll((Collection<? extends LearningSession>) obj);
+                    learningSessionListAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     private void initUI() {
