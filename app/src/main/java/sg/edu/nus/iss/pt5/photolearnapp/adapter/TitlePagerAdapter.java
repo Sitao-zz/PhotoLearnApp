@@ -25,7 +25,6 @@ public class TitlePagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-
                 TitleFragment learningTitleFragment = TitleFragment.newInstance(UIType.LEARNING);
                 return learningTitleFragment;
             case 1:

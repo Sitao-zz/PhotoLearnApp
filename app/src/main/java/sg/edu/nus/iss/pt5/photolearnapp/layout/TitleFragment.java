@@ -74,7 +74,7 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
             intent.putExtra(AppConstants.UI_TYPE, uiType);
             intent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
             intent.putExtra(AppConstants.TITLE_OBJ, titleList.get(position));
-            TitleFragment.this.startActivityForResult(intent, AppConstants.RC_EDIT_LT);
+            getActivity().startActivityForResult(intent, AppConstants.RC_EDIT_LT);
         }
     };
 
@@ -105,8 +105,7 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
         learningSession = (LearningSession) extras.getSerializable(AppConstants.LEARNING_SESSION_OBJ);
         uiType = (UIType) getArguments().getSerializable(AppConstants.UI_TYPE);
 
-        titleListAdapter = new TitleListAdapter(this.getContext(), titleList);
-
+        titleListAdapter = new TitleListAdapter(getActivity(), titleList);
 
     }
 
@@ -207,7 +206,7 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
                 intent.putExtra(AppConstants.UI_TYPE, uiType);
                 intent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
-                startActivityForResult(intent, RC_ADD_LT);
+                getActivity().startActivityForResult(intent, RC_ADD_LT);
                 break;
         }
     }

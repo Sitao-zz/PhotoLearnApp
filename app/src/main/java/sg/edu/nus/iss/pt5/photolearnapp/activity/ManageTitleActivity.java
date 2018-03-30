@@ -78,7 +78,6 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
         if (CommonUtils.isLearningUI(uiType)) {
             if (Mode.ADD == mode) {
                 title = new LearningTitle();
-                title.setId(UUID.randomUUID().toString());
                 title.setUserId(SecurityContext.getInstance().getRole().getUser().getId());
                 title.setSessionId(learningSession.getId());
                 addBtn.setVisibility(View.VISIBLE);
@@ -93,7 +92,6 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
         } else {
             if (Mode.ADD == mode) {
                 title = new QuizTitle();
-                title.setId(UUID.randomUUID().toString());
                 title.setUserId(SecurityContext.getInstance().getRole().getUser().getId());
                 title.setSessionId(learningSession.getId());
                 addBtn.setVisibility(View.VISIBLE);
