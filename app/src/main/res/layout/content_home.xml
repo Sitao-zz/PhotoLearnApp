@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sg.edu.nus.iss.pt5.photolearnapp.activity.LearningSessionActivity">
+    tools:context="sg.edu.nus.iss.pt5.photolearnapp.activity.HomeActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarTLayoutID"
@@ -22,20 +22,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        android:id="@+id/trainerContentID"
-        layout="@layout/content_trainer"
+    <FrameLayout
+        android:id="@+id/homeFrameLayoutID"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appBarTLayoutID"
-        android:visibility="gone" />
+        android:layout_below="@+id/appBarTLayoutID">
 
-    <include
-        android:id="@+id/participantContentID"
-        layout="@layout/content_participant"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/appBarTLayoutID"
-        android:visibility="gone"/>
+    </FrameLayout>
 
 </RelativeLayout>

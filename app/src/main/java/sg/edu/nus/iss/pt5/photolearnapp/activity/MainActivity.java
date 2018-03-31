@@ -1,15 +1,11 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -24,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,13 +31,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
-import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
-import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.UserDAO;
-import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Trainer;
 import sg.edu.nus.iss.pt5.photolearnapp.model.User;
-import sg.edu.nus.iss.pt5.photolearnapp.model.UserRole;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_SIGN_IN;
@@ -197,7 +188,7 @@ public class MainActivity extends BaseActivity implements
         SecurityContext.getInstance().setRole(new Trainer(appUser));
 
         // Redirect to Learning Session
-        Intent intent = new Intent(this, LearningSessionActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivityForResult(intent,RC_SIGN_IN_SUCCESS);
     }
 

@@ -29,19 +29,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LearningSessionActivity"
+            android:name=".activity.HomeActivity"
             android:label="@string/title_activity_learning_session"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ManageLearningSessionActivity"
             android:launchMode="singleTask"
-            android:parentActivityName=".activity.LearningSessionActivity" />
+            android:parentActivityName=".activity.HomeActivity" />
         <activity
             android:name=".activity.TitleActivity"
             android:label="@string/title_activity_title"
             android:launchMode="singleTask"
-            android:parentActivityName=".activity.LearningSessionActivity"
+            android:parentActivityName=".activity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ManageTitleActivity"
@@ -61,7 +61,7 @@
         <activity
             android:name=".activity.AnswerQuizTitleActivity"
             android:launchMode="singleTask"
-            android:parentActivityName=".activity.LearningSessionActivity" />
+            android:parentActivityName=".activity.HomeActivity" />
         <activity
             android:name=".activity.AnswerQuizItemActivity"
             android:parentActivityName=".activity.AnswerQuizTitleActivity" />
@@ -87,7 +87,7 @@
             android:parentActivityName=".activity.SummaryActivity"></activity>
 
         <activity android:name=".activity.LearningTitleActivity"
-            android:parentActivityName=".activity.LearningSessionActivity"
+            android:parentActivityName=".activity.HomeActivity"
             android:launchMode="singleTask"></activity>
     </application>
 
