@@ -39,6 +39,8 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
 
     private ImageView photoImageView;
     private TextView descriptionTextView;
+    private TextView textViewLongitude;
+    private TextView textViewLatitude;
     private CheckBox optOneCheckBox;
     private CheckBox optTwoCheckBox;
     private CheckBox optThreeCheckBox;
@@ -100,6 +102,9 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
         photoImageView = (ImageView) view.findViewById(R.id.photoImageViewID);
         descriptionTextView = (TextView) view.findViewById(R.id.descriptionTextViewID);
 
+        textViewLongitude = (TextView) view.findViewById(R.id.textViewLongitude);
+        textViewLatitude = (TextView) view.findViewById(R.id.textViewLatitude);
+
         optOneCheckBox = (CheckBox) view.findViewById(R.id.optOneCheckBoxID);
         optTwoCheckBox = (CheckBox) view.findViewById(R.id.optTowCheckBoxID);
         optThreeCheckBox = (CheckBox) view.findViewById(R.id.optThreeCheckBoxID);
@@ -142,6 +147,8 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
     private void populateUI() {
 
         descriptionTextView.setText(quizItem.getPhotoDesc());
+        textViewLongitude.setText(Double.toString(quizItem.getLongitude()));
+        textViewLatitude.setText(Double.toString(quizItem.getLatitude()));
 
         optOneCheckBox.setText(quizItem.getOptionOne());
         optTwoCheckBox.setText(quizItem.getOptionTwo());

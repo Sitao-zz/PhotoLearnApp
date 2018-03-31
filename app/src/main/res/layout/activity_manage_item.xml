@@ -23,6 +23,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="202dp"
                 android:src="@android:drawable/stat_notify_error" />
+            
+            <LinearLayout
+                android:id="@+id/locationLayoutID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/tagLocationBtnID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_location_on_black_24dp" />
+
+                <TextView
+                    android:id="@+id/textViewLongitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/textViewLatitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/descriptionTextViewID"

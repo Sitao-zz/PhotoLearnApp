@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +34,8 @@ import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_ADD_LT;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_EDIT_LT;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.TITLE_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.UI_TYPE;
 
@@ -77,6 +81,11 @@ public class TitleActivity extends BaseActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
     }
 
 }

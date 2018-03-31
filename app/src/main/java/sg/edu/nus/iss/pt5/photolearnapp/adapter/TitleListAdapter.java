@@ -94,7 +94,7 @@ public class TitleListAdapter<T extends Title> extends RecyclerView.Adapter<Titl
         }
 
         public void setDateTime(Date dateTime) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(AppConstants.DATE_DISPLAY_PATTERN);
             dateTimeTextView.setText(dateFormat.format(dateTime));
         }
     }

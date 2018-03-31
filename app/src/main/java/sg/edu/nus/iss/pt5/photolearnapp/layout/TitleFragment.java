@@ -73,12 +73,12 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
 
         @Override
         public void onLeftClicked(int position) {
-            Intent intent = new Intent(TitleFragment.this.getContext(), ManageTitleActivity.class);
+            Intent intent = new Intent(getContext(), ManageTitleActivity.class);
             intent.putExtra(AppConstants.MODE, Mode.EDIT);
             intent.putExtra(AppConstants.UI_TYPE, uiType);
             intent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
             intent.putExtra(AppConstants.TITLE_OBJ, titleList.get(position));
-            getActivity().startActivityForResult(intent, AppConstants.RC_EDIT_LT);
+            startActivityForResult(intent, AppConstants.RC_EDIT_LT);
         }
     };
 
@@ -209,11 +209,11 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addTitleFButton:
-                Intent intent = new Intent(this.getContext(), ManageTitleActivity.class);
+                Intent intent = new Intent(getContext(), ManageTitleActivity.class);
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
                 intent.putExtra(AppConstants.UI_TYPE, uiType);
                 intent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
-                getActivity().startActivityForResult(intent, RC_ADD_LT);
+                startActivityForResult(intent, RC_ADD_LT);
                 break;
         }
     }

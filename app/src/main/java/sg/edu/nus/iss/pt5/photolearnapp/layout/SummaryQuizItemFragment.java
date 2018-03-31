@@ -127,10 +127,20 @@ public class SummaryQuizItemFragment extends Fragment implements View.OnClickLis
                     optThreeCheckBox.setChecked(quizUserAnswer.isOptionThree());
                     optFourCheckBox.setChecked(quizUserAnswer.isOptionFour());
 
-                    optOneCheckBox.setTextColor(quizItem.isOptionOneAnswer() == quizUserAnswer.isOptionOne() ? Color.GREEN : Color.RED);
-                    optTwoCheckBox.setTextColor(quizItem.isOptionTwoAnswer() == quizUserAnswer.isOptionTwo() ? Color.GREEN : Color.RED);
-                    optThreeCheckBox.setTextColor(quizItem.isOptionThreeAnswer() == quizUserAnswer.isOptionThree() ? Color.GREEN : Color.RED);
-                    optFourCheckBox.setTextColor(quizItem.isOptionFourAnswer() == quizUserAnswer.isOptionFour() ? Color.GREEN : Color.RED);
+                    if((quizItem.isOptionOneAnswer() == quizUserAnswer.isOptionOne())
+                            && (quizItem.isOptionTwoAnswer() == quizUserAnswer.isOptionTwo())
+                            && (quizItem.isOptionThreeAnswer() == quizUserAnswer.isOptionThree())
+                            && (quizItem.isOptionFourAnswer() == quizUserAnswer.isOptionFour())) {
+                        checkAnswer(optOneCheckBox,quizItem.isOptionOneAnswer(),true);
+                        checkAnswer(optTwoCheckBox,quizItem.isOptionTwoAnswer(),true);
+                        checkAnswer(optThreeCheckBox,quizItem.isOptionThreeAnswer(),true);
+                        checkAnswer(optFourCheckBox,quizItem.isOptionFourAnswer(),true);
+                    } else {
+                        checkAnswer(optOneCheckBox,quizItem.isOptionOneAnswer(),false);
+                        checkAnswer(optTwoCheckBox,quizItem.isOptionTwoAnswer(),false);
+                        checkAnswer(optThreeCheckBox,quizItem.isOptionThreeAnswer(),false);
+                        checkAnswer(optFourCheckBox,quizItem.isOptionFourAnswer(),false);
+                    }
 
                 }
             }
@@ -138,6 +148,16 @@ public class SummaryQuizItemFragment extends Fragment implements View.OnClickLis
 
         remarksTextView.setText(quizItem.getExplanation());
 
+    }
+
+    private void checkAnswer(CheckBox checkBox, boolean value, boolean isCorrect) {
+        if (value && isCorrect) {
+            checkBox.setTextColor(Color.GREEN);
+        }
+
+        if (value && !isCorrect) {
+            checkBox.setTextColor(Color.RED);
+        }
     }
 
     private void populateModel() {

@@ -40,6 +40,13 @@ public class TitlePagerAdapter extends FragmentStatePagerAdapter {
         return pageCount;
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        // it will recreate all Fragments when
+        // notifyDataSetChanged is called
+        return POSITION_NONE;
+    }
+
     public void removeTabPage() {
         pageCount--;
         notifyDataSetChanged();
