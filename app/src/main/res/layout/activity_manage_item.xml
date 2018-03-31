@@ -18,11 +18,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageButton
+                android:id="@+id/photoImageBtnID"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@android:drawable/stat_notify_error" />
+
             <ImageView
                 android:id="@+id/photoImageViewID"
                 android:layout_width="match_parent"
                 android:layout_height="202dp"
-                android:src="@android:drawable/stat_notify_error" />
+                android:src="@android:drawable/stat_notify_error"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/locationLayoutID"

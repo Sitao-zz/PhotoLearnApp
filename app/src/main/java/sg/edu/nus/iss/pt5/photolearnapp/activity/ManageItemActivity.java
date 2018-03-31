@@ -35,14 +35,11 @@ import java.util.List;
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
-import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningItem;
-import sg.edu.nus.iss.pt5.photolearnapp.model.LearningTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
-import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreHelper;
@@ -54,12 +51,12 @@ import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_PERMISSION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.TITLE_OBJ;
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.UI_TYPE;
 
 public class ManageItemActivity extends BaseActivity implements View.OnClickListener {
 
     private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
+    private ImageButton photoImageBtn;
     private ImageView photoImageView;
     private ImageButton tagLocationBtn;
     private EditText descriptionEditText;
@@ -115,6 +112,8 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
         learningItemDAO = new LearningItemDAO();
         quizItemDAO = new QuizItemDAO();
 
+        photoImageBtn = (ImageButton) findViewById(R.id.photoImageBtnID);
+        photoImageBtn.setOnClickListener(this);
         photoImageView = (ImageView) findViewById(R.id.photoImageViewID);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditTextID);
 
@@ -265,6 +264,9 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
         Intent returnIntent;
 
         switch (v.getId()) {
+            case R.id.photoImageBtnID:
+                selectImage();
+                break;
             case R.id.cancelBtnID:
                 finish();
                 break;
@@ -387,13 +389,13 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
             valid = false;
         }
 
-        if(item.getLatitude() == 0.0 || item.getLongitude() == 0.0) {
-            textViewLongitude.setError("Tag the image before you Add/Edit" );
+        if (item.getLatitude() == 0.0 || item.getLongitude() == 0.0) {
+            textViewLongitude.setError("Tag the image before you Add/Edit");
             valid = false;
         }
 
         if (!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionOne().isEmpty()) {
-            optOneEditText.setError("Enter description for Option 01" );
+            optOneEditText.setError("Enter description for Option 01");
             valid = false;
         }
         if (!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionTwo().isEmpty()) {
@@ -487,7 +489,16 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
     }
 
     private void downloadImage() {
-        fileStoreHelper.downloadImage(item.getPhotoUrl(), new FileStoreListener<Bitmap>() {
+        String fileStorePath = item.getPhotoUrl();
+        if (fileStorePath == null || fileStorePath.isEmpty()) {
+            photoImageBtn.setVisibility(View.VISIBLE);
+            photoImageView.setVisibility(View.GONE);
+            return;
+        }
+
+        photoImageBtn.setVisibility(View.GONE);
+        photoImageView.setVisibility(View.VISIBLE);
+        fileStoreHelper.downloadImage(fileStorePath, new FileStoreListener<Bitmap>() {
             @Override
             public void onSuccess(Bitmap bitmap) {
                 DisplayMetrics dm = new DisplayMetrics();
