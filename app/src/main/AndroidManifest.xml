@@ -24,6 +24,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,7 +32,7 @@
             android:name=".activity.LearningSessionActivity"
             android:label="@string/title_activity_learning_session"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ManageLearningSessionActivity"
             android:launchMode="singleTask"
@@ -57,17 +58,37 @@
                 android:value="sg.edu.nus.iss.pt5.photolearnapp.activity.TitleActivity" />
         </activity>
         <activity android:name=".activity.ManageItemActivity" />
-
+        <activity
+            android:name=".activity.AnswerQuizTitleActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName=".activity.LearningSessionActivity" />
+        <activity
+            android:name=".activity.AnswerQuizItemActivity"
+            android:parentActivityName=".activity.AnswerQuizTitleActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-          />
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+            android:label="@string/app_name" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider313983045794866"
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <provider
             android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider313983045794866"
             android:exported="true" />
+
+        <activity android:name=".activity.SummaryActivity"
+            android:parentActivityName=".activity.AnswerQuizTitleActivity"
+            android:launchMode="singleTask"></activity>
+
+        <activity android:name=".activity.SummaryQuizItemActivity"
+            android:parentActivityName=".activity.SummaryActivity"></activity>
+
+        <activity android:name=".activity.LearningTitleActivity"
+            android:parentActivityName=".activity.LearningSessionActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

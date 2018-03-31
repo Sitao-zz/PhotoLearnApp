@@ -13,6 +13,8 @@ public class AppConstants {
 
     public static final int RC_ADD_LT = 20;
     public static final int RC_EDIT_LT = 21;
+    public static final int RC_ANSWER_QT_MODE = 22;
+
 
     public static final int RC_SIGN_IN = 100;
     public static final int RC_SIGN_IN_SUCCESS = 101;
@@ -36,6 +38,8 @@ public class AppConstants {
     public static final String MODE = "Mode";
     public static final String UI_TYPE = "Title UI Type";
     public static final String UPLOADED_IMAGE_URL = "Uploaded Image URL";
+    public static final String IS_LAST = "Is Last";
+
 
 
     // File Storage

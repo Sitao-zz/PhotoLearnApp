@@ -17,13 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
+import sg.edu.nus.iss.pt5.photolearnapp.activity.AnswerQuizItemActivity;
+import sg.edu.nus.iss.pt5.photolearnapp.activity.ItemActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.activity.ManageTitleActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitleListAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
-import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningTitleDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizTitleDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
@@ -105,7 +106,11 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
         learningSession = (LearningSession) extras.getSerializable(AppConstants.LEARNING_SESSION_OBJ);
         uiType = (UIType) getArguments().getSerializable(AppConstants.UI_TYPE);
 
-        titleListAdapter = new TitleListAdapter(getActivity(), titleList);
+        if (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantAnswerMode()) {
+            titleListAdapter = new TitleListAdapter(getActivity(), titleList);
+        } else {
+            titleListAdapter = new TitleListAdapter(getActivity(), titleList);
+        }
 
     }
 

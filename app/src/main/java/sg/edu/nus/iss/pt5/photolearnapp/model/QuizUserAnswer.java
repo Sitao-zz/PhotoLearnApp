@@ -28,6 +28,13 @@ public class QuizUserAnswer implements Serializable, IModel, IEntity {
     public QuizUserAnswer() {
     }
 
+    public QuizUserAnswer(String userId, String quizItemId) {
+        this.userId = userId;
+        this.quizItemId = quizItemId;
+        this.dateTime = Calendar.getInstance().getTime();
+        this.id = userId + quizItemId;
+    }
+
     public QuizUserAnswer(String userId, String quizItemId, Iterable<Boolean> answer) {
         this.userId = userId;
         this.quizItemId = quizItemId;

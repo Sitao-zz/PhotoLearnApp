@@ -68,6 +68,9 @@ public class TitleActivity extends BaseActivity {
             if(CommonUtils.isParticipantEditMode()) {
                 tabLayout.removeTabAt(1);
                 titlePagerAdapter.removeTabPage();
+            } else if(CommonUtils.isParticipantEditMode()) {
+                tabLayout.removeTabAt(2);
+                titlePagerAdapter.removeTabPage();
             }
         }
 

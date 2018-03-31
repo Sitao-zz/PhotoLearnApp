@@ -15,10 +15,14 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
+import sg.edu.nus.iss.pt5.photolearnapp.activity.AnswerQuizItemActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.activity.ItemActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.activity.TitleActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
+import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
+import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
+import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
 /**
  * Created by mjeyakaran on 18/3/18.
@@ -43,7 +47,13 @@ public class TitleListAdapter<T extends Title> extends RecyclerView.Adapter<Titl
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ItemActivity.class);
+                Intent intent;
+                if (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantAnswerMode()) {
+                    intent = new Intent(context, AnswerQuizItemActivity.class);
+                } else {
+                    intent = new Intent(context, ItemActivity.class);
+                }
+
                 intent.putExtra(AppConstants.TITLE_OBJ, titleList.get(titleViewHolder.getLayoutPosition()));
                 context.startActivity(intent);
 

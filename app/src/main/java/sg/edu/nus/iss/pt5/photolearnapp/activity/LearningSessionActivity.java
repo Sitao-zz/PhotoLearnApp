@@ -10,7 +10,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,9 +30,9 @@ import java.util.List;
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
-import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningSessionDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Trainer;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeCallback;
@@ -42,9 +41,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeActionHandler;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.ITEM_OBJ;
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_ANSWER_QT_MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_TITLE_EDIT_MODE;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_TITLE_READ_MODE;
 
@@ -62,6 +59,7 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
 
     private Button viewModeBtn;
     private Button editModeBtn;
+    private Button answerQuizBtn;
 
     private LinearLayout sessionDetail;
     private SearchView learningSessionSearchView;
@@ -212,6 +210,8 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
         viewModeBtn.setOnClickListener(this);
         editModeBtn = (Button) findViewById(R.id.editModeBtnID);
         editModeBtn.setOnClickListener(this);
+        answerQuizBtn = (Button) findViewById(R.id.answerQuizBtnID);
+        answerQuizBtn.setOnClickListener(this);
 
     }
 
@@ -235,16 +235,22 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
                 startActivityForResult(intent, AppConstants.RC_ADD_LS);
                 break;
             case R.id.viewModeBtnID:
-                Intent viewModeIntent = new Intent(this, TitleActivity.class);
+                Intent viewModeIntent = new Intent(this, LearningTitleActivity.class);
                 ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.VIEW);
                 viewModeIntent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
-                startActivityForResult(viewModeIntent, RC_TITLE_READ_MODE);
+                startActivity(viewModeIntent);
                 break;
             case R.id.editModeBtnID:
-                Intent editModeIntent = new Intent(this, TitleActivity.class);
+                Intent editModeIntent = new Intent(this, LearningTitleActivity.class);
                 ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.EDIT);
                 editModeIntent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
-                startActivityForResult(editModeIntent, RC_TITLE_EDIT_MODE);
+                startActivity(editModeIntent);
+                break;
+            case R.id.answerQuizBtnID :
+                Intent answerQuizTitle = new Intent(this, AnswerQuizTitleActivity.class);
+                ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.ANSWER);
+                answerQuizTitle.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
+                startActivity(answerQuizTitle);
                 break;
         }
 
