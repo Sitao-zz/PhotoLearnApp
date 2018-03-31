@@ -105,4 +105,8 @@ public class TitleListAdapter<T extends Title> extends RecyclerView.Adapter<Titl
         notifyItemRangeChanged(position, getItemCount());
     }
 
+    public void filter(List<T> titleList) {
+        this.titleList = titleList;
+        notifyDataSetChanged();
+    }
 }

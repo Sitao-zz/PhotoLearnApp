@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.util.SwipeCallback;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_ADD_LT;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_EDIT_LT;
 
-public class TitleFragment<T extends Title> extends Fragment implements View.OnClickListener {
+public class TitleFragment<T extends Title> extends Fragment implements View.OnClickListener, SearchView.OnQueryTextListener {
 
     private static final int REQ_CODE = 002;
 
@@ -54,6 +55,8 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
 
     private LearningTitleDAO learningTitleDAO;
     private QuizTitleDAO quizTitleDAO;
+
+    private SearchView titleSearchView;
 
     private SwipeActionHandler swipeActionHandler = new SwipeActionHandler() {
         @Override
@@ -106,11 +109,7 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
         learningSession = (LearningSession) extras.getSerializable(AppConstants.LEARNING_SESSION_OBJ);
         uiType = (UIType) getArguments().getSerializable(AppConstants.UI_TYPE);
 
-        if (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantAnswerMode()) {
-            titleListAdapter = new TitleListAdapter(getActivity(), titleList);
-        } else {
-            titleListAdapter = new TitleListAdapter(getActivity(), titleList);
-        }
+        titleListAdapter = new TitleListAdapter(getActivity(), titleList);
 
     }
 
@@ -160,6 +159,9 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_title, container, false);
+
+        titleSearchView = (SearchView) view.findViewById(R.id.titleSearchViewID);
+        titleSearchView.setOnQueryTextListener(this);
 
         initTitleListView(view);
 
@@ -222,5 +224,27 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
                 && resultCode == Activity.RESULT_OK) {
             loadData();
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        titleListAdapter.filter(filterTitle(query));
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        titleListAdapter.filter(filterTitle(newText));
+        return false;
+    }
+
+    private List<T> filterTitle(String text) {
+        List<T> filterList = new ArrayList<T>();
+        for(T title : titleList) {
+            if(title.getTitle().startsWith(text)) {
+                filterList.add(title);
+            }
+        }
+        return filterList;
     }
 }

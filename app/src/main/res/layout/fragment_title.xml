@@ -1,14 +1,20 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="sg.edu.nus.iss.pt5.photolearnapp.layout.TitleFragment">
 
+    <android.support.v7.widget.SearchView
+        android:id="@+id/titleSearchViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/titleListRecyclerViewID"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/titleSearchViewID"
         android:layout_margin="10dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
@@ -18,11 +24,13 @@
         android:id="@+id/addTitleFButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:tint="@android:color/white"
+        android:visibility="visible"
         app:backgroundTint="@color/btn_logut_bg"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:visibility="visible"/>
+        app:srcCompat="@android:drawable/ic_input_add" />
 
-</FrameLayout>
+</RelativeLayout>
