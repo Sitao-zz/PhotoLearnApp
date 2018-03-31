@@ -331,7 +331,7 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
                         //get the location of longtitude and Latitude.
                         double doubleLongitude = location.getLongitude();
                         double doubleLatitude = location.getLatitude();
-                        textViewLongitude.setText(doubleLongitude + ",");
+                        textViewLongitude.setText(doubleLongitude + "");
                         textViewLatitude.setText(doubleLatitude + "");
                         //locationManager.requestLocationUpdates(Holder, 12000, 7, this);
                     }
@@ -386,8 +386,14 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
             }
             valid = false;
         }
+
+        if(item.getLatitude() == 0.0 || item.getLongitude() == 0.0) {
+            textViewLongitude.setError("Tag the image before you Add/Edit" );
+            valid = false;
+        }
+
         if (!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionOne().isEmpty()) {
-            optOneEditText.setError("Enter description for Option 01");
+            optOneEditText.setError("Enter description for Option 01" );
             valid = false;
         }
         if (!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionTwo().isEmpty()) {
@@ -399,11 +405,11 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
             valid = false;
         }
         if (!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionFour().isEmpty()) {
-            optFourEditText.setError("Enter description for Option 03");
+            optFourEditText.setError("Enter description for Option 04");
             valid = false;
         }
         if (!CommonUtils.isLearningUI(title) && ((QuizItem) item).getExplanation().isEmpty()) {
-            optFourEditText.setError("Enter description for Option 03");
+            remarksEditText.setError("Enter explanation for answer.");
             valid = false;
         }
         if (!CommonUtils.isLearningUI(title) &&

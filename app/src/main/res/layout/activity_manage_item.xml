@@ -23,10 +23,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="202dp"
                 android:src="@android:drawable/stat_notify_error" />
-            
+
             <LinearLayout
                 android:id="@+id/locationLayoutID"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -36,17 +36,48 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_location_on_black_24dp" />
 
-                <TextView
-                    android:id="@+id/textViewLongitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="" />
+                <LinearLayout
+                    android:id="@+id/latitudeLayoutID"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewLatitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="" />
+                    <TextView
+                        android:id="@+id/latitudeTextViewID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Latitude:"/>
+
+                    <TextView
+                        android:id="@+id/textViewLongitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/longitudeLayoutID"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/longitudeTextViewID2"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_weight="1"
+                        android:text="Longitude :" />
+
+                    <TextView
+                        android:id="@+id/textViewLatitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <TextView
