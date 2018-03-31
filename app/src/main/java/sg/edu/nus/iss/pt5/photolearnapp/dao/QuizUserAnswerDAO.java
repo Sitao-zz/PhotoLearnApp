@@ -14,11 +14,16 @@ public class QuizUserAnswerDAO extends BaseEntityDAO<QuizUserAnswer> {
         super("quizUserAnswer", QuizUserAnswer.class);
     }
 
-    public void getItemsByQuizUser(User user, QuizItem quizItem, DAOResultListener<Iterable<QuizUserAnswer>> resultListener) {
-        this.getItemsByQuizUserId(user.getId(), quizItem.getId(), resultListener);
+    public void getAnswersByItemId(String titleId, DAOResultListener<Iterable<QuizUserAnswer>> resultListener) {
+        ValueEventListener childrenListener = createChildrenEventListener(resultListener);
+        mEntityRef.orderByChild("quizItemId").equalTo(titleId).addValueEventListener(childrenListener);
     }
 
-    public void getItemsByQuizUserId(String userId, String quizItemId, DAOResultListener<Iterable<QuizUserAnswer>> resultListener) {
+    public void getAnswersByQuizUser(User user, QuizItem quizItem, DAOResultListener<Iterable<QuizUserAnswer>> resultListener) {
+        this.getAnswersByQuizUserId(user.getId(), quizItem.getId(), resultListener);
+    }
+
+    public void getAnswersByQuizUserId(String userId, String quizItemId, DAOResultListener<Iterable<QuizUserAnswer>> resultListener) {
         ValueEventListener childrenListener = createChildrenEventListener(resultListener);
         String prefix = userId + quizItemId;
         mEntityRef.orderByChild("id").startAt(prefix).endAt(prefix + "\\uf8ff").addValueEventListener(childrenListener);
