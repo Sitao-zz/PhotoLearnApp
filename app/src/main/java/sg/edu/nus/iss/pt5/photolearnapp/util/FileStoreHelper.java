@@ -20,7 +20,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 
 public class FileStoreHelper {
 
-    private static final long ONE_MEGABYTE = 1024 * 1024;
+    private static final long TEN_MEGABYTE = 1024 * 1024 * 10;
 
     private static FileStoreHelper fileStoreHelper;
     private static Object dummy = new Object();
@@ -51,7 +51,7 @@ public class FileStoreHelper {
 
         StorageReference pathReference = storageRef.child(fileStorePath);
 
-        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        pathReference.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
