@@ -25,7 +25,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.LEARNING_SESSION_OBJ;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
 
-public class ManageLearningSessionActivity extends BaseActivity implements View.OnClickListener{
+public class ManageLearningSessionActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String DATE_PATTERN = "dd/MM/yyyy";
     private SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.US);
@@ -97,7 +97,7 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
             learningSession.setCourseDate(Calendar.getInstance().getTime());
             addBtn.setVisibility(View.VISIBLE);
             setTitle("Add New Learning Session");
-        } else if(Mode.EDIT == mode) {
+        } else if (Mode.EDIT == mode) {
             learningSession = (LearningSession) extras.get(LEARNING_SESSION_OBJ);
             saveBtn.setVisibility(View.VISIBLE);
             setTitle("Edit Learning Session");
@@ -132,10 +132,8 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
     @Override
     public void onClick(View v) {
 
-        Intent returnIntent;
-
         switch (v.getId()) {
-            case R.id.courseDateEditTextID :
+            case R.id.courseDateEditTextID:
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(courseDate);
                 new DatePickerDialog(ManageLearningSessionActivity.this, onDateSetListener,
@@ -143,64 +141,59 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
                 break;
-            case R.id.cancelBtnID :
+            case R.id.cancelBtnID:
                 finish();
                 break;
             case R.id.addBtnID:
                 updateModel();
-                if(Validate()) {
-                    returnIntent = new Intent();
-                    SaveSession(returnIntent);
-                }
-                else {
-                    Toast.makeText(this,"Adding learning session failed", Toast.LENGTH_SHORT).show();
+                learningSession.generateSessionID();
+                if (Validate()) {
+                    SaveSession();
+                } else {
+                    Toast.makeText(this, "Adding learning session failed", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.saveBtnID:
                 updateModel();
-                if(Validate()) {
-                    returnIntent = new Intent();
-                    SaveSession(returnIntent);
-                }
-                else {
-                    Toast.makeText(this,"Edit learning session failed", Toast.LENGTH_SHORT).show();
+                if (Validate()) {
+                    SaveSession();
+                } else {
+                    Toast.makeText(this, "Edit learning session failed", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
 
     // Add/save session form validation
-    public boolean Validate()
-    {
+    public boolean Validate() {
         boolean valid = true;
-        if(learningSession.getCourseCode().isEmpty()) {
+        if (learningSession.getCourseCode().isEmpty()) {
             courseCodeEditText.setError("Course code can't be empty.");
             valid = false;
         }
-        if(learningSession.getCourseName().isEmpty()){
+        if (learningSession.getCourseName().isEmpty()) {
             courseNameEditText.setError("Course name can't be empty.");
             valid = false;
         }
-        if(learningSession.getModuleNumber().isEmpty()){
+        if (learningSession.getModuleNumber().isEmpty()) {
             moduleNumberEditText.setError("Module number can't be empty.");
             valid = false;
         }
-        if(learningSession.getModuleName().isEmpty()){
+        if (learningSession.getModuleName().isEmpty()) {
             moduleNameEditText.setError("Module name can't be empty.");
             valid = false;
         }
-        return  valid;
+        return valid;
     }
 
     //Save session object after validation.
-    public void SaveSession(Intent returnIntent) {
-
-        learningSession.generateSessionID();
+    public void SaveSession() {
+        Intent intent = new Intent();
         learningSessionDAO.save(learningSession);
 
-        returnIntent.putExtra(MODE, mode);
-        returnIntent.putExtra(LEARNING_SESSION_OBJ, learningSession);
-        setResult(Activity.RESULT_OK, returnIntent);
+        intent.putExtra(MODE, mode);
+        intent.putExtra(LEARNING_SESSION_OBJ, learningSession);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
 }
