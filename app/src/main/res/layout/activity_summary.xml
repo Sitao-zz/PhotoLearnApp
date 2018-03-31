@@ -6,9 +6,107 @@
     android:layout_height="match_parent"
     tools:context="sg.edu.nus.iss.pt5.photolearnapp.activity.SummaryActivity">
 
-    <Button
-        android:id="@+id/summaryBtnID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Summary" />
+    <LinearLayout
+        android:id="@+id/sessionDetailID"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Quiz Title :"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/quizTitleTextViewID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quiz title name" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Questions :"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/cQuestionTextViewID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Correct :"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/cCorrectTextViewID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Incorrect :"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/cIncorrectTextViewID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/summaryBtnID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Quiz Detail" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

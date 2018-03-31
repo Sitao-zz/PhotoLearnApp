@@ -39,6 +39,8 @@ public class AppConstants {
     public static final String UI_TYPE = "Title UI Type";
     public static final String UPLOADED_IMAGE_URL = "Uploaded Image URL";
     public static final String IS_LAST = "Is Last";
+    public static final String QCOUNT = "QCOUNT";
+    public static final String ACOUNT = "ACOUNT";
 
 
 

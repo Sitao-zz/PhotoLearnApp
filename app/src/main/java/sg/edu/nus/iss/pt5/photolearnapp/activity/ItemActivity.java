@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,9 @@ public class ItemActivity extends BaseActivity implements View.OnClickListener {
     private ItemPagerAdapter itemPagerAdapter;
     private ViewPager mViewPager;
 
+    private ImageButton leftNav;
+    private ImageButton rightNav;
+
     private Title title;
 
     private LearningItemDAO learningItemDAO;
@@ -62,11 +66,11 @@ public class ItemActivity extends BaseActivity implements View.OnClickListener {
 
         if (CommonUtils.isLearningUI(title)) {
             itemList = new ArrayList<LearningItem>();
-            itemPagerAdapter = new ItemPagerAdapter<LearningItem>(getSupportFragmentManager(),title, (List<LearningItem>) itemList);
+            itemPagerAdapter = new ItemPagerAdapter<LearningItem>(getSupportFragmentManager(), title, (List<LearningItem>) itemList);
             toolbar.setTitle(getString(R.string.learning_item));
         } else {
             itemList = new ArrayList<QuizItem>();
-            itemPagerAdapter = new ItemPagerAdapter<QuizItem>(getSupportFragmentManager(),title, (List<QuizItem>) itemList);
+            itemPagerAdapter = new ItemPagerAdapter<QuizItem>(getSupportFragmentManager(), title, (List<QuizItem>) itemList);
             toolbar.setTitle(getString(R.string.quiz_item));
         }
         loadData();
@@ -74,6 +78,11 @@ public class ItemActivity extends BaseActivity implements View.OnClickListener {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(itemPagerAdapter);
+
+        leftNav = (ImageButton) findViewById(R.id.leftNavImageBtnID);
+        leftNav.setOnClickListener(this);
+        rightNav = (ImageButton) findViewById(R.id.rightNavImageBtnID);
+        rightNav.setOnClickListener(this);
 
         initAddItemButton();
 
@@ -120,6 +129,18 @@ public class ItemActivity extends BaseActivity implements View.OnClickListener {
                 intent.putExtra(AppConstants.MODE, Mode.ADD);
                 intent.putExtra(AppConstants.TITLE_OBJ, title);
                 startActivityForResult(intent, RC_ADD_ITEM);
+                break;
+            case R.id.leftNavImageBtnID:
+                int tab01 = mViewPager.getCurrentItem();
+                if (tab01 > 0) {
+                    mViewPager.setCurrentItem(--tab01);
+                } else if (tab01 == 0) {
+                    mViewPager.setCurrentItem(tab01);
+                }
+                break;
+            case R.id.rightNavImageBtnID:
+                int tab02 = mViewPager.getCurrentItem();
+                mViewPager.setCurrentItem(++tab02);
                 break;
         }
 

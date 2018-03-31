@@ -236,7 +236,7 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
     }
 
     private void updateModel() {
-        
+
         item.setPhotoDesc(descriptionEditText.getText().toString());
 
         if (location != null) {

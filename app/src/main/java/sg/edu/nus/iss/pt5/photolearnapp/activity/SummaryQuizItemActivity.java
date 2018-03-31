@@ -3,6 +3,7 @@ package sg.edu.nus.iss.pt5.photolearnapp.activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,13 @@ import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 
-public class SummaryQuizItemActivity extends BaseActivity {
+public class SummaryQuizItemActivity extends BaseActivity implements View.OnClickListener {
 
     private SummaryQuizItemPagerAdapter pagerAdapter;
     private ViewPager viewPager;
+
+    private ImageButton leftNav;
+    private ImageButton rightNav;
 
     private QuizTitle quizTitle;
     private QuizItemDAO quizItemDAO;
@@ -47,6 +51,11 @@ public class SummaryQuizItemActivity extends BaseActivity {
         viewPager.setVisibility(View.VISIBLE);
         viewPager.setAdapter(pagerAdapter);
 
+        leftNav = (ImageButton) findViewById(R.id.leftNavImageBtnID);
+        leftNav.setOnClickListener(this);
+        rightNav = (ImageButton) findViewById(R.id.rightNavImageBtnID);
+        rightNav.setOnClickListener(this);
+
     }
 
     private void loadData() {
@@ -61,4 +70,21 @@ public class SummaryQuizItemActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.leftNavImageBtnID:
+                int tab01 = viewPager.getCurrentItem();
+                if (tab01 > 0) {
+                    viewPager.setCurrentItem(--tab01);
+                } else if (tab01 == 0) {
+                    viewPager.setCurrentItem(tab01);
+                }
+                break;
+            case R.id.rightNavImageBtnID:
+                int tab02 = viewPager.getCurrentItem();
+                viewPager.setCurrentItem(++tab02);
+                break;
+        }
+    }
 }
