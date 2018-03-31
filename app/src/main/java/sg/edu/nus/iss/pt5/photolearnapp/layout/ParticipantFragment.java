@@ -95,7 +95,6 @@ public class ParticipantFragment extends Fragment implements View.OnClickListene
         sessionDetail.setVisibility(View.GONE);
 
         learningSessionSearchView = (SearchView) view.findViewById(R.id.learningSessionSearchViewID);
-        learningSessionSearchView.setQuery("20180301-IoT-M01", false);
         learningSessionSearchView.setQueryHint("Learning Session ID");
         learningSessionSearchView.setOnQueryTextListener(this);
         learningSessionSearchView.setOnSuggestionListener(this);

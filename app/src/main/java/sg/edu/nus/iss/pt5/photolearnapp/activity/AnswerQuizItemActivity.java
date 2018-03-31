@@ -89,7 +89,12 @@ public class AnswerQuizItemActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void onSubmitClick() {
+    public void onSubmitClick(boolean isCorrectAnswer) {
+
+        if(isCorrectAnswer) {
+            correctAnsCount++;
+        }
+        
         Intent summaryIntent = new Intent(this, SummaryActivity.class);
         summaryIntent.putExtra(QCOUNT, quizItemList.size());
         summaryIntent.putExtra(ACOUNT, correctAnsCount);
