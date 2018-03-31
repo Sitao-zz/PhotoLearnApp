@@ -394,8 +394,9 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
             valid = false;
         }
 
-        if(item.getPhotoUrl().isEmpty()){
+        if(item.getPhotoUrl() == null ){
             Toast.makeText(this, "Select an Image for upload..!", Toast.LENGTH_SHORT).show();
+            valid = false;
         }
 
         if (!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionOne().isEmpty()) {
