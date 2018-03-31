@@ -1,17 +1,24 @@
 package sg.edu.nus.iss.pt5.photolearnapp.layout;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.activity.AnswerQuizTitleActivity;
@@ -24,15 +31,16 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
-public class ParticipantFragment extends Fragment implements View.OnClickListener, SearchView.OnQueryTextListener {
+public class ParticipantFragment extends Fragment implements View.OnClickListener, SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
 
     private Button viewModeBtn;
     private Button editModeBtn;
     private Button answerQuizBtn;
 
     private LinearLayout sessionDetail;
-    private SearchView learningSessionSearchView;
     private LearningSession learningSession;
+    private SearchView learningSessionSearchView;
+    private SimpleCursorAdapter mAdapter;
 
     private TextView courseDateTextView;
     private TextView courseCodeTextView;
@@ -41,6 +49,8 @@ public class ParticipantFragment extends Fragment implements View.OnClickListene
     private TextView moduleNameTextView;
 
     private LearningSessionDAO learningSessionDAO;
+
+    private final List<String> mSuggestions = new ArrayList<String>();
 
     public ParticipantFragment() {
         // Required empty public constructor
@@ -55,6 +65,24 @@ public class ParticipantFragment extends Fragment implements View.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         learningSessionDAO = new LearningSessionDAO();
+
+        final String[] from = new String[]{"sessionId"};
+        final int[] to = new int[]{android.R.id.text1};
+        mAdapter = new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_1,
+                null,
+                from,
+                to,
+                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+        learningSessionDAO.getObjects(new DAOResultListener<Iterable<LearningSession>>() {
+            @Override
+            public void OnDAOReturned(Iterable<LearningSession> list) {
+                for (LearningSession session : list) {
+                    mSuggestions.add(session.getId());
+                }
+            }
+        });
     }
 
     @Override
@@ -70,6 +98,12 @@ public class ParticipantFragment extends Fragment implements View.OnClickListene
         learningSessionSearchView.setQuery("20180301-IoT-M01", false);
         learningSessionSearchView.setQueryHint("Learning Session ID");
         learningSessionSearchView.setOnQueryTextListener(this);
+        learningSessionSearchView.setOnSuggestionListener(this);
+        learningSessionSearchView.setSuggestionsAdapter(mAdapter);
+
+        int autoCompleteTextViewID = getResources().getIdentifier("android:id/search_src_text", null, null);
+        AutoCompleteTextView searchAutoCompleteTextView = (AutoCompleteTextView) learningSessionSearchView.findViewById(autoCompleteTextViewID);
+        searchAutoCompleteTextView.setThreshold(1);
 
         courseDateTextView = (TextView) view.findViewById(R.id.courseDateTextViewID);
         courseCodeTextView = (TextView) view.findViewById(R.id.courseCodeTextViewID);
@@ -140,8 +174,32 @@ public class ParticipantFragment extends Fragment implements View.OnClickListene
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        populateAdapter(newText);
         return false;
     }
 
 
+    @Override
+    public boolean onSuggestionSelect(int position) {
+        return false;
+    }
+
+    @Override
+    public boolean onSuggestionClick(int position) {
+        Cursor cursor = mAdapter.getCursor();
+        cursor.moveToPosition(position);
+        String selectedItem = cursor.getString(1);
+        learningSessionSearchView.setQuery(selectedItem, true);
+        return false;
+    }
+
+    private void populateAdapter(String query) {
+        final MatrixCursor c = new MatrixCursor(new String[]{BaseColumns._ID, "sessionId"});
+        int index = 0;
+        for (String sessionId : mSuggestions) {
+            if (sessionId.toLowerCase().startsWith(query.toLowerCase()))
+                c.addRow(new Object[]{index, sessionId});
+        }
+        mAdapter.changeCursor(c);
+    }
 }
