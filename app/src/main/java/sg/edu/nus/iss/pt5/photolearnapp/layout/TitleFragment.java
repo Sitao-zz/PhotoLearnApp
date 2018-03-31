@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
-import sg.edu.nus.iss.pt5.photolearnapp.activity.AnswerQuizItemActivity;
-import sg.edu.nus.iss.pt5.photolearnapp.activity.ItemActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.activity.ManageTitleActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitleListAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
@@ -137,6 +135,10 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
                     });
                 }
 
+                if (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantViewMode()) {
+                    titleSearchView.setVisibility(View.VISIBLE);
+                }
+
                 break;
             case QUIZ:
                 quizTitleDAO.getTitlesBySession(learningSession, new DAOResultListener<Iterable<QuizTitle>>() {
@@ -150,8 +152,6 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
                 });
                 break;
         }
-
-
     }
 
     @Override
@@ -239,9 +239,10 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
     }
 
     private List<T> filterTitle(String text) {
+        String text_low = text.toLowerCase();
         List<T> filterList = new ArrayList<T>();
-        for(T title : titleList) {
-            if(title.getTitle().startsWith(text)) {
+        for (T title : titleList) {
+            if (title.getTitle().toLowerCase().startsWith(text_low)) {
                 filterList.add(title);
             }
         }
