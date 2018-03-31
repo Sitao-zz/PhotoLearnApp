@@ -53,7 +53,7 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
     private NavigateListener navigateListener;
 
     public interface NavigateListener {
-        public void onNextClick();
+        public void onNextClick(boolean isCorrectAnswer);
 
         public void onSubmitClick();
     }
@@ -204,7 +204,15 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
                 populateModel();
                 quizUserAnswerDAO.save(quizUserAnswer);
 
-                navigateListener.onNextClick();
+                boolean isCorrectAnswer = false;
+                if ((quizItem.isOptionOneAnswer() == quizUserAnswer.isOptionOne())
+                        && (quizItem.isOptionTwoAnswer() == quizUserAnswer.isOptionTwo())
+                        && (quizItem.isOptionThreeAnswer() == quizUserAnswer.isOptionThree())
+                        && (quizItem.isOptionFourAnswer() == quizUserAnswer.isOptionFour())) {
+                    isCorrectAnswer = true;
+                }
+
+                navigateListener.onNextClick(isCorrectAnswer);
                 break;
             case R.id.submitBtnID:
                 populateModel();

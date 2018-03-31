@@ -21,6 +21,9 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.ACOUNT;
+import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.QCOUNT;
+
 public class AnswerQuizItemActivity extends BaseActivity implements View.OnClickListener, AnswerQuizItemFragment.NavigateListener {
 
     private AnswerQuizItemPagerAdapter answerQuizItemPagerAdapter;
@@ -29,6 +32,8 @@ public class AnswerQuizItemActivity extends BaseActivity implements View.OnClick
     private QuizTitle quizTitle;
     private QuizItemDAO quizItemDAO;
     private List<QuizItem> quizItemList;
+
+    private int correctAnsCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,12 @@ public class AnswerQuizItemActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void onNextClick() {
+    public void onNextClick(boolean isCorrectAnswer) {
+
+        if(isCorrectAnswer) {
+            correctAnsCount++;
+        }
+
         int currPos = viewPager.getCurrentItem();
         answerQuizItemPagerAdapter.notifyDataSetChanged();
         viewPager.setCurrentItem(currPos + 1);
@@ -81,6 +91,8 @@ public class AnswerQuizItemActivity extends BaseActivity implements View.OnClick
     @Override
     public void onSubmitClick() {
         Intent summaryIntent = new Intent(this, SummaryActivity.class);
+        summaryIntent.putExtra(QCOUNT, quizItemList.size());
+        summaryIntent.putExtra(ACOUNT, correctAnsCount);
         summaryIntent.putExtra(AppConstants.TITLE_OBJ, quizTitle);
         startActivity(summaryIntent);
     }
