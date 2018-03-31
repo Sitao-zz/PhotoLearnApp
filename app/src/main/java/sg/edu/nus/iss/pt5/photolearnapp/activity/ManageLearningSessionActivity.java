@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -146,28 +147,60 @@ public class ManageLearningSessionActivity extends BaseActivity implements View.
                 finish();
                 break;
             case R.id.addBtnID:
-
                 updateModel();
-                learningSession.generateSessionID();
-
-                learningSessionDAO.save(learningSession);
-
-                returnIntent = new Intent();
-                returnIntent.putExtra(MODE,mode);
-                returnIntent.putExtra(LEARNING_SESSION_OBJ,learningSession);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                if(Validate()) {
+                    returnIntent = new Intent();
+                    SaveSession(returnIntent);
+                }
+                else {
+                    Toast.makeText(this,"Adding learning session failed", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.saveBtnID:
                 updateModel();
-
-                learningSessionDAO.save(learningSession);
-                returnIntent = new Intent();
-                returnIntent.putExtra(MODE,mode);
-                returnIntent.putExtra(LEARNING_SESSION_OBJ,learningSession);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                if(Validate()) {
+                    returnIntent = new Intent();
+                    SaveSession(returnIntent);
+                }
+                else {
+                    Toast.makeText(this,"Edit learning session failed", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
+    }
+
+    // Add/save session form validation
+    public boolean Validate()
+    {
+        boolean valid = true;
+        if(learningSession.getCourseCode().isEmpty()) {
+            courseCodeEditText.setError("Course code can't be empty.");
+            valid = false;
+        }
+        if(learningSession.getCourseName().isEmpty()){
+            courseNameEditText.setError("Course name can't be empty.");
+            valid = false;
+        }
+        if(learningSession.getModuleNumber().isEmpty()){
+            moduleNumberEditText.setError("Module number can't be empty.");
+            valid = false;
+        }
+        if(learningSession.getModuleName().isEmpty()){
+            moduleNameEditText.setError("Module name can't be empty.");
+            valid = false;
+        }
+        return  valid;
+    }
+
+    //Save session object after validation.
+    public void SaveSession(Intent returnIntent) {
+
+        learningSession.generateSessionID();
+        learningSessionDAO.save(learningSession);
+
+        returnIntent.putExtra(MODE, mode);
+        returnIntent.putExtra(LEARNING_SESSION_OBJ, learningSession);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }

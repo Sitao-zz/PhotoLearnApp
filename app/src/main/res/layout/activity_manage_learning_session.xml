@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
+        android:hint="Please enter your course code "
         android:maxLength="10" />
 
     <TextView
@@ -51,6 +52,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
+        android:hint="Please enter your course name "
         android:maxLength="50" />
 
     <TextView
@@ -66,6 +68,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
+        android:hint="Please enter your module number "
         android:maxLength="5" />
 
     <TextView
@@ -81,6 +84,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
+        android:hint="Please enter your module name"
         android:maxLength="50" />
 
     <LinearLayout
