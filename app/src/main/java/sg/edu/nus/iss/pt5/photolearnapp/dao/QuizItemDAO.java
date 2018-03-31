@@ -2,6 +2,10 @@ package sg.edu.nus.iss.pt5.photolearnapp.dao;
 
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import sg.edu.nus.iss.pt5.photolearnapp.model.Participant;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizTitle;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizUserAnswer;
@@ -54,5 +58,29 @@ public class QuizItemDAO extends BaseEntityDAO<QuizItem> {
         for (String objId : objIds) {
             this.deleteById(objId);
         }
+    }
+
+    public void deleteAnswersByQuizTitleUserId(Participant participant, QuizTitle title) {
+        this.deleteAnswersByQuizTitleUserId(participant.getId(), title.getId());
+    }
+
+    public void deleteAnswersByQuizTitleUserId(final String userId, String quizTitleId) {
+        DAOResultListener<Iterable<QuizItem>> itemListener = new DAOResultListener<Iterable<QuizItem>>() {
+            @Override
+            public void OnDAOReturned(Iterable<QuizItem> list) {
+                for (QuizItem item : list) {
+                    DAOResultListener<Iterable<QuizUserAnswer>> answerListener = new DAOResultListener<Iterable<QuizUserAnswer>>() {
+                        @Override
+                        public void OnDAOReturned(Iterable<QuizUserAnswer> objects) {
+                            for (QuizUserAnswer obj : objects) {
+                                mChildDao.delete(obj);
+                            }
+                        }
+                    };
+                    mChildDao.getAnswersByQuizUserId(userId, item.getId(), answerListener);
+                }
+            }
+        };
+        this.getItemsByTitleId(quizTitleId, itemListener);
     }
 }

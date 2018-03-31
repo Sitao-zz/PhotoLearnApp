@@ -1,12 +1,9 @@
 package sg.edu.nus.iss.pt5.photolearnapp.layout;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -21,9 +18,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
-import sg.edu.nus.iss.pt5.photolearnapp.activity.ManageItemActivity;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizUserAnswerDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizUserAnswer;
@@ -32,14 +29,13 @@ import sg.edu.nus.iss.pt5.photolearnapp.util.FileStoreListener;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 import sg.edu.nus.iss.pt5.photolearnapp.util.TextToSpeechUtil;
 
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.LEARNING_SESSION_OBJ;
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
-
 public class AnswerQuizItemFragment extends Fragment implements View.OnClickListener {
 
     private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
     private QuizItem quizItem;
+    private QuizItemDAO quizItemDAO;
+
     private QuizUserAnswer quizUserAnswer;
     private QuizUserAnswerDAO quizUserAnswerDAO;
     private boolean isLastItem;
@@ -97,8 +93,8 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
         }
 
         textToSpeechUtil = new TextToSpeechUtil(this.getContext());
+        quizItemDAO = new QuizItemDAO();
         quizUserAnswerDAO = new QuizUserAnswerDAO();
-
     }
 
     @Override
@@ -249,6 +245,7 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
                 myAlertDialog.setNegativeButton("Confirm",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
+                                quizItemDAO.deleteAnswersByQuizTitleUserId(SecurityContext.getInstance().getRole().getUser().getId(), quizItem.getTitleId());
                                 getActivity().finish();
                             }
                         });
