@@ -2,7 +2,6 @@ package sg.edu.nus.iss.pt5.photolearnapp.layout;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
-import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizUserAnswerDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
@@ -148,7 +146,7 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
         optThreeCheckBox.setText(quizItem.getOptionThree());
         optFourCheckBox.setText(quizItem.getOptionFour());
 
-        quizUserAnswerDAO.getItemsByQuizUser(SecurityContext.getInstance().getRole().getUser(), quizItem, new DAOResultListener<Iterable<QuizUserAnswer>>() {
+        quizUserAnswerDAO.getAnswersByQuizUser(SecurityContext.getInstance().getRole().getUser(), quizItem, new DAOResultListener<Iterable<QuizUserAnswer>>() {
             @Override
             public void OnDAOReturned(Iterable<QuizUserAnswer> obj) {
                 List<QuizUserAnswer> quizUserAnswerList = (List<QuizUserAnswer>) obj;
