@@ -152,8 +152,6 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
                 });
                 break;
         }
-
-
     }
 
     @Override
@@ -241,9 +239,10 @@ public class TitleFragment<T extends Title> extends Fragment implements View.OnC
     }
 
     private List<T> filterTitle(String text) {
+        String text_low = text.toLowerCase();
         List<T> filterList = new ArrayList<T>();
         for (T title : titleList) {
-            if (title.getTitle().startsWith(text)) {
+            if (title.getTitle().toLowerCase().startsWith(text_low)) {
                 filterList.add(title);
             }
         }
