@@ -130,10 +130,15 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
         setTitle();
 
         if(CommonUtils.isLearningUI(title)) {
-            descriptionEditText.setHint("Please enter your learning item description");
+            descriptionEditText.setHint("Please enter your learning item description.");
         }
         else{
-            descriptionEditText.setHint("Please enter your quiz item description");
+            descriptionEditText.setHint("Please enter your quiz item description.");
+            optOneEditText.setHint("Please enter Option 01 description.");
+            optTwoEditText.setHint("Please enter Option 02 description.");
+            optThreeEditText.setHint("Please enter Option 03 description.");
+            optFourEditText.setHint("Please enter Option 04 description.");
+            remarksEditText.setHint("Please enter explanation for the answer.");
         }
 
         populateUI();
@@ -227,19 +232,18 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
             case R.id.addBtnID:
 
                 updateModel();
-
-                if(CommonUtils.isLearningUI(title)) {
-                    learningItemDAO.save((LearningItem) item);
-                } else {
-                    quizItemDAO.save((QuizItem) item);
+                if(Validate()) {
+                    returnIntent = new Intent();
+                    SaveItem(returnIntent);
                 }
-
-                returnIntent = new Intent();
-                returnIntent.putExtra(MODE, mode);
-                returnIntent.putExtra(ITEM_OBJ, item);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-
+                else {
+                    if(CommonUtils.isLearningUI(title)) {
+                        Toast.makeText(this, "Add Learning Item failed..!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(this, "Add Quiz Item failed..!", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
             case R.id.saveBtnID:
                 updateModel();
@@ -249,10 +253,10 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
                 }
                 else {
                     if(CommonUtils.isLearningUI(title)) {
-                        Toast.makeText(this, "Edit learning item failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Edit Learning Item failed..!", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(this, "Adding learning item failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Edit Quiz Item failed..!", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -289,15 +293,41 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
             }
             valid = false;
         }
+        if(!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionOne().isEmpty()) {
+            optOneEditText.setError("Enter description for Option 01");
+            valid = false;
+        }
+        if(!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionTwo().isEmpty()) {
+            optTwoEditText.setError("Enter description for Option 02");
+            valid = false;
+        }
+        if(!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionThree().isEmpty()) {
+            optThreeEditText.setError("Enter description for Option 03");
+            valid = false;
+        }
+        if(!CommonUtils.isLearningUI(title) && ((QuizItem) item).getOptionFour().isEmpty()) {
+            optFourEditText.setError("Enter description for Option 03");
+            valid = false;
+        }
+        if(!CommonUtils.isLearningUI(title) && ((QuizItem) item).getExplanation().isEmpty()) {
+            optFourEditText.setError("Enter description for Option 03");
+            valid = false;
+        }
+        if(!CommonUtils.isLearningUI(title) &&
+                !((QuizItem) item).isOptionOneAnswer() && !((QuizItem) item).isOptionTwoAnswer() &&
+                !((QuizItem) item).isOptionThreeAnswer()&&  !((QuizItem) item).isOptionFourAnswer()) {
+            remarksEditText.setError("Please choose minimum one option");
+            valid = false;
+        }
         return  valid;
     }
 
     //Save quiz/learning item object after validation.
     public void SaveItem(Intent returnIntent) {
         if(CommonUtils.isLearningUI(title)) {
-            learningItemDAO.delete((LearningItem) item);
+            learningItemDAO.save((LearningItem) item);
         } else {
-            quizItemDAO.delete((QuizItem) item);
+            quizItemDAO.save((QuizItem) item);
         }
 
         returnIntent = new Intent();

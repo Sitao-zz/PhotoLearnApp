@@ -96,13 +96,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Remarks :" />
+                android:text="Explanation :" />
 
             <TextView
                 android:id="@+id/remarksTextViewID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Remarks" />
+                android:text="Explanatiton" />
 
         </LinearLayout>
 

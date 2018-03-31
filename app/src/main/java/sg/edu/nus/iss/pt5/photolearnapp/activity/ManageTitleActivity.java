@@ -159,10 +159,10 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
                 }
                 else {
                     if(CommonUtils.isLearningUI(uiType)) {
-                        Toast.makeText(this, "Edit learning title failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Edit learning title failed..!", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(this, "Edit quiz title failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Edit quiz title failed..!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -185,7 +185,6 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
             }
             valid = false;
         }
-
         return  valid;
     }
 
