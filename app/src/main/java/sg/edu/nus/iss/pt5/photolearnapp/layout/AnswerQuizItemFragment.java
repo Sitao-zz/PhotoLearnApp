@@ -60,8 +60,7 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
 
     public interface NavigateListener {
         public void onNextClick(boolean isCorrectAnswer);
-
-        public void onSubmitClick();
+        public void onSubmitClick(boolean isCorrectAnswer);
     }
 
 
@@ -212,22 +211,12 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
             case R.id.nextBtnID:
                 populateModel();
                 quizUserAnswerDAO.save(quizUserAnswer);
-
-                boolean isCorrectAnswer = false;
-                if ((quizItem.isOptionOneAnswer() == quizUserAnswer.isOptionOne())
-                        && (quizItem.isOptionTwoAnswer() == quizUserAnswer.isOptionTwo())
-                        && (quizItem.isOptionThreeAnswer() == quizUserAnswer.isOptionThree())
-                        && (quizItem.isOptionFourAnswer() == quizUserAnswer.isOptionFour())) {
-                    isCorrectAnswer = true;
-                }
-
-                navigateListener.onNextClick(isCorrectAnswer);
+                navigateListener.onNextClick(isCorrectAnswer());
                 break;
             case R.id.submitBtnID:
                 populateModel();
                 quizUserAnswerDAO.save(quizUserAnswer);
-
-                navigateListener.onSubmitClick();
+                navigateListener.onSubmitClick(isCorrectAnswer());
                 break;
             case R.id.exitBtnID:
 
@@ -253,6 +242,16 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
 
                 break;
         }
+    }
+
+    private boolean isCorrectAnswer() {
+        if ((quizItem.isOptionOneAnswer() == quizUserAnswer.isOptionOne())
+                && (quizItem.isOptionTwoAnswer() == quizUserAnswer.isOptionTwo())
+                && (quizItem.isOptionThreeAnswer() == quizUserAnswer.isOptionThree())
+                && (quizItem.isOptionFourAnswer() == quizUserAnswer.isOptionFour())) {
+            return  true;
+        }
+        return false;
     }
 
     public void onPause() {
