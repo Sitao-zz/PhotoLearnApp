@@ -1,9 +1,11 @@
 package sg.edu.nus.iss.pt5.photolearnapp.layout;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import java.util.List;
 import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
+import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizUserAnswerDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.QuizUserAnswer;
@@ -31,6 +34,8 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
     private FileStoreHelper fileStoreHelper = FileStoreHelper.getInstance();
 
     private QuizItem quizItem;
+    private QuizItemDAO quizItemDAO;
+
     private QuizUserAnswer quizUserAnswer;
     private QuizUserAnswerDAO quizUserAnswerDAO;
     private boolean isLastItem;
@@ -46,6 +51,7 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
 
     private Button nextBtn;
     private Button submitBtn;
+    private Button exitBtn;
 
     private ImageButton textToSpeechBtn;
     private TextToSpeechUtil textToSpeechUtil;
@@ -87,8 +93,8 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
         }
 
         textToSpeechUtil = new TextToSpeechUtil(this.getContext());
+        quizItemDAO = new QuizItemDAO();
         quizUserAnswerDAO = new QuizUserAnswerDAO();
-
     }
 
     @Override
@@ -118,6 +124,9 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
         submitBtn = (Button) view.findViewById(R.id.submitBtnID);
         submitBtn.setVisibility(View.GONE);
         submitBtn.setOnClickListener(this);
+
+        exitBtn = (Button) view.findViewById(R.id.exitBtnID);
+        exitBtn.setOnClickListener(this);
 
         if (isLastItem) {
             submitBtn.setVisibility(View.VISIBLE);
@@ -219,6 +228,29 @@ public class AnswerQuizItemFragment extends Fragment implements View.OnClickList
                 quizUserAnswerDAO.save(quizUserAnswer);
 
                 navigateListener.onSubmitClick();
+                break;
+            case R.id.exitBtnID:
+
+                AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
+                myAlertDialog.setTitle("Exit and clear all answers");
+                myAlertDialog.setMessage("Exit and remove all attempted answers.\n\nAre you sure to exit?");
+
+                myAlertDialog.setPositiveButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+
+                myAlertDialog.setNegativeButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                quizItemDAO.deleteAnswersByQuizTitleUserId(SecurityContext.getInstance().getRole().getUser().getId(), quizItem.getTitleId());
+                                getActivity().finish();
+                            }
+                        });
+                myAlertDialog.show();
+
                 break;
         }
     }
