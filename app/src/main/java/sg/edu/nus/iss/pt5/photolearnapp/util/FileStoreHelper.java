@@ -3,7 +3,6 @@ package sg.edu.nus.iss.pt5.photolearnapp.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,6 +45,9 @@ public class FileStoreHelper {
 
 
     public void downloadImage(final String fileStorePath, final FileStoreListener<Bitmap> fileStoreListener) {
+        if (fileStorePath == null || fileStorePath.isEmpty()) {
+            return;
+        }
 
         StorageReference pathReference = storageRef.child(fileStorePath);
 
