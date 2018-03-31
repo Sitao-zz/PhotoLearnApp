@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -65,6 +66,13 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
         uiType = (UIType) extras.get(UI_TYPE);
         learningSession = (LearningSession) extras.get(LEARNING_SESSION_OBJ);
         title = (Title) extras.get(TITLE_OBJ);
+
+        if(CommonUtils.isLearningUI(uiType)) {
+            titleNameEditText.setHint("Please enter your learning title");
+        }
+        else{
+            titleNameEditText.setHint("Please enter your quiz title");
+        }
 
         init();
 
@@ -127,17 +135,19 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
                 populateModel();
                 title.setDateTime(Calendar.getInstance().getTime());
 
-                if(CommonUtils.isLearningUI(uiType)) {
-                    learningTitleDAO.save((LearningTitle) title);
-                } else {
-                    quizTitleDAO.save((QuizTitle) title);
+                if(Validate()) {
+                    returnIntent = new Intent();
+                    SaveTitle(returnIntent);
+                }
+                else {
+                    if(CommonUtils.isLearningUI(uiType)) {
+                        Toast.makeText(this, "Adding learning title failed", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(this, "Adding quiz title failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-                returnIntent = new Intent();
-                returnIntent.putExtra(MODE, mode);
-                returnIntent.putExtra(TITLE_OBJ, title);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
                 break;
 
             case R.id.saveBtnID:
@@ -157,5 +167,36 @@ public class ManageTitleActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
 
+    }
+
+
+    // Add/save title form validation
+    public boolean Validate()
+    {
+        boolean valid = true;
+        if(title.getTitle().isEmpty()) {
+            if(CommonUtils.isLearningUI(uiType)) {
+                titleNameEditText.setError("Learning title can't be empty.");
+            }
+            else{
+                titleNameEditText.setError("Quiz title can't be empty.");
+            }
+            valid = false;
+        }
+
+        return  valid;
+    }
+
+    //Save session object after validation.
+    public void SaveTitle(Intent returnIntent) {
+        if(CommonUtils.isLearningUI(uiType)) {
+            learningTitleDAO.save((LearningTitle) title);
+        } else {
+            quizTitleDAO.save((QuizTitle) title);
+        }
+        returnIntent.putExtra(MODE, mode);
+        returnIntent.putExtra(TITLE_OBJ, title);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }
