@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.storage.UploadTask;
 
@@ -128,6 +129,13 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
         setTitle();
 
+        if(CommonUtils.isLearningUI(title)) {
+            descriptionEditText.setHint("Please enter your learning item description");
+        }
+        else{
+            descriptionEditText.setHint("Please enter your quiz item description");
+        }
+
         populateUI();
 
     }
@@ -234,22 +242,19 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.saveBtnID:
-
                 updateModel();
-
-                if(CommonUtils.isLearningUI(title)) {
-                    learningItemDAO.save((LearningItem) item);
-                } else {
-                    quizItemDAO.save((QuizItem) item);
+                if(Validate()) {
+                    returnIntent = new Intent();
+                    SaveItem(returnIntent);
                 }
-
-                returnIntent = new Intent();
-                returnIntent.putExtra(MODE, mode);
-                returnIntent.putExtra(ITEM_OBJ, item);
-                returnIntent.putExtra(POSITION, position);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-
+                else {
+                    if(CommonUtils.isLearningUI(title)) {
+                        Toast.makeText(this, "Edit learning item failed.", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(this, "Adding learning item failed.", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
             case R.id.deleteBtnID:
 
@@ -269,6 +274,38 @@ public class ManageItemActivity extends BaseActivity implements View.OnClickList
                 break;
         }
 
+    }
+
+    // Add/save learning/quiz item form validation
+    public boolean Validate()
+    {
+        boolean valid = true;
+        if(item.getPhotoDesc().isEmpty()) {
+            if(CommonUtils.isLearningUI(title)) {
+                descriptionEditText.setError("Learning item description can't be empty.");
+            }
+            else{
+                descriptionEditText.setError("Quiz item description can't be empty.");
+            }
+            valid = false;
+        }
+        return  valid;
+    }
+
+    //Save quiz/learning item object after validation.
+    public void SaveItem(Intent returnIntent) {
+        if(CommonUtils.isLearningUI(title)) {
+            learningItemDAO.delete((LearningItem) item);
+        } else {
+            quizItemDAO.delete((QuizItem) item);
+        }
+
+        returnIntent = new Intent();
+        returnIntent.putExtra(MODE, Mode.DELETE);
+        returnIntent.putExtra(ITEM_OBJ, item);
+        returnIntent.putExtra(POSITION, position);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 
 
