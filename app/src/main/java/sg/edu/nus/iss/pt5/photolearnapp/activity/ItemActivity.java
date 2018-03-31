@@ -3,7 +3,6 @@ package sg.edu.nus.iss.pt5.photolearnapp.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.view.ViewPager;
@@ -17,9 +16,7 @@ import sg.edu.nus.iss.pt5.photolearnapp.R;
 import sg.edu.nus.iss.pt5.photolearnapp.adapter.ItemPagerAdapter;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
-import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.DAOResultListener;
-import sg.edu.nus.iss.pt5.photolearnapp.dao.DummyDataProvider;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.LearningItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.dao.QuizItemDAO;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
@@ -31,8 +28,6 @@ import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.MODE;
-import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.POSITION;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_ADD_ITEM;
 import static sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants.RC_EDIT_ITEM;
 

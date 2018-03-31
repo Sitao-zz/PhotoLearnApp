@@ -27,6 +27,10 @@ public class CommonUtils {
         return (Mode.EDIT == ((Participant) SecurityContext.getInstance().getRole()).getMode());
     }
 
+    public static boolean isParticipantAnswerMode() {
+        return (Mode.ANSWER == ((Participant) SecurityContext.getInstance().getRole()).getMode());
+    }
+
     public static boolean isLearningUI(UIType uiType) {
         return (UIType.LEARNING == uiType);
     }

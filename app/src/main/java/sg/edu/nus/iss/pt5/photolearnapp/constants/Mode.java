@@ -5,5 +5,5 @@ package sg.edu.nus.iss.pt5.photolearnapp.constants;
  */
 
 public enum Mode {
-    ADD, EDIT, DELETE, VIEW
+    ADD, EDIT, DELETE, VIEW, ANSWER, SUMMART
 }

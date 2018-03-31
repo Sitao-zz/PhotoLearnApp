@@ -6,32 +6,31 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
+import sg.edu.nus.iss.pt5.photolearnapp.constants.Mode;
+import sg.edu.nus.iss.pt5.photolearnapp.layout.AnswerQuizItemFragment;
 import sg.edu.nus.iss.pt5.photolearnapp.layout.ItemFragment;
+import sg.edu.nus.iss.pt5.photolearnapp.layout.SummaryQuizItemFragment;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Item;
+import sg.edu.nus.iss.pt5.photolearnapp.model.QuizItem;
 import sg.edu.nus.iss.pt5.photolearnapp.model.Title;
 
 /**
  * Created by mjeyakaran on 23/3/18.
  */
 
-public class ItemPagerAdapter<T extends Item> extends FragmentStatePagerAdapter {
+public class AnswerQuizItemPagerAdapter extends FragmentStatePagerAdapter {
 
-    private Title title;
-    private List<T> itemList;
+    private List<QuizItem> itemList;
 
-    public ItemPagerAdapter(FragmentManager fm, Title title, List<T> itemList) {
+    public AnswerQuizItemPagerAdapter(FragmentManager fm, List<QuizItem> itemList) {
         super(fm);
-        this.title = title;
         this.itemList = itemList;
     }
 
     @Override
     public Fragment getItem(int position) {
-
-        T item = itemList.get(position);
-        ItemFragment itemFragment = ItemFragment.newInstance(position, title, item);
-
-        return itemFragment;
+        QuizItem quizItem = itemList.get(position);
+        return AnswerQuizItemFragment.newInstance(quizItem, (position > itemList.size() - 2));
     }
 
     @Override
@@ -46,7 +45,4 @@ public class ItemPagerAdapter<T extends Item> extends FragmentStatePagerAdapter 
         return POSITION_NONE;
     }
 
-    public List<T> getItemList() {
-        return itemList;
-    }
 }
