@@ -235,13 +235,13 @@ public class LearningSessionActivity extends BaseActivity implements View.OnClic
                 startActivityForResult(intent, AppConstants.RC_ADD_LS);
                 break;
             case R.id.viewModeBtnID:
-                Intent viewModeIntent = new Intent(this, TitleActivity.class);
+                Intent viewModeIntent = new Intent(this, LearningTitleActivity.class);
                 ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.VIEW);
                 viewModeIntent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
                 startActivity(viewModeIntent);
                 break;
             case R.id.editModeBtnID:
-                Intent editModeIntent = new Intent(this, TitleActivity.class);
+                Intent editModeIntent = new Intent(this, LearningTitleActivity.class);
                 ((Participant) SecurityContext.getInstance().getRole()).setMode(Mode.EDIT);
                 editModeIntent.putExtra(AppConstants.LEARNING_SESSION_OBJ, learningSession);
                 startActivity(editModeIntent);

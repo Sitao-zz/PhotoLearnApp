@@ -85,6 +85,10 @@
 
         <activity android:name=".activity.SummaryQuizItemActivity"
             android:parentActivityName=".activity.SummaryActivity"></activity>
+
+        <activity android:name=".activity.LearningTitleActivity"
+            android:parentActivityName=".activity.LearningSessionActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

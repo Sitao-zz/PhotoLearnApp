@@ -1,31 +1,29 @@
 package sg.edu.nus.iss.pt5.photolearnapp.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 
 import sg.edu.nus.iss.pt5.photolearnapp.R;
-import sg.edu.nus.iss.pt5.photolearnapp.adapter.TitlePagerAdapter;
-import sg.edu.nus.iss.pt5.photolearnapp.constants.AppConstants;
 import sg.edu.nus.iss.pt5.photolearnapp.constants.UIType;
 import sg.edu.nus.iss.pt5.photolearnapp.layout.TitleFragment;
-import sg.edu.nus.iss.pt5.photolearnapp.model.LearningSession;
 import sg.edu.nus.iss.pt5.photolearnapp.util.CommonUtils;
 import sg.edu.nus.iss.pt5.photolearnapp.util.SecurityContext;
 
-public class AnswerQuizTitleActivity extends BaseActivity {
+public class LearningTitleActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_answer_quiz_title);
+        setContentView(R.layout.activity_learning_title);
 
-        setTitle("Answer Quiz");
+        if (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantViewMode()) {
+            setTitle("View Learning Title");
+        } else if (SecurityContext.getInstance().isParticipant() && CommonUtils.isParticipantEditMode()) {
+            setTitle("Edit Learning Title");
+        }
 
-        TitleFragment quizTitleFragment = TitleFragment.newInstance(UIType.QUIZ);
+        TitleFragment quizTitleFragment = TitleFragment.newInstance(UIType.LEARNING);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.titleListFrameLayoutID, quizTitleFragment).commit();
 
