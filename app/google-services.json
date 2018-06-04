@@ -19,7 +19,7 @@
           "client_type": 1,
           "android_info": {
             "package_name": "sg.edu.nus.iss.pt5.photolearnapp",
-            "certificate_hash": "ef36e95710f280847c96928328b9379e2b362248"
+            "certificate_hash": "{create a fingerprint in firebase}"
           }
         },
         {
@@ -29,7 +29,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD0cW9AGZfWS9HjAzBiPdp01MQ8l-P37dg"
+          "current_key": "{Your api key}"
         }
       ],
       "services": {
